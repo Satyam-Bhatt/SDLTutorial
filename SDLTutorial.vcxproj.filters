@@ -18,10 +18,24 @@
     <ClCompile Include="01_hello_SDL\01_hello_SDL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="02_getting_an_image_on_the_screen\02_getting_an_image_on_the_screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="02_getting_an_image_on_the_screen\readme.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="02_getting_an_image_on_the_screen\hello_world.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
