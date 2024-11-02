@@ -24,6 +24,9 @@
     <ClCompile Include="Mine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="03_event_driven_programming\03_event_driven_programming.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
@@ -32,9 +35,15 @@
     <Text Include="02_getting_an_image_on_the_screen\readme.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="03_event_driven_programming\readme.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="02_getting_an_image_on_the_screen\hello_world.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="03_event_driven_programming\x.bmp">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>

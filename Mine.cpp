@@ -15,7 +15,7 @@ class MineFirstClass {
 //public:bool loadMedia_Mine();
 //public:void close_Mine();
 	  //Initialzie
-public:bool init_Mine()
+public:bool init_MIne()
 {
 	bool success = false;
 	if (SDL_Init((SDL_INIT_VIDEO)) < 0)
@@ -70,7 +70,7 @@ int main( int argc, char* args[] )
 {
 	MineFirstClass firstClass;
 
-	if( !firstClass.init_Mine() )
+	if( !firstClass.init_MIne() )
 	{
 		printf( "Failed to initialize!\n" );
 	}
@@ -82,6 +82,11 @@ int main( int argc, char* args[] )
 		}
 		else
 		{
+			//Event handler
+			SDL_Event e;
+
+			bool quit = false;
+
 			//Apply the image
 			SDL_BlitSurface( image, NULL, screenSurface, NULL );
 			
@@ -89,7 +94,37 @@ int main( int argc, char* args[] )
 			SDL_UpdateWindowSurface( window );
 
             //Hack to get window to stay up
-            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+            //SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+			
+			//Application is running
+			while (!quit)
+			{
+			    int a=SDL_PollEvent(&e);
+				
+				while (a != 0)
+				{
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+					}
+					if(e.type == SDL_KEYDOWN)
+					{
+							printf("key\n");
+					}
+					if (e.type == SDL_MOUSEBUTTONDOWN)
+					{
+						printf("mouse\n");
+					}
+					//if (e.type == SDL_MOUSEMOTION) {
+					//	//printf("mouse motion\n");
+					//}
+
+					printf("%d\n", a);
+					a = SDL_PollEvent(&e);
+					printf("Sister Nonsense: %d\n", a);
+
+				}
+			}
 		}
 	}
 
