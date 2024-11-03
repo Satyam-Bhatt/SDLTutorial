@@ -22,16 +22,23 @@
     <ClCompile Include="01_hello_SDL\01_hello_SDL.cpp" />
     <ClCompile Include="02_getting_an_image_on_the_screen\02_getting_an_image_on_the_screen.cpp" />
     <ClCompile Include="03_event_driven_programming\03_event_driven_programming.cpp" />
+    <ClCompile Include="04_key_presses\04_key_presses.cpp" />
     <ClCompile Include="Mine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt" />
     <Text Include="02_getting_an_image_on_the_screen\readme.txt" />
     <Text Include="03_event_driven_programming\readme.txt" />
+    <Text Include="04_key_presses\readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="02_getting_an_image_on_the_screen\hello_world.bmp" />
     <Image Include="03_event_driven_programming\x.bmp" />
+    <Image Include="04_key_presses\down.bmp" />
+    <Image Include="04_key_presses\left.bmp" />
+    <Image Include="04_key_presses\press.bmp" />
+    <Image Include="04_key_presses\right.bmp" />
+    <Image Include="04_key_presses\up.bmp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
