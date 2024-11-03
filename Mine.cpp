@@ -140,7 +140,6 @@ int main(int argc, char* args[])
 
 			bool quit = false;
 
-			firstClass.loadMedia_Mine();
 			image = allImagesLoaded[KEY_PRESS_SURFACE_DEFAULT];
 
 			//Hack to get window to stay up
@@ -149,8 +148,6 @@ int main(int argc, char* args[])
 			//Application is running
 			while (!quit)
 			{
-
-
 				while (SDL_PollEvent(&e) != 0)
 				{
 					if (e.type == SDL_QUIT)
