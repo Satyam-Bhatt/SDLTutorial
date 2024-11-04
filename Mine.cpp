@@ -21,18 +21,31 @@ SDL_Surface* allImagesLoaded[KEY_PRESS_SURFACE_TOTAL];
 
 SDL_Surface* loadSurface(std::string path)
 {
+	SDL_Surface* optimizedSurface = NULL;
 	SDL_Surface* temporarySurface = SDL_LoadBMP(path.c_str());
 	if (temporarySurface == NULL)
 	{
 		printf("Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
 	}
-	return temporarySurface;
+	else
+	{
+		optimizedSurface = SDL_ConvertSurface(temporarySurface, screenSurface->format, 0);
+		if (optimizedSurface == NULL)
+		{
+			printf("OptimizedSurfaceIssue %s \n", SDL_GetError());
+		}
+
+		//Free the loaded Surface
+		SDL_FreeSurface(temporarySurface);
+	}
+
+	return optimizedSurface;
 }
 
 class MineFirstClass {
 	//Screen Dimensions
-	const int S_Widht = 800;
-	const int S_Height = 600;
+	public:const int S_Widht = 800;
+	public:const int S_Height = 600;
 
 	//Initialzie
 	public:bool init_MIne()
@@ -179,7 +192,13 @@ int main(int argc, char* args[])
 					}
 
 					//Apply the image
-					SDL_BlitSurface(image, NULL, screenSurface, NULL);
+					//SDL_BlitSurface(image, NULL, screenSurface, NULL);
+					SDL_Rect rect;
+					rect.x = 0;
+					rect.y = 0;
+					rect.w = firstClass.S_Widht;
+					rect.h = firstClass.S_Height;
+					SDL_BlitScaled(image, NULL, screenSurface, &rect);
 
 					//Update the surface
 					SDL_UpdateWindowSurface(window);
