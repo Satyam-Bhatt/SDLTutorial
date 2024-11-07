@@ -48,7 +48,7 @@ public: bool init()
 			}
 			else
 			{
-				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				SDL_SetRenderDrawColor(renderer, 0xff, 0, 0, 0);
 
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
@@ -145,7 +145,7 @@ public:void close()
 
 };
 
-//float value = 0;
+float value = 0;
 
 int main(int argc, char* args[])
 {
@@ -176,24 +176,23 @@ int main(int argc, char* args[])
 					}
 				}
 
+				SDL_Rect rect;
+				rect.x = value;
+				rect.y = sin(rect.x/2) * 40;
+				rect.w = SCREEN_WIDTH / 2;
+				rect.h = SCREEN_HEIGHT / 2;
+
 				//Clear Screen
 				SDL_RenderClear(renderer);
 
 				//Render Texture to Screen
-				SDL_RenderCopy(renderer,imageTexture, NULL, NULL);
+				SDL_RenderCopy(renderer, imageTexture, NULL, &rect);
 				//IMG_LoadTexture(renderer, "06_extension_libraries_and_loading_other_image_formats/loaded.png"); //Not working
 
 				//Update Screen
 				SDL_RenderPresent(renderer);
 
-				//SDL_Rect rect;
-				//rect.x = value;
-				//rect.y = 0;
-				//rect.w = SCREEN_WIDTH / 2;
-				//rect.h = SCREEN_HEIGHT / 2;
-				//SDL_BlitScaled(image, NULL, screenSurface, &rect);
-				//SDL_UpdateWindowSurface(window);
-				//value += 0.05;
+				value += 0.005;
 			}
 		}
 	}
