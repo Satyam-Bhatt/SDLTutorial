@@ -48,7 +48,7 @@ public: bool init()
 			}
 			else
 			{
-				SDL_SetRenderDrawColor(renderer, 0xff, 0, 0, 0);
+				SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
@@ -176,18 +176,47 @@ int main(int argc, char* args[])
 					}
 				}
 
-				SDL_Rect rect;
-				rect.x = value;
-				rect.y = sin(rect.x/2) * 40;
-				rect.w = SCREEN_WIDTH / 2;
-				rect.h = SCREEN_HEIGHT / 2;
+				SDL_SetRenderDrawColor(renderer, 0xFF, 60, 0xFF, 0xFF);
 
 				//Clear Screen
 				SDL_RenderClear(renderer);
 
+				SDL_Rect rect;
+				rect.x = value;
+				rect.y = sin(rect.x / 2) * 40;
+				rect.w = SCREEN_WIDTH / 2;
+				rect.h = SCREEN_HEIGHT / 2;
+
 				//Render Texture to Screen
 				SDL_RenderCopy(renderer, imageTexture, NULL, &rect);
 				//IMG_LoadTexture(renderer, "06_extension_libraries_and_loading_other_image_formats/loaded.png"); //Not working
+
+
+				SDL_Rect rectFilled;
+				rectFilled.x = SCREEN_WIDTH / 4;
+				rectFilled.y = SCREEN_HEIGHT / 4;
+				rectFilled.w = SCREEN_WIDTH / 2;
+				rectFilled.h = SCREEN_HEIGHT / 2;
+				//Can also be defined as -> SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
+				SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
+				SDL_RenderFillRect(renderer, &rectFilled);
+
+				SDL_Rect rectLine;
+				rectLine.x = SCREEN_WIDTH / 6;
+				rectLine.y = SCREEN_HEIGHT / 6;
+				rectLine.w = SCREEN_WIDTH * 2 / 3;
+				rectLine.h = SCREEN_HEIGHT * 2 / 3;
+				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+				SDL_RenderDrawRect(renderer, &rectLine);
+
+				SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+				SDL_RenderDrawLine(renderer, 0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
+
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+				for (int i = SCREEN_HEIGHT / 4; i < SCREEN_HEIGHT / 2; i+= 4)
+				{
+					SDL_RenderDrawPoint(renderer, SCREEN_WIDTH / 2, i);
+				}
 
 				//Update Screen
 				SDL_RenderPresent(renderer);
