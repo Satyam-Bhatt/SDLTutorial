@@ -1,3 +1,5 @@
+//Responsible for Taking inputs and changinf images
+
 //#include <SDL.h>
 //#include <stdio.h>
 //#include <string>

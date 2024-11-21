@@ -1,3 +1,5 @@
+//Responsible for rendering geometry and an Image which is a PNG using SDL_Image and Textures
+
 #include <stdio.h>
 #include <SDL.h>
 #include <string>
@@ -11,7 +13,7 @@ SDL_Surface* screenSurface = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* image = NULL;
 SDL_Texture* imageTexture = NULL;
-
+SDL_Texture* viewportTexture = NULL;
 
 class MyClass {
 
@@ -119,6 +121,13 @@ public:bool LoadMedia()
 		success = false;
 	}
 
+	viewportTexture = LoadTexture("09_the_viewport/viewport.png");
+	if (viewportTexture == NULL)
+	{
+		printf("Unable to load image %s! SDL_image Error: %s\n", "09_the_viewport/viewport.png", IMG_GetError());
+		success = false;
+	}
+
 	return success;
 }
 
@@ -126,6 +135,9 @@ public:void close()
 {
 	SDL_DestroyTexture(imageTexture);
 	imageTexture = NULL;
+
+	SDL_DestroyTexture(viewportTexture);
+	viewportTexture = NULL;
 
 	SDL_DestroyRenderer(renderer);
 	renderer = NULL;
@@ -176,10 +188,49 @@ int main(int argc, char* args[])
 					}
 				}
 
-				SDL_SetRenderDrawColor(renderer, 0xFF, 60, 0xFF, 0xFF);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
 
 				//Clear Screen
 				SDL_RenderClear(renderer);
+
+				SDL_Rect topLeftViewport;
+				topLeftViewport.x = 0;
+				topLeftViewport.y = 0;
+				topLeftViewport.w = SCREEN_WIDTH / 2;
+				topLeftViewport.h = SCREEN_HEIGHT / 2;
+				SDL_RenderSetViewport(renderer, &topLeftViewport);
+
+				//Render Texture to Screen
+				SDL_RenderCopy(renderer, viewportTexture, NULL, NULL); //Because of the viewport, the image will be rendered to the top left corner of the screen
+
+				SDL_Rect topRightViewport;
+				topRightViewport.x = SCREEN_WIDTH / 2;
+				topRightViewport.y = 0;
+				topRightViewport.w = SCREEN_WIDTH / 2;
+				topRightViewport.h = SCREEN_HEIGHT / 2;
+				SDL_RenderSetViewport(renderer, &topRightViewport);
+
+				//Render Texture to Screen
+				SDL_RenderCopy(renderer, viewportTexture, NULL, NULL);
+
+				SDL_Rect bottomViewport;
+				bottomViewport.x = 0;
+				bottomViewport.y = SCREEN_HEIGHT / 2;
+				bottomViewport.w = SCREEN_WIDTH;
+				bottomViewport.h = SCREEN_HEIGHT / 2;
+				SDL_RenderSetViewport(renderer, &bottomViewport);
+
+
+				//Render Texture to Screen
+				SDL_RenderCopy(renderer, viewportTexture, NULL, NULL);
+
+				SDL_Rect fullViewport;
+				fullViewport.x = 0;
+				fullViewport.y = 0;
+				fullViewport.w = SCREEN_WIDTH;
+				fullViewport.h = SCREEN_HEIGHT;
+				SDL_RenderSetViewport(renderer, &fullViewport);
+
 
 				SDL_Rect rect;
 				rect.x = value;

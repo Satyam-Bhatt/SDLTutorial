@@ -45,6 +45,9 @@
     <ClCompile Include="ImageRender_Mine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="09_the_viewport\09_the_viewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
