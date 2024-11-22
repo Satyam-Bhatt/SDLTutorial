@@ -26,6 +26,12 @@
     <ClCompile Include="05_optimized_surface_loading_and_soft_stretching\05_optimized_surface_loading_and_soft_stretching.cpp" />
     <ClCompile Include="06_extension_libraries_and_loading_other_image_formats\06_extension_libraries_and_loading_other_image_formats.cpp" />
     <ClCompile Include="07_texture_loading_and_rendering\07_texture_loading_and_rendering.cpp" />
+    <ClCompile Include="09_the_viewport\09_the_viewport.cpp" />
+    <ClCompile Include="10_color_keying\10_color_keying.cpp" />
+    <ClCompile Include="Class.cpp" />
+    <ClCompile Include="ColorKeying_Mine.cpp" />
+    <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
+    <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
   </ItemGroup>
@@ -49,6 +55,10 @@
     <Image Include="05_optimized_surface_loading_and_soft_stretching\stretch.bmp" />
     <Image Include="06_extension_libraries_and_loading_other_image_formats\loaded.png" />
     <Image Include="07_texture_loading_and_rendering\texture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Class.h" />
+    <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
