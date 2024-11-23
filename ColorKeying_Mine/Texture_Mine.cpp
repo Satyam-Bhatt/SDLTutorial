@@ -86,7 +86,7 @@ void Texture_Mine::Render(int x, int y, SDL_Renderer* gRenderer)
 {
 	if (mTexture == NULL)
 	{
-		//printf("No texture to render\n");
+		printf("No texture to render\n");
 		return;
 	}
 

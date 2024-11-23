@@ -12,7 +12,10 @@ Texture_Mine texture_1, texture_2;
 void close()
 {
 	texture_1.Free();
-	//texture_2.Free();
+	texture_2.Free();
+
+	IMG_Quit();
+	SDL_Quit();
 }
 
 int main(int argc, char* args[])
