@@ -2,18 +2,57 @@
 // - Color keying - removes a color from the image
 // - Loading Textures in style Proper Method
 
-#include <SDL.h>
-#include <stdio.h>
-#include <string>
-#include <SDL_image.h>
 #include "ColorKeying_Mine/Texture_Mine.h"
+#include "ColorKeying_Mine/CommonVariables.h"
+#include "StartupStuff.h"
 
-const int SCREEN_HEIGHT = 480;
-const int SCREEN_WIDTH = 640;
+StartupStuff* startupStuff = new StartupStuff();
+Texture_Mine texture_1, texture_2;
+
+void close()
+{
+	texture_1.Free();
+	//texture_2.Free();
+}
 
 int main(int argc, char* args[])
 {
-	Texture_Mine texture;
-	printf("Hello, World! %d \n" , texture.GetHeight());
+	if (!startupStuff->init())
+	{
+		printf("Failed to initialize!\n");
+	}
+	else
+	{
+		if(!startupStuff->LoadMedia(texture_1, "10_color_keying/foo.png") || !startupStuff->LoadMedia(texture_2, "10_color_keying/background.png"))
+		{
+			printf("Failed to load media!\n");
+		}
+		else
+		{
+			bool quit = false;
+			SDL_Event e;
+
+			while (!quit)
+			{
+				while (SDL_PollEvent(&e) != 0) 
+				{
+					if(e.type == SDL_QUIT)
+					{
+						quit = true;
+					}
+				}
+
+				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
+				SDL_RenderClear(startupStuff->renderer);
+
+				texture_2.Render(0, 0, startupStuff->renderer);
+				texture_1.Render(320, 200, startupStuff->renderer);
+
+				SDL_RenderPresent(startupStuff->renderer);
+			}
+		}
+	}
+	close();
+	startupStuff->Free();
 	return 0;
 }

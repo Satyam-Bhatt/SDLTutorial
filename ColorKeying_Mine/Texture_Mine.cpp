@@ -2,6 +2,7 @@
 
 Texture_Mine::Texture_Mine()
 {
+	//Initialize Variables
 	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
@@ -9,7 +10,7 @@ Texture_Mine::Texture_Mine()
 
 Texture_Mine::~Texture_Mine()
 {
-	Texture_Mine::Free();
+	Free();
 }
 
 void Texture_Mine::Free()
@@ -64,7 +65,10 @@ bool Texture_Mine::LoadFromFile(std::string path, SDL_Renderer* renderer)
 		SDL_FreeSurface(loadedSurface);
 	}
 	
-	if(success) mTexture = newTexture;
+	if (success)
+	{
+		mTexture = newTexture;
+	}
 	return success;
 }
 
@@ -76,4 +80,17 @@ int Texture_Mine::GetHeight()
 int Texture_Mine::GetWidth()
 {
 	return mWidth;
+}
+
+void Texture_Mine::Render(int x, int y, SDL_Renderer* gRenderer)
+{
+	if (mTexture == NULL)
+	{
+		//printf("No texture to render\n");
+		return;
+	}
+
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	SDL_RenderCopy(gRenderer, mTexture, NULL, &renderQuad);
 }

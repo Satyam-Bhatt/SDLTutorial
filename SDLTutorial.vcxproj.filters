@@ -60,6 +60,9 @@
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StartupStuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
@@ -122,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="Class.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StartupStuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorKeying_Mine\CommonVariables.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
