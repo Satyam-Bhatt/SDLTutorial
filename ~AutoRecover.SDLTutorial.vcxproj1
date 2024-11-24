@@ -28,6 +28,7 @@
     <ClCompile Include="07_texture_loading_and_rendering\07_texture_loading_and_rendering.cpp" />
     <ClCompile Include="09_the_viewport\09_the_viewport.cpp" />
     <ClCompile Include="10_color_keying\10_color_keying.cpp" />
+    <ClCompile Include="11_clip_rendering_and_sprite_sheets\11_clip_rendering_and_sprite_sheets.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
@@ -59,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />
+    <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
     <ClInclude Include="StartupStuff.h" />
   </ItemGroup>

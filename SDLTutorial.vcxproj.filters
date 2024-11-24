@@ -63,6 +63,9 @@
     <ClCompile Include="StartupStuff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="11_clip_rendering_and_sprite_sheets\11_clip_rendering_and_sprite_sheets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

@@ -20,11 +20,15 @@ public:
 	void Free();
 
 	//Renders texture at given point
-	void Render(int x, int y, SDL_Renderer* renderer);
+	void Render(int x, int y, SDL_Renderer* renderer, bool expandToScreen = false);
+
+	void Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
 
 	//Gets image dimensions
 	int GetWidth();
 	int GetHeight();
+
+	SDL_Rect clipRects[4];
 
 private:
 	//The actual hardware texture
