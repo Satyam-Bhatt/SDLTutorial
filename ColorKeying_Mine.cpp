@@ -1,6 +1,7 @@
 // This code does 
 // - Color keying - removes a color from the image
 // - Loading Textures in style Proper Method
+// - Sprite Sheet and Clipping
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"

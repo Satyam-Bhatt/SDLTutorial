@@ -22,6 +22,7 @@ public:
 	//Renders texture at given point
 	void Render(int x, int y, SDL_Renderer* renderer, bool expandToScreen = false);
 
+	//Method Responsible for clipping an image and also rendering it at a given point
 	void Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
 
 	//Gets image dimensions

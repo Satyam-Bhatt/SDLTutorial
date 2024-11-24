@@ -122,6 +122,7 @@ void Texture_Mine::Render(int x, int y, SDL_Renderer* gRenderer, bool expandToSc
 	}
 }
 
+//Method Responsible for clipping an image
 void Texture_Mine::Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip)
 {
 	if (mTexture == NULL)
