@@ -19,11 +19,17 @@ public:
 	//Deallocates texture
 	void Free();
 
+	//Set color modulation
+	void SetColor(Uint8 red, Uint8 green, Uint8 blue);
+
 	//Renders texture at given point
 	void Render(int x, int y, SDL_Renderer* renderer, bool expandToScreen = false);
 
 	//Method Responsible for clipping an image and also rendering it at a given point
 	void Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
+
+	//Method to render texture for a given height and width
+	void Render(int x, int y, int width, int height, SDL_Renderer* renderer);
 
 	//Gets image dimensions
 	int GetWidth();
