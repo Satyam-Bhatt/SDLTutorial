@@ -22,6 +22,12 @@ public:
 	//Set color modulation
 	void SetColor(Uint8 red, Uint8 green, Uint8 blue);
 
+	//Set Alpha modulation
+	void SetAlpha(Uint8 alpha);
+
+	//Set Blend Mode
+	void SetBlendMode(SDL_BlendMode blending);
+
 	//Renders texture at given point
 	void Render(int x, int y, SDL_Renderer* renderer, bool expandToScreen = false);
 

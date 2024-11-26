@@ -160,3 +160,15 @@ void Texture_Mine::SetColor(Uint8 red, Uint8 green, Uint8 blue)
 	//Modulate texture
 	SDL_SetTextureColorMod(mTexture, red, green, blue);
 }
+
+void Texture_Mine::SetAlpha(Uint8 alpha)
+{
+	//Modulate Alpha value
+	SDL_SetTextureAlphaMod(mTexture, alpha);
+}
+
+void Texture_Mine::SetBlendMode(SDL_BlendMode blending)
+{
+	//Set blending function
+	SDL_SetTextureBlendMode(mTexture, blending);
+}

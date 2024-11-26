@@ -8,12 +8,8 @@
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "StartupStuff.h"
 
-Uint8 r = 255;
-Uint8 g = 255;
-Uint8 b = 255;
-
 StartupStuff* startupStuff = new StartupStuff();
-Texture_Mine texture_1, texture_2, texture_3, texture_4;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5;
 
 void close()
 {
@@ -36,7 +32,11 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		if(!startupStuff->LoadMedia(texture_1, "10_color_keying/foo.png") || !startupStuff->LoadMedia(texture_2, "10_color_keying/background.png") || !startupStuff->LoadMedia(texture_3, "11_clip_rendering_and_sprite_sheets/dots.png") || !startupStuff->LoadMedia(texture_4, "12_color_modulation/colors.png"))
+		if(!startupStuff->LoadMedia(texture_1, "10_color_keying/foo.png")
+			|| !startupStuff->LoadMedia(texture_2, "10_color_keying/background.png") 
+			|| !startupStuff->LoadMedia(texture_3, "11_clip_rendering_and_sprite_sheets/dots.png") 
+			|| !startupStuff->LoadMedia(texture_4, "12_color_modulation/colors.png")
+			|| !startupStuff->LoadMedia(texture_5, "13_alpha_blending/fadeout.png", SDL_BLENDMODE_BLEND))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -44,6 +44,11 @@ int main(int argc, char* args[])
 		{
 			bool quit = false;
 			SDL_Event e;
+
+			Uint8 r = 255;
+			Uint8 g = 255;
+			Uint8 b = 255;
+			Uint8 a = 255;
 
 			while (!quit)
 			{
@@ -87,6 +92,16 @@ int main(int argc, char* args[])
 							case SDLK_v:
 							b -= 32;
 							break;
+
+							//Decrease alpha
+							case SDLK_s:
+							a -= 32;
+							break;
+
+							//Increase alpha
+							case SDLK_a:
+							a += 32;
+							break;
 						}
 					}
 				}
@@ -106,6 +121,10 @@ int main(int argc, char* args[])
 
 				texture_4.SetColor(r, g, b);
 				texture_4.Render(SCREEN_WIDTH / 2 - 50, 0, 100, 100, startupStuff->renderer);
+
+				texture_5.SetAlpha(a);
+				texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
+
 
 				SDL_RenderPresent(startupStuff->renderer);
 			}

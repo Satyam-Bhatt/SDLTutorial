@@ -16,5 +16,8 @@ public:
 	void Free();
 	bool init();
 	bool LoadMedia(Texture_Mine& texture, std::string path);
+
+	//Load Media with Blend Mode
+	bool LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blending);
 };
 

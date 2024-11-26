@@ -69,6 +69,9 @@
     <ClCompile Include="12_color_modulation\12_color_modulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="13_alpha_blending\13_alpha_blending.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

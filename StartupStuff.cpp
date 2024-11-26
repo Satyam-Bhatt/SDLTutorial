@@ -78,3 +78,18 @@ bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path)
 	}
 	return success;
 }
+
+bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blendMode)
+{
+	bool success = true;
+	if(!texture.LoadFromFile(path, renderer))
+	{
+		printf("Failed to load texture image!\n");
+		success = false;
+	}
+	else
+	{
+		texture.SetBlendMode(blendMode);
+	}
+	return success;
+}
