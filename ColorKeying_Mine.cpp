@@ -104,29 +104,31 @@ int main(int argc, char* args[])
 							break;
 						}
 					}
+
+					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
+					SDL_RenderClear(startupStuff->renderer);
+
+					texture_2.Render(0, 0, startupStuff->renderer, false);
+					texture_1.Render(420, 200, startupStuff->renderer, false);
+
+					texture_3.Render(SCREEN_WIDTH / 2 - texture_3.GetWidth() / 2, SCREEN_HEIGHT / 2 - texture_3.GetHeight() / 2, startupStuff->renderer, false);
+
+					texture_3.Render(0, 0, startupStuff->renderer, &texture_3.clipRects[0]);
+					texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[1].w, 0, startupStuff->renderer, &texture_3.clipRects[1]);
+					texture_3.Render(0, SCREEN_HEIGHT - texture_3.clipRects[2].h, startupStuff->renderer, &texture_3.clipRects[2]);
+					texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[3].w, SCREEN_HEIGHT - texture_3.clipRects[3].h, startupStuff->renderer, &texture_3.clipRects[3]);
+
+					texture_4.SetColor(r, g, b);
+					texture_4.Render(SCREEN_WIDTH / 2 - 50, 0, 100, 100, startupStuff->renderer);
+
+					texture_5.SetAlpha(a);
+					texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
+
+
+					SDL_RenderPresent(startupStuff->renderer);
 				}
 
-				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
-				SDL_RenderClear(startupStuff->renderer);
 
-				texture_2.Render(0, 0, startupStuff->renderer, false);
-				texture_1.Render(420, 200, startupStuff->renderer, false);
-
-				texture_3.Render(SCREEN_WIDTH / 2 - texture_3.GetWidth() / 2, SCREEN_HEIGHT / 2 - texture_3.GetHeight() / 2, startupStuff->renderer, false);
-				
-				texture_3.Render(0, 0, startupStuff->renderer, &texture_3.clipRects[0]);
-				texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[1].w, 0, startupStuff->renderer, &texture_3.clipRects[1]);
-				texture_3.Render(0, SCREEN_HEIGHT - texture_3.clipRects[2].h, startupStuff->renderer, &texture_3.clipRects[2]);
-				texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[3].w, SCREEN_HEIGHT - texture_3.clipRects[3].h, startupStuff->renderer, &texture_3.clipRects[3]);
-
-				texture_4.SetColor(r, g, b);
-				texture_4.Render(SCREEN_WIDTH / 2 - 50, 0, 100, 100, startupStuff->renderer);
-
-				texture_5.SetAlpha(a);
-				texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
-
-
-				SDL_RenderPresent(startupStuff->renderer);
 			}
 		}
 	}
