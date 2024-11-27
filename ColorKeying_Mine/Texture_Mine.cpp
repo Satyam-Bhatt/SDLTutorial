@@ -26,6 +26,26 @@ Texture_Mine::Texture_Mine()
 	clipRects[3].y = 100;
 	clipRects[3].w = 100;
 	clipRects[3].h = 100;
+
+	animatedRects[0].x = 0;
+	animatedRects[0].y = 0;
+	animatedRects[0].w = 64;
+	animatedRects[0].h = 205;
+
+	animatedRects[1].x = 64;
+	animatedRects[1].y = 0;
+	animatedRects[1].w = 64;
+	animatedRects[1].h = 205;
+
+	animatedRects[2].x = 128;
+	animatedRects[2].y = 0;
+	animatedRects[2].w = 64;
+	animatedRects[2].h = 205;
+
+	animatedRects[3].x = 205;
+	animatedRects[3].y = 0;
+	animatedRects[3].w = 64;
+	animatedRects[3].h = 205;
 }
 
 Texture_Mine::~Texture_Mine()

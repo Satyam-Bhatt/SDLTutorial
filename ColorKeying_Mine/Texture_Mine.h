@@ -42,6 +42,7 @@ public:
 	int GetHeight();
 
 	SDL_Rect clipRects[4];
+	SDL_Rect animatedRects[4];
 
 private:
 	//The actual hardware texture

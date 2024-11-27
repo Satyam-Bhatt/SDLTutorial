@@ -45,7 +45,7 @@ bool StartupStuff::init()
 		}
 		else
 		{
-			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL)
 			{
 				printf("Renderer could not be created! SDL Error %s\n", SDL_GetError());
