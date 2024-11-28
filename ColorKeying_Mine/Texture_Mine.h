@@ -34,6 +34,9 @@ public:
 	//Method Responsible for clipping an image and also rendering it at a given point
 	void Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
 
+	//Method to render and rotate the texture
+	void RenderRotate(int x, int y, float changeTextureSize = 1 , SDL_Renderer* renderer = NULL, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
 	//Method to render texture for a given height and width
 	void Render(int x, int y, int width, int height, SDL_Renderer* renderer);
 

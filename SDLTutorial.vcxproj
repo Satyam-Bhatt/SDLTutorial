@@ -32,6 +32,7 @@
     <ClCompile Include="12_color_modulation\12_color_modulation.cpp" />
     <ClCompile Include="13_alpha_blending\13_alpha_blending.cpp" />
     <ClCompile Include="14_animated_sprites_and_vsync\14_animated_sprites_and_vsync.cpp" />
+    <ClCompile Include="15_rotation_and_flipping\15_rotation_and_flipping.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />

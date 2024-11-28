@@ -9,7 +9,7 @@
 #include "StartupStuff.h"
 
 StartupStuff* startupStuff = new StartupStuff();
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated;
 
 void close()
 {
@@ -19,6 +19,7 @@ void close()
 	texture_4.Free();
 	texture_5.Free();
 	texture_animated.Free();
+	texture_rotated.Free();
 	startupStuff->Free();
 	delete startupStuff;
 	startupStuff = nullptr;
@@ -35,12 +36,13 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		if(!startupStuff->LoadMedia(texture_1, "10_color_keying/foo.png")
-			|| !startupStuff->LoadMedia(texture_2, "10_color_keying/background.png") 
-			|| !startupStuff->LoadMedia(texture_3, "11_clip_rendering_and_sprite_sheets/dots.png") 
+		if (!startupStuff->LoadMedia(texture_1, "10_color_keying/foo.png")
+			|| !startupStuff->LoadMedia(texture_2, "10_color_keying/background.png")
+			|| !startupStuff->LoadMedia(texture_3, "11_clip_rendering_and_sprite_sheets/dots.png")
 			|| !startupStuff->LoadMedia(texture_4, "12_color_modulation/colors.png")
 			|| !startupStuff->LoadMedia(texture_5, "13_alpha_blending/fadeout.png", SDL_BLENDMODE_BLEND)
-			|| !startupStuff->LoadMedia(texture_animated, "14_animated_sprites_and_vsync/foo.png"))
+			|| !startupStuff->LoadMedia(texture_animated, "14_animated_sprites_and_vsync/foo.png")
+			|| !startupStuff->LoadMedia(texture_rotated, "15_rotation_and_flipping/arrow.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -56,11 +58,15 @@ int main(int argc, char* args[])
 
 			int frame = 0;
 
+			double degrees = 0;
+
+			SDL_RendererFlip flipType = SDL_FLIP_NONE;
+
 			while (!quit)
 			{
-				while (SDL_PollEvent(&e) != 0) 
+				while (SDL_PollEvent(&e) != 0)
 				{
-					if(e.type == SDL_QUIT)
+					if (e.type == SDL_QUIT)
 					{
 						quit = true;
 					}
@@ -69,45 +75,55 @@ int main(int argc, char* args[])
 					{
 						switch (e.key.keysym.sym)
 						{
-							//Increase red
+								//Increase red
 							case SDLK_r:
-							r += 32;
-							break;
-							
-							//Increase green
+								r += 32;
+								break;
+
+								//Increase green
 							case SDLK_g:
-							g += 32;
-							break;
-							
-							//Increase blue
+								g += 32;
+								break;
+
+								//Increase blue
 							case SDLK_b:
-							b += 32;
-							break;
+								b += 32;
+								break;
 
-							//Decrease red
+								//Decrease red
 							case SDLK_e:
-							r -= 32;
-							break;
-							
-							//Decrease green
+								r -= 32;
+								break;
+
+								//Decrease green
 							case SDLK_f:
-							g -= 32;
-							break;
-							
-							//Decrease blue
+								g -= 32;
+								break;
+
+								//Decrease blue
 							case SDLK_v:
-							b -= 32;
-							break;
+								b -= 32;
+								break;
 
-							//Decrease alpha
+								//Decrease alpha
 							case SDLK_s:
-							a -= 32;
-							break;
+								a -= 32;
+								break;
 
-							//Increase alpha
+								//Increase alpha
 							case SDLK_a:
-							a += 32;
-							break;
+								a += 32;
+								break;
+
+								//Increase degrees
+							case SDLK_l:
+								degrees += 10;
+								break;
+
+								//Decrease degrees
+							case SDLK_k:
+								degrees -= 10;
+								break;
 						}
 					}
 				}
@@ -131,6 +147,8 @@ int main(int argc, char* args[])
 				texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
 
 				texture_animated.Render(100, 120, startupStuff->renderer, &texture_animated.animatedRects[frame / 16]);
+
+				texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
 
 				SDL_RenderPresent(startupStuff->renderer);
 

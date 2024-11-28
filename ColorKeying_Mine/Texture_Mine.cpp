@@ -175,6 +175,19 @@ void Texture_Mine::Render(int x, int y, int width, int height, SDL_Renderer* ren
 	SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
 }
 
+void Texture_Mine::RenderRotate(int x, int y, float changeTextureSize , SDL_Renderer* renderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
+{
+	if (mTexture == NULL)
+	{
+		printf("No texture to render\n");
+		return;
+	}
+	
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth/ changeTextureSize, mHeight/ changeTextureSize };
+	SDL_RenderCopyEx(renderer, mTexture, clip, &renderQuad, angle, center, flip);
+}
+
 void Texture_Mine::SetColor(Uint8 red, Uint8 green, Uint8 blue)
 {
 	//Modulate texture
