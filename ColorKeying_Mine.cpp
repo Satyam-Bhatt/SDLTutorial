@@ -6,7 +6,7 @@
 // - Rotation of sprite
 // - Animated Sprites
 // - Alpha Blending
-// - Text
+// - Text Rendering
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
