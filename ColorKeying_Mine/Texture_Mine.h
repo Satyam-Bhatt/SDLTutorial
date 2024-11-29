@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <SDL_ttf.h>
 
 class Texture_Mine
 {
@@ -15,6 +16,9 @@ public:
 
 	//Loads image at specified path
 	bool LoadFromFile(std::string path, SDL_Renderer* renderer);
+
+	//Creates image from Text 
+	bool LoadFromRenderededText(std::string textureText, SDL_Color textColor, TTF_Font* font, SDL_Renderer* renderer);
 
 	//Deallocates texture
 	void Free();

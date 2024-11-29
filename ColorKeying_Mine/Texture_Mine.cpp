@@ -112,6 +112,49 @@ bool Texture_Mine::LoadFromFile(std::string path, SDL_Renderer* renderer)
 	return success;
 }
 
+bool Texture_Mine::LoadFromRenderededText(std::string textureText, SDL_Color textColor, TTF_Font* gFont, SDL_Renderer* renderer)
+{
+	bool success = true;
+	Free();
+
+	//The final texture
+	SDL_Texture* newTexture = NULL;
+
+	//Loaded texture
+	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+	if (textSurface == NULL)
+	{
+		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		//Create texture from surface pixels
+		newTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		if (newTexture == NULL)
+		{
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+			success = false;
+		}
+		else
+		{
+			//Get image dimensions
+			mWidth = textSurface->w;
+			mHeight = textSurface->h;
+		}
+
+		SDL_FreeSurface(textSurface);
+	}
+
+	if (success)
+	{
+		mTexture = newTexture;
+	}
+	return success;
+
+
+}
+
 int Texture_Mine::GetHeight()
 {
 	return mHeight;

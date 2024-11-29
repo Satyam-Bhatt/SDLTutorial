@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <SDL_ttf.h>
 #include "ColorKeying_Mine/Texture_Mine.h"
 
 class StartupStuff
@@ -19,5 +20,8 @@ public:
 
 	//Load Media with Blend Mode
 	bool LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blending);
+
+	//Load Text
+	bool LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
 };
 

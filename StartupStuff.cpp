@@ -61,6 +61,13 @@ bool StartupStuff::init()
 					printf("SDL_image could not initialize! SDL_image Error %s\n", IMG_GetError());
 					success = false;
 				}
+
+				//Initialize SDL_ttf
+				if(TTF_Init() == -1)
+				{
+					printf("SDL_ttf could not initialize! SDL_ttf Error %s\n", TTF_GetError());
+					success = false;
+				}
 			}
 		}
 	}
@@ -90,6 +97,27 @@ bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendM
 	else
 	{
 		texture.SetBlendMode(blendMode);
+	}
+	return success;
+}
+
+bool StartupStuff::LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)
+{
+	bool success = true;
+
+	gFont = TTF_OpenFont(fontPath.c_str(), fontSize);
+	if (gFont == NULL)
+	{
+		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		if (!texture.LoadFromRenderededText(textureText, textColor, gFont, renderer))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
 	}
 	return success;
 }

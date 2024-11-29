@@ -3,13 +3,20 @@
 // - Loading Textures in style Proper Method
 // - Sprite Sheet and Clipping
 // - Color Modulation
+// - Rotation of sprite
+// - Animated Sprites
+// - Alpha Blending
+// - Text
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "StartupStuff.h"
 
 StartupStuff* startupStuff = new StartupStuff();
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated;
+
+TTF_Font* gFont = NULL;
+
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text;
 
 void close()
 {
@@ -20,10 +27,16 @@ void close()
 	texture_5.Free();
 	texture_animated.Free();
 	texture_rotated.Free();
+	texture_text.Free();
+
+	TTF_CloseFont(gFont);
+	gFont = NULL;
+
 	startupStuff->Free();
 	delete startupStuff;
 	startupStuff = nullptr;
 
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -42,7 +55,8 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(texture_4, "12_color_modulation/colors.png")
 			|| !startupStuff->LoadMedia(texture_5, "13_alpha_blending/fadeout.png", SDL_BLENDMODE_BLEND)
 			|| !startupStuff->LoadMedia(texture_animated, "14_animated_sprites_and_vsync/foo.png")
-			|| !startupStuff->LoadMedia(texture_rotated, "15_rotation_and_flipping/arrow.png"))
+			|| !startupStuff->LoadMedia(texture_rotated, "15_rotation_and_flipping/arrow.png")
+			|| !startupStuff->LoadText(gFont, "16_true_type_fonts/lazy.ttf", "Hello World", { 0, 0, 0 }, 60, texture_text))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -149,6 +163,8 @@ int main(int argc, char* args[])
 				texture_animated.Render(100, 120, startupStuff->renderer, &texture_animated.animatedRects[frame / 16]);
 
 				texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
+
+				texture_text.Render(150, 150, startupStuff->renderer, false);
 
 				SDL_RenderPresent(startupStuff->renderer);
 
