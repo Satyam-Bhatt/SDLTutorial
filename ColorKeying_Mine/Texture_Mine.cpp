@@ -112,6 +112,7 @@ bool Texture_Mine::LoadFromFile(std::string path, SDL_Renderer* renderer)
 	return success;
 }
 
+#ifdef SDL_TTF_MAJOR_VERSION
 bool Texture_Mine::LoadFromRenderededText(std::string textureText, SDL_Color textColor, TTF_Font* gFont, SDL_Renderer* renderer)
 {
 	bool success = true;
@@ -154,6 +155,7 @@ bool Texture_Mine::LoadFromRenderededText(std::string textureText, SDL_Color tex
 
 
 }
+#endif
 
 int Texture_Mine::GetHeight()
 {
@@ -227,7 +229,19 @@ void Texture_Mine::RenderRotate(int x, int y, float changeTextureSize , SDL_Rend
 	}
 	
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, mWidth/ changeTextureSize, mHeight/ changeTextureSize };
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+
+	if (clip != NULL)
+	{
+		renderQuad.w = clip->w/ changeTextureSize;
+		renderQuad.h = clip->h/ changeTextureSize;
+	}
+	else
+	{
+		renderQuad.w /= 2;
+		renderQuad.h /= 2;
+	}
+
 	SDL_RenderCopyEx(renderer, mTexture, clip, &renderQuad, angle, center, flip);
 }
 

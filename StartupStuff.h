@@ -21,7 +21,9 @@ public:
 	//Load Media with Blend Mode
 	bool LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blending);
 
+#ifdef SDL_TTF_MAJOR_VERSION
 	//Load Text
 	bool LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
+#endif
 };
 

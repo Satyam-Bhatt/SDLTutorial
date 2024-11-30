@@ -101,6 +101,7 @@ bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendM
 	return success;
 }
 
+#ifdef SDL_TTF_MAJOR_VERSION
 bool StartupStuff::LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)
 {
 	bool success = true;
@@ -121,3 +122,4 @@ bool StartupStuff::LoadText(TTF_Font* gFont, std::string fontPath, std::string t
 	}
 	return success;
 }
+#endif

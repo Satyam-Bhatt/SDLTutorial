@@ -7,16 +7,22 @@
 // - Animated Sprites
 // - Alpha Blending
 // - Text Rendering
+// - Mouse Events
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "StartupStuff.h"
+#include "MouseEvents_h_cpp/Button.h"
+#define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text;
+
+Texture_Mine buttonSprite;
+Button button[TOTAL_BUTTONS];
 
 void close()
 {
@@ -28,6 +34,7 @@ void close()
 	texture_animated.Free();
 	texture_rotated.Free();
 	texture_text.Free();
+	buttonSprite.Free();
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -56,12 +63,19 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(texture_5, "13_alpha_blending/fadeout.png", SDL_BLENDMODE_BLEND)
 			|| !startupStuff->LoadMedia(texture_animated, "14_animated_sprites_and_vsync/foo.png")
 			|| !startupStuff->LoadMedia(texture_rotated, "15_rotation_and_flipping/arrow.png")
-			|| !startupStuff->LoadText(gFont, "16_true_type_fonts/lazy.ttf", "Hello World", { 0, 0, 0 }, 60, texture_text))
+			|| !startupStuff->LoadMedia(buttonSprite, "17_mouse_events/button.png"))
 		{
 			printf("Failed to load media!\n");
 		}
 		else
 		{
+#ifdef SDL_TTF_MAJOR_VERSION 
+			if (!startupStuff->LoadText(gFont, "16_true_type_fonts/lazy.ttf", "Hello World", { 0, 0, 0 }, 60, texture_text))
+			{
+				printf("Failed to render text texture!\n");
+			}
+#endif
+
 			bool quit = false;
 			SDL_Event e;
 
@@ -75,6 +89,11 @@ int main(int argc, char* args[])
 			double degrees = 0;
 
 			SDL_RendererFlip flipType = SDL_FLIP_NONE;
+
+			button[0].SetPosition(0, 120);
+			button[1].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4, 120);
+			button[2].SetPosition(120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
+			button[3].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4 - 120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
 
 			while (!quit)
 			{
@@ -140,6 +159,11 @@ int main(int argc, char* args[])
 								break;
 						}
 					}
+
+					for (int i = 0; i < TOTAL_BUTTONS; ++i)
+					{
+						button[i].HandleEvent(&e);
+					}
 				}
 				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -164,7 +188,15 @@ int main(int argc, char* args[])
 
 				texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
 
+#ifdef  SDL_TTF_MAJOR_VERSION
+				
 				texture_text.Render(150, 150, startupStuff->renderer, false);
+
+#endif
+				for(int i = 0; i < TOTAL_BUTTONS; i++)
+				{
+					button[i].Render(&buttonSprite ,startupStuff->renderer);
+				}
 
 				SDL_RenderPresent(startupStuff->renderer);
 

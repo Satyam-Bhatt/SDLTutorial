@@ -33,6 +33,8 @@
     <ClCompile Include="13_alpha_blending\13_alpha_blending.cpp" />
     <ClCompile Include="14_animated_sprites_and_vsync\14_animated_sprites_and_vsync.cpp" />
     <ClCompile Include="15_rotation_and_flipping\15_rotation_and_flipping.cpp" />
+    <ClCompile Include="16_true_type_fonts\16_true_type_fonts.cpp" />
+    <ClCompile Include="17_mouse_events\17_mouse_events.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
@@ -121,8 +123,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDLStuff\SDL2_ttf-2.22.0\include;C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDLStuff\SDL2_ttf-2.22.0\lib\x64;C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,7 +164,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
