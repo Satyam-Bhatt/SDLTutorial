@@ -238,8 +238,8 @@ void Texture_Mine::RenderRotate(int x, int y, float changeTextureSize , SDL_Rend
 	}
 	else
 	{
-		renderQuad.w /= 2;
-		renderQuad.h /= 2;
+		renderQuad.w /= changeTextureSize;
+		renderQuad.h /= changeTextureSize;
 	}
 
 	SDL_RenderCopyEx(renderer, mTexture, clip, &renderQuad, angle, center, flip);

@@ -8,6 +8,7 @@
 // - Alpha Blending
 // - Text Rendering
 // - Mouse Events
+// - Key States
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -24,6 +25,9 @@ Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_anim
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
 
+//Key State Textures
+Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture;
+
 void close()
 {
 	texture_1.Free();
@@ -35,6 +39,11 @@ void close()
 	texture_rotated.Free();
 	texture_text.Free();
 	buttonSprite.Free();
+	pressTexture.Free();
+	upTexture.Free();
+	downTexture.Free();
+	leftTexture.Free();
+	rightTexture.Free();
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -63,7 +72,12 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(texture_5, "13_alpha_blending/fadeout.png", SDL_BLENDMODE_BLEND)
 			|| !startupStuff->LoadMedia(texture_animated, "14_animated_sprites_and_vsync/foo.png")
 			|| !startupStuff->LoadMedia(texture_rotated, "15_rotation_and_flipping/arrow.png")
-			|| !startupStuff->LoadMedia(buttonSprite, "17_mouse_events/button.png"))
+			|| !startupStuff->LoadMedia(buttonSprite, "17_mouse_events/button.png")
+			|| !startupStuff->LoadMedia(pressTexture, "18_key_states/press.png")
+			|| !startupStuff->LoadMedia(upTexture, "18_key_states/up.png")
+			|| !startupStuff->LoadMedia(downTexture, "18_key_states/down.png")
+			|| !startupStuff->LoadMedia(leftTexture, "18_key_states/left.png")
+			|| !startupStuff->LoadMedia(rightTexture, "18_key_states/right.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -94,6 +108,8 @@ int main(int argc, char* args[])
 			button[1].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4, 120);
 			button[2].SetPosition(120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
 			button[3].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4 - 120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
+
+			Texture_Mine* currentTexture = NULL;
 
 			while (!quit)
 			{
@@ -165,8 +181,34 @@ int main(int argc, char* args[])
 						button[i].HandleEvent(&e);
 					}
 				}
+
+				//Set Texture based on current keyState
+				const Uint8* currentKeyState = SDL_GetKeyboardState(NULL);
+				if (currentKeyState[SDL_SCANCODE_UP])
+				{
+					currentTexture = &upTexture;
+				}
+				else if (currentKeyState[SDL_SCANCODE_DOWN])
+				{
+					currentTexture = &downTexture;
+				}
+				else if (currentKeyState[SDL_SCANCODE_LEFT])
+				{
+					currentTexture = &leftTexture;
+				}
+				else if (currentKeyState[SDL_SCANCODE_RIGHT])
+				{
+					currentTexture = &rightTexture;
+				}
+				else
+				{
+					currentTexture = &pressTexture;
+				}
+
+
 				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
 				SDL_RenderClear(startupStuff->renderer);
+
 
 				texture_2.Render(0, 0, startupStuff->renderer, false);
 				texture_1.Render(420, 200, startupStuff->renderer, false);
@@ -197,6 +239,8 @@ int main(int argc, char* args[])
 				{
 					button[i].Render(&buttonSprite ,startupStuff->renderer);
 				}
+
+				currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);
 

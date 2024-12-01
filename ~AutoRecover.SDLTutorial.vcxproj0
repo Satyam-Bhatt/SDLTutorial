@@ -35,12 +35,14 @@
     <ClCompile Include="15_rotation_and_flipping\15_rotation_and_flipping.cpp" />
     <ClCompile Include="16_true_type_fonts\16_true_type_fonts.cpp" />
     <ClCompile Include="17_mouse_events\17_mouse_events.cpp" />
+    <ClCompile Include="18_key_states\18_key_states.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
     <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
+    <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +67,11 @@
     <Image Include="07_texture_loading_and_rendering\texture.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Class.h" />
     <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
+    <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
