@@ -16,6 +16,9 @@ void StartupStuff::Free()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	SDL_JoystickClose(gameController);
+	
+	gameController = NULL;
 	window = NULL;
 	renderer = NULL;
 }
@@ -24,7 +27,7 @@ bool StartupStuff::init()
 {
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
 	{
 		printf("SDL could not initialize! SDL Error %s\n", SDL_GetError());
 		success = false;
@@ -34,6 +37,21 @@ bool StartupStuff::init()
 		if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
 			printf("Warning: Linear texture filtering not enabled!");
+		}
+
+		//Check for joysticks
+		if (SDL_NumJoysticks() < 1)
+		{
+			printf("Warning: No joysticks connected!\n");
+		}
+		else
+		{
+			//Load joystick
+			gameController = SDL_JoystickOpen(0);
+			if (gameController == NULL)
+			{
+				printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+			}
 		}
 
 		//Create window

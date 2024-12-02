@@ -15,3 +15,5 @@ enum ButtonSprite
 	BUTTON_SPRITE_MOUSE_UP = 3,
 	BUTTON_SPRITE_TOTAL = 4
 };
+
+const int JOYSTICK_DEAD_ZONE = 8000;

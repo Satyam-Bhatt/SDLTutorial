@@ -35,6 +35,8 @@
     <ClCompile Include="15_rotation_and_flipping\15_rotation_and_flipping.cpp" />
     <ClCompile Include="16_true_type_fonts\16_true_type_fonts.cpp" />
     <ClCompile Include="17_mouse_events\17_mouse_events.cpp" />
+    <ClCompile Include="18_key_states\18_key_states.cpp" />
+    <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />

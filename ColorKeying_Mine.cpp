@@ -9,6 +9,7 @@
 // - Text Rendering
 // - Mouse Events
 // - Key States
+// - Joystick Input
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -20,7 +21,7 @@ StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL;
 
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -44,6 +45,7 @@ void close()
 	downTexture.Free();
 	leftTexture.Free();
 	rightTexture.Free();
+	joystick_Texture.Free();
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -77,7 +79,8 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(upTexture, "18_key_states/up.png")
 			|| !startupStuff->LoadMedia(downTexture, "18_key_states/down.png")
 			|| !startupStuff->LoadMedia(leftTexture, "18_key_states/left.png")
-			|| !startupStuff->LoadMedia(rightTexture, "18_key_states/right.png"))
+			|| !startupStuff->LoadMedia(rightTexture, "18_key_states/right.png")
+			|| !startupStuff->LoadMedia(joystick_Texture, "19_gamepads_and_joysticks/arrow.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -110,6 +113,9 @@ int main(int argc, char* args[])
 			button[3].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4 - 120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
 
 			Texture_Mine* currentTexture = NULL;
+
+			int xDir = 0;
+			int yDir = 0;
 
 			while (!quit)
 			{
@@ -173,6 +179,50 @@ int main(int argc, char* args[])
 							case SDLK_k:
 								degrees -= 10;
 								break;
+						}
+					}
+					//Joystick events
+					else if (e.type == SDL_JOYAXISMOTION)
+					{
+						// Motion on Controller 0
+						if (e.jaxis.which == 0)
+						{
+							//X axis motion on Contoller 0
+							if (e.jaxis.axis == 0)
+							{
+								//Left of dead zone
+								if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+								{
+									xDir = -1;
+								}
+								//Right of dead zone
+								else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+								{
+									xDir = 1;
+								}
+								else
+								{
+									xDir = 0;
+								}
+							}
+							//Y axis motion on Controller 0
+							else if (e.jaxis.axis == 1)
+							{
+								//Below of dead zone
+								if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+								{
+									yDir = -1;
+								}
+								//Above of dead zone
+								else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+								{
+									yDir = 1;
+								}
+								else
+								{
+									yDir = 0;
+								}
+							}
 						}
 					}
 
@@ -241,6 +291,15 @@ int main(int argc, char* args[])
 				}
 
 				currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
+
+				double joystickAngle = atan2(yDir, xDir) * 180 / M_PI;
+
+				if(xDir == 0 && yDir == 0)
+				{
+					joystickAngle = 0;
+				}
+
+				joystick_Texture.RenderRotate(0, 250, 3, startupStuff->renderer, NULL, joystickAngle);
 
 				SDL_RenderPresent(startupStuff->renderer);
 

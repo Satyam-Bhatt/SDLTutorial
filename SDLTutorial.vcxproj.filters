@@ -90,6 +90,9 @@
     <ClCompile Include="18_key_states\18_key_states.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
