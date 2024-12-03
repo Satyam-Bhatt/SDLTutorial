@@ -93,6 +93,9 @@
     <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="20_force_feedback\20_force_feedback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

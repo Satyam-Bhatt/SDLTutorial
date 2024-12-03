@@ -37,6 +37,7 @@
     <ClCompile Include="17_mouse_events\17_mouse_events.cpp" />
     <ClCompile Include="18_key_states\18_key_states.cpp" />
     <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp" />
+    <ClCompile Include="20_force_feedback\20_force_feedback.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />

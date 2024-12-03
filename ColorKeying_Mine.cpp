@@ -10,6 +10,7 @@
 // - Mouse Events
 // - Key States
 // - Joystick Input
+// - Controller Rumble
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -222,6 +223,26 @@ int main(int argc, char* args[])
 								{
 									yDir = 0;
 								}
+							}
+						}
+					}
+					//Joystick button press
+					else if (e.type == SDL_JOYBUTTONDOWN)
+					{
+						//Use Game Controller
+						if (startupStuff->gameController != NULL)
+						{
+							//Play rumble at 75% strength for 500 milliseconds
+							if (SDL_GameControllerRumble(startupStuff->gameController, 0xFFFF * 3 / 4, 0xFFFF * 3 / 4, 500) != 0)
+							{
+								printf("Warning: Unable to play game contoller rumble! %s\n", SDL_GetError());
+							}
+						}
+						else if (startupStuff->joyHaptic != NULL)
+						{
+							if (SDL_HapticRumblePlay(startupStuff->joyHaptic, 0.75, 500) != 0)
+							{
+								printf("Warning: Unable to play joystick rumble! %s\n", SDL_GetError());
 							}
 						}
 					}

@@ -12,6 +12,14 @@ public:
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 
+	//Game controller handler with force feedback
+	SDL_GameController* gameController = NULL;
+
+	//Joystick handles with Haptics
+	SDL_Joystick* joyStick = NULL;
+	SDL_Haptic* joyHaptic = NULL;
+
+
 	StartupStuff();
 	~StartupStuff();
 	void Free();
@@ -27,7 +35,7 @@ public:
 #endif
 
 private:
-	SDL_Joystick* gameController = NULL;
+
 
 };
 

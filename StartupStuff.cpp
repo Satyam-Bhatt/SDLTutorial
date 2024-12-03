@@ -16,9 +16,16 @@ void StartupStuff::Free()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	SDL_JoystickClose(gameController);
-	
+
+	if (joyHaptic != NULL) SDL_HapticClose(joyHaptic);
+
+	if (joyStick != NULL) SDL_JoystickClose(joyStick);
+
+	if (gameController != NULL) SDL_GameControllerClose(gameController);
+
 	gameController = NULL;
+	joyHaptic = NULL;
+	joyStick = NULL;
 	window = NULL;
 	renderer = NULL;
 }
@@ -27,7 +34,7 @@ bool StartupStuff::init()
 {
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK) < 0)
 	{
 		printf("SDL could not initialize! SDL Error %s\n", SDL_GetError());
 		success = false;
@@ -46,11 +53,54 @@ bool StartupStuff::init()
 		}
 		else
 		{
-			//Load joystick
-			gameController = SDL_JoystickOpen(0);
+			//Check if the first controller is game controller interface
+			if (!SDL_IsGameController(0))
+			{
+				printf("Warning: Joystick is not game controller interface compatible! SDL Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				//Open game controller
+				gameController = SDL_GameControllerOpen(0);
+				if (gameController == NULL)
+				{
+					printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+				}
+			}
+
+			//Load joystick if game controller is NULL
 			if (gameController == NULL)
 			{
-				printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+				joyStick = SDL_JoystickOpen(0);
+				if (joyStick == NULL)
+				{
+					printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+				}
+				else
+				{
+					//Check if Joystick supports haptics
+					if (!SDL_JoystickIsHaptic(joyStick))
+					{
+						printf("Warning: Controller does not support haptics! SDL Error: %s\n", SDL_GetError());
+					}
+					else
+					{
+						//Get joystick haptic device
+						joyHaptic = SDL_HapticOpenFromJoystick(joyStick);
+						if (joyHaptic == NULL)
+						{
+							printf("Warning: Unable to get joystick haptics! SDL Error: %s\n", SDL_GetError());
+						}
+						else
+						{
+							//Initialize joystick haptics
+							if (SDL_HapticRumbleInit(joyHaptic) < 0)
+							{
+								printf("Warning: Unable to initialize joystick haptics! SDL Error: %s\n", SDL_GetError());
+							}
+						}
+					}
+				}
 			}
 		}
 
