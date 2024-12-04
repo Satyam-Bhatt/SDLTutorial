@@ -22,13 +22,19 @@ StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL;
 
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
 
 //Key State Textures
 Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture;
+
+//Music
+Mix_Music* music = NULL;
+
+//Sound Effects
+Mix_Chunk* scratch = NULL, * high = NULL, * medium = NULL, * low = NULL;
 
 void close()
 {
@@ -47,6 +53,21 @@ void close()
 	leftTexture.Free();
 	rightTexture.Free();
 	joystick_Texture.Free();
+	audio_Texture.Free();
+
+	//Free Sound Effects
+	Mix_FreeChunk(scratch);
+	Mix_FreeChunk(high);
+	Mix_FreeChunk(medium);
+	Mix_FreeChunk(low);
+	scratch = NULL;
+	high = NULL;
+	medium = NULL;
+	low = NULL;
+
+	//Free Music
+	Mix_FreeMusic(music);
+	music = NULL;
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -58,6 +79,7 @@ void close()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	Mix_Quit();
 }
 
 int main(int argc, char* args[])
@@ -81,7 +103,13 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(downTexture, "18_key_states/down.png")
 			|| !startupStuff->LoadMedia(leftTexture, "18_key_states/left.png")
 			|| !startupStuff->LoadMedia(rightTexture, "18_key_states/right.png")
-			|| !startupStuff->LoadMedia(joystick_Texture, "19_gamepads_and_joysticks/arrow.png"))
+			|| !startupStuff->LoadMedia(joystick_Texture, "19_gamepads_and_joysticks/arrow.png")
+			|| !startupStuff->LoadMusic("21_sound_effects_and_music/beat.wav", music)
+			|| !startupStuff->LoadSFX("21_sound_effects_and_music/scratch.wav", scratch)
+			|| !startupStuff->LoadSFX("21_sound_effects_and_music/high.wav", high)
+			|| !startupStuff->LoadSFX("21_sound_effects_and_music/medium.wav", medium)
+			|| !startupStuff->LoadSFX("21_sound_effects_and_music/low.wav", low)
+			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -109,9 +137,9 @@ int main(int argc, char* args[])
 			SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
 			button[0].SetPosition(0, 120);
-			button[1].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4, 120);
-			button[2].SetPosition(120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
-			button[3].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH/4 - 120, SCREEN_HEIGHT - BUTTON_HEIGHT/4 - 50);
+			button[1].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH / 4, 120);
+			button[2].SetPosition(120, SCREEN_HEIGHT - BUTTON_HEIGHT / 4 - 50);
+			button[3].SetPosition(SCREEN_WIDTH - BUTTON_WIDTH / 4 - 120, SCREEN_HEIGHT - BUTTON_HEIGHT / 4 - 50);
 
 			Texture_Mine* currentTexture = NULL;
 
@@ -131,55 +159,104 @@ int main(int argc, char* args[])
 					{
 						switch (e.key.keysym.sym)
 						{
-								//Increase red
-							case SDLK_r:
-								r += 32;
-								break;
+							//Increase red
+						case SDLK_r:
+							r += 32;
+							break;
 
-								//Increase green
-							case SDLK_g:
-								g += 32;
-								break;
+							//Increase green
+						case SDLK_g:
+							g += 32;
+							break;
 
-								//Increase blue
-							case SDLK_b:
-								b += 32;
-								break;
+							//Increase blue
+						case SDLK_b:
+							b += 32;
+							break;
 
-								//Decrease red
-							case SDLK_e:
-								r -= 32;
-								break;
+							//Decrease red
+						case SDLK_e:
+							r -= 32;
+							break;
 
-								//Decrease green
-							case SDLK_f:
-								g -= 32;
-								break;
+							//Decrease green
+						case SDLK_f:
+							g -= 32;
+							break;
 
-								//Decrease blue
-							case SDLK_v:
-								b -= 32;
-								break;
+							//Decrease blue
+						case SDLK_v:
+							b -= 32;
+							break;
 
-								//Decrease alpha
-							case SDLK_s:
-								a -= 32;
-								break;
+							//Decrease alpha
+						case SDLK_s:
+							a -= 32;
+							break;
 
-								//Increase alpha
-							case SDLK_a:
-								a += 32;
-								break;
+							//Increase alpha
+						case SDLK_a:
+							a += 32;
+							break;
 
-								//Increase degrees
-							case SDLK_l:
-								degrees += 10;
-								break;
+							//Increase degrees
+						case SDLK_l:
+							degrees += 10;
+							break;
 
-								//Decrease degrees
-							case SDLK_k:
-								degrees -= 10;
-								break;
+							//Decrease degrees
+						case SDLK_k:
+							degrees -= 10;
+							break;
+
+							//Play High Sound
+						case SDLK_1:
+							Mix_PlayChannel(-1, high, 0);
+							break;
+
+							//Play Medium Sound
+						case SDLK_2:
+							Mix_PlayChannel(-1, medium, 0);
+							break;
+
+							//Play Low Sound
+						case SDLK_3:
+							Mix_PlayChannel(-1, low, 0);
+							break;
+
+							//Play Scratch Sound
+						case SDLK_4:
+							Mix_PlayChannel(-1, scratch, 0);
+							break;
+
+						case SDLK_9:
+							//If there is no music playing
+							if (Mix_PlayingMusic() == 0)
+							{
+								Mix_PlayMusic(music, -1);
+							}
+							//If music is being played
+							else
+							{
+								//If music is paused
+								if (Mix_PausedMusic() == 1)
+								{
+									//Resume Music
+									Mix_ResumeMusic();
+								}
+								//If the music is playing
+								else
+								{
+									//Pause the music
+									Mix_PauseMusic();
+								}
+							}
+							break;
+
+						case SDLK_0:
+							//Stop the music
+							Mix_HaltMusic();
+							break;
 						}
 					}
 					//Joystick events
@@ -277,9 +354,10 @@ int main(int argc, char* args[])
 				}
 
 
-				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 255, 255);
+				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
 
+				audio_Texture.RenderRotate(640, SCREEN_HEIGHT / 2 - audio_Texture.GetHeight() / 6, 3, startupStuff->renderer);
 
 				texture_2.Render(0, 0, startupStuff->renderer, false);
 				texture_1.Render(420, 200, startupStuff->renderer, false);
@@ -302,25 +380,26 @@ int main(int argc, char* args[])
 				texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
 
 #ifdef  SDL_TTF_MAJOR_VERSION
-				
+
 				texture_text.Render(150, 150, startupStuff->renderer, false);
 
 #endif
-				for(int i = 0; i < TOTAL_BUTTONS; i++)
+				for (int i = 0; i < TOTAL_BUTTONS; i++)
 				{
-					button[i].Render(&buttonSprite ,startupStuff->renderer);
+					button[i].Render(&buttonSprite, startupStuff->renderer);
 				}
 
 				currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
 
 				double joystickAngle = atan2(yDir, xDir) * 180 / M_PI;
 
-				if(xDir == 0 && yDir == 0)
+				if (xDir == 0 && yDir == 0)
 				{
 					joystickAngle = 0;
 				}
 
 				joystick_Texture.RenderRotate(0, 250, 3, startupStuff->renderer, NULL, joystickAngle);
+
 
 				SDL_RenderPresent(startupStuff->renderer);
 

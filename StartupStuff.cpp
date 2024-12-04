@@ -34,14 +34,14 @@ bool StartupStuff::init()
 {
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO) < 0)
 	{
 		printf("SDL could not initialize! SDL Error %s\n", SDL_GetError());
 		success = false;
 	}
 	else
 	{
-		if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
 			printf("Warning: Linear texture filtering not enabled!");
 		}
@@ -105,7 +105,7 @@ bool StartupStuff::init()
 		}
 
 		//Create window
-		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 855, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL Error %s\n", SDL_GetError());
@@ -123,17 +123,25 @@ bool StartupStuff::init()
 			{
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+				//Initialize Image loading
 				int imgFlags = IMG_INIT_PNG;
-				if(!(IMG_Init(imgFlags) & imgFlags))
+				if (!(IMG_Init(imgFlags) & imgFlags))
 				{
 					printf("SDL_image could not initialize! SDL_image Error %s\n", IMG_GetError());
 					success = false;
 				}
 
 				//Initialize SDL_ttf
-				if(TTF_Init() == -1)
+				if (TTF_Init() == -1)
 				{
 					printf("SDL_ttf could not initialize! SDL_ttf Error %s\n", TTF_GetError());
+					success = false;
+				}
+
+				//Initialize SDL_mixer
+				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+				{
+					printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 					success = false;
 				}
 			}
@@ -146,18 +154,19 @@ bool StartupStuff::init()
 bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path)
 {
 	bool success = true;
-	if(!texture.LoadFromFile(path, renderer))
+	if (!texture.LoadFromFile(path, renderer))
 	{
 		printf("Failed to load texture image!\n");
 		success = false;
 	}
+
 	return success;
 }
 
 bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blendMode)
 {
 	bool success = true;
-	if(!texture.LoadFromFile(path, renderer))
+	if (!texture.LoadFromFile(path, renderer))
 	{
 		printf("Failed to load texture image!\n");
 		success = false;
@@ -168,6 +177,35 @@ bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendM
 	}
 	return success;
 }
+
+bool StartupStuff::LoadMusic(std::string path, Mix_Music*& music)
+{
+	bool success = true;
+
+	music = Mix_LoadMUS(path.c_str());
+	if (music == NULL)
+	{
+		printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
+	}
+
+	return success;
+}
+
+bool StartupStuff::LoadSFX(std::string path, Mix_Chunk*& chunk)
+{
+	bool success = true;
+
+	chunk = Mix_LoadWAV(path.c_str());
+	if (chunk == NULL)
+	{
+		printf("Failed to load SFX! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
+	}
+
+	return success;
+}
+
 
 #ifdef SDL_TTF_MAJOR_VERSION
 bool StartupStuff::LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)

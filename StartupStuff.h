@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "ColorKeying_Mine/Texture_Mine.h"
 
 class StartupStuff
@@ -28,6 +29,10 @@ public:
 
 	//Load Media with Blend Mode
 	bool LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blending);
+
+	bool LoadMusic(std::string path, Mix_Music *& music);
+
+	bool LoadSFX(std::string path, Mix_Chunk *& chunk);
 
 #ifdef SDL_TTF_MAJOR_VERSION
 	//Load Text
