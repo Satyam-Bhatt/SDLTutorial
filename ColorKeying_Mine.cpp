@@ -11,6 +11,7 @@
 // - Key States
 // - Joystick Input
 // - Controller Rumble
+// - Timer
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -20,9 +21,9 @@
 
 StartupStuff* startupStuff = new StartupStuff();
 
-TTF_Font* gFont = NULL;
+TTF_Font* gFont = NULL, *gFont2 = NULL;
 
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -54,6 +55,8 @@ void close()
 	rightTexture.Free();
 	joystick_Texture.Free();
 	audio_Texture.Free();
+	prompt_Texture.Free();
+	timeTextTexture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -71,6 +74,8 @@ void close()
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
+	TTF_CloseFont(gFont2);
+	gFont2 = NULL;
 
 	startupStuff->Free();
 	delete startupStuff;
@@ -120,6 +125,10 @@ int main(int argc, char* args[])
 			{
 				printf("Failed to render text texture!\n");
 			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Press Enter to Reset Start Time", { 255, 0, 0 }, 20, prompt_Texture))
+			{
+				printf("Failed to render text texture!\n");
+			}
 #endif
 
 			bool quit = false;
@@ -145,6 +154,12 @@ int main(int argc, char* args[])
 
 			int xDir = 0;
 			int yDir = 0;
+
+			//Current time start time
+			Uint32 startTime = 0;
+			
+			//In memory text stream
+			std::stringstream timeText;
 
 			while (!quit)
 			{
@@ -257,6 +272,11 @@ int main(int argc, char* args[])
 							//Stop the music
 							Mix_HaltMusic();
 							break;
+
+						case SDLK_RETURN:
+							//Reset start time
+							startTime = SDL_GetTicks();
+							break;
 						}
 					}
 					//Joystick events
@@ -353,6 +373,15 @@ int main(int argc, char* args[])
 					currentTexture = &pressTexture;
 				}
 
+				//Set text to be rendered
+				timeText.str("");
+				timeText << "Milliseconds since start time " << SDL_GetTicks() - startTime;
+
+				//Render Text
+				if (!timeTextTexture.LoadFromRenderededText(timeText.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				{
+					printf("Unable to render time texture!\n");
+				}
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -391,6 +420,7 @@ int main(int argc, char* args[])
 
 				currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
 
+				// conversion Radians to degree
 				double joystickAngle = atan2(yDir, xDir) * 180 / M_PI;
 
 				if (xDir == 0 && yDir == 0)
@@ -400,6 +430,8 @@ int main(int argc, char* args[])
 
 				joystick_Texture.RenderRotate(0, 250, 3, startupStuff->renderer, NULL, joystickAngle);
 
+				prompt_Texture.Render(600, 0, startupStuff->renderer, false);
+				timeTextTexture.Render(500, 20, startupStuff->renderer, false);
 
 				SDL_RenderPresent(startupStuff->renderer);
 

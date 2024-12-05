@@ -99,6 +99,9 @@
     <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="22_timing\22_timing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

@@ -39,6 +39,7 @@
     <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp" />
     <ClCompile Include="20_force_feedback\20_force_feedback.cpp" />
     <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp" />
+    <ClCompile Include="22_timing\22_timing.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />

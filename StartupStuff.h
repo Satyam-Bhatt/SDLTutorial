@@ -5,6 +5,7 @@
 #include <string>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <sstream>
 #include "ColorKeying_Mine/Texture_Mine.h"
 
 class StartupStuff
@@ -36,7 +37,7 @@ public:
 
 #ifdef SDL_TTF_MAJOR_VERSION
 	//Load Text
-	bool LoadText(TTF_Font* gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
+	bool LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
 #endif
 
 private:
