@@ -39,6 +39,7 @@
     <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp" />
     <ClCompile Include="20_force_feedback\20_force_feedback.cpp" />
     <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp" />
+    <ClCompile Include="22_timing\22_timing.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Mine2.cpp" />
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt" />
@@ -76,6 +78,7 @@
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

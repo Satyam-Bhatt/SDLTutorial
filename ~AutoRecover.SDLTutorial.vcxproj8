@@ -37,6 +37,9 @@
     <ClCompile Include="17_mouse_events\17_mouse_events.cpp" />
     <ClCompile Include="18_key_states\18_key_states.cpp" />
     <ClCompile Include="19_gamepads_and_joysticks\19_gamepads_and_joysticks.cpp" />
+    <ClCompile Include="20_force_feedback\20_force_feedback.cpp" />
+    <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp" />
+    <ClCompile Include="22_timing\22_timing.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
@@ -45,6 +48,7 @@
     <ClCompile Include="Mine2.cpp" />
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt" />
@@ -74,6 +78,7 @@
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -128,8 +133,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDLStuff\SDL2_ttf-2.22.0\include;C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLStuff\SDL2_ttf-2.22.0\lib\x64;C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDLStuff\SDL2_mixer-2.8.0\include;C:\SDLStuff\SDL2_ttf-2.22.0\include;C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDLStuff\SDL2_mixer-2.8.0\lib\x64;C:\SDLStuff\SDL2_ttf-2.22.0\lib\x64;C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -169,7 +174,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

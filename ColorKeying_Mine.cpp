@@ -17,13 +17,14 @@
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "StartupStuff.h"
 #include "MouseEvents_h_cpp/Button.h"
+#include "Timer.h"
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
 
-TTF_Font* gFont = NULL, *gFont2 = NULL;
+TTF_Font* gFont = NULL, * gFont2 = NULL;
 
-Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture;
+Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -57,6 +58,9 @@ void close()
 	audio_Texture.Free();
 	prompt_Texture.Free();
 	timeTextTexture.Free();
+	start_PromptTexture.Free();
+	pause_PromptTexture.Free();
+	timerTextTexture2.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -129,6 +133,14 @@ int main(int argc, char* args[])
 			{
 				printf("Failed to render text texture!\n");
 			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Press P to Pause or Unpause the Timer", { 255, 0, 0 }, 20, pause_PromptTexture))
+			{
+				printf("Failed to render text texture!\n");
+			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Press Q to Start or Stop the Timer", { 255, 0, 0 }, 20, start_PromptTexture))
+			{
+				printf("Failed to render text texture!\n");
+			}
 #endif
 
 			bool quit = false;
@@ -157,9 +169,12 @@ int main(int argc, char* args[])
 
 			//Current time start time
 			Uint32 startTime = 0;
-			
+
 			//In memory text stream
 			std::stringstream timeText;
+
+			Timer timer;
+			std::stringstream timeText2;
 
 			while (!quit)
 			{
@@ -277,6 +292,30 @@ int main(int argc, char* args[])
 							//Reset start time
 							startTime = SDL_GetTicks();
 							break;
+
+							//Pause Music
+						case SDLK_p:
+							if (timer.isPaused())
+							{
+								timer.unpause();
+							}
+							else
+							{
+								timer.pause();
+							}
+							break;
+
+							//Start/Stop
+						case SDLK_q:
+							if (timer.isStarted())
+							{
+								timer.stop();
+							}
+							else
+							{
+								timer.start();
+							}
+							break;
 						}
 					}
 					//Joystick events
@@ -383,6 +422,14 @@ int main(int argc, char* args[])
 					printf("Unable to render time texture!\n");
 				}
 
+				timeText2.str("");
+				timeText2 << "Seconds since start time " << (timer.getTicks() / 1000.f);
+
+				if(!timerTextTexture2.LoadFromRenderededText(timeText2.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				{
+					printf("Unable to render time texture!\n");
+				}
+
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
 
@@ -432,6 +479,10 @@ int main(int argc, char* args[])
 
 				prompt_Texture.Render(600, 0, startupStuff->renderer, false);
 				timeTextTexture.Render(500, 20, startupStuff->renderer, false);
+
+				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
+				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
+				timerTextTexture2.Render(100, 660, startupStuff->renderer, false);
 
 				SDL_RenderPresent(startupStuff->renderer);
 
