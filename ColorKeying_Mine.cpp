@@ -13,6 +13,7 @@
 // - Controller Rumble
 // - Timer
 // - Start Stop Timer
+// - Average FPS
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -26,6 +27,8 @@ StartupStuff* startupStuff = new StartupStuff();
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
+
+Texture_Mine fpsTimer_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -62,6 +65,7 @@ void close()
 	start_PromptTexture.Free();
 	pause_PromptTexture.Free();
 	timerTextTexture2.Free();
+	fpsTimer_Texture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -174,8 +178,17 @@ int main(int argc, char* args[])
 			//In memory text stream
 			std::stringstream timeText;
 
+			//Start Stop Pause Timer
 			Timer timer;
 			std::stringstream timeText2;
+
+			//Frames Per Second Timer
+			Timer fpsTimer;
+			std::stringstream fpsText;
+
+			//Start Counting Frames per second
+			int countedFrames = 0;
+			fpsTimer.start();
 
 			while (!quit)
 			{
@@ -431,6 +444,21 @@ int main(int argc, char* args[])
 					printf("Unable to render time texture!\n");
 				}
 
+				//Calculate and correct fps
+				float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+				if (avgFPS > 2000000)
+				{
+					avgFPS = 0;
+				}
+
+				fpsText.str("");
+				fpsText << "Average FPS " << avgFPS;
+
+				if (!fpsTimer_Texture.LoadFromRenderededText(fpsText.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				{
+					printf("Unable to render time texture!\n");
+				}
+
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
 
@@ -485,8 +513,10 @@ int main(int argc, char* args[])
 				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
 				timerTextTexture2.Render(100, 660, startupStuff->renderer, false);
 
-				SDL_RenderPresent(startupStuff->renderer);
+				fpsTimer_Texture.Render(500, 660, startupStuff->renderer, false);
 
+				SDL_RenderPresent(startupStuff->renderer);
+				++countedFrames;
 
 				frame++;
 				if (frame / 16 > 3)
