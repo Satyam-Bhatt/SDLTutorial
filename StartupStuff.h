@@ -40,8 +40,5 @@ public:
 	bool LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
 #endif
 
-private:
-
-
 };
 

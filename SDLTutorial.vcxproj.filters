@@ -108,6 +108,12 @@
     <ClCompile Include="23_advanced_timers\23_advanced_timers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CapScreen_Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
