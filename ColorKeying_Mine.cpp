@@ -14,12 +14,14 @@
 // - Timer
 // - Start Stop Timer
 // - Average FPS
+// - Motion
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "StartupStuff.h"
 #include "MouseEvents_h_cpp/Button.h"
 #include "Timer.h"
+#include "Dot.h"
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
@@ -28,7 +30,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture;
+Texture_Mine fpsTimer_Texture, dotTexture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -66,6 +68,7 @@ void close()
 	pause_PromptTexture.Free();
 	timerTextTexture2.Free();
 	fpsTimer_Texture.Free();
+	dotTexture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -123,7 +126,8 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/high.wav", high)
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/medium.wav", medium)
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/low.wav", low)
-			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png"))
+			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png")
+			|| !startupStuff->LoadMedia(dotTexture, "26_motion/dot.bmp"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -189,6 +193,9 @@ int main(int argc, char* args[])
 			//Start Counting Frames per second
 			int countedFrames = 0;
 			fpsTimer.start();
+
+			//Moving Dot
+			Dot dot;
 
 			while (!quit)
 			{
@@ -401,6 +408,8 @@ int main(int argc, char* args[])
 					{
 						button[i].HandleEvent(&e);
 					}
+
+					dot.handleEvent(e);
 				}
 
 				//Set Texture based on current keyState
@@ -450,6 +459,8 @@ int main(int argc, char* args[])
 				{
 					avgFPS = 0;
 				}
+
+				dot.move();
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -504,6 +515,8 @@ int main(int argc, char* args[])
 				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
 				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
 				timerTextTexture2.Render(100, 660, startupStuff->renderer, false);
+
+				dot.render(dotTexture, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);
 				++countedFrames;

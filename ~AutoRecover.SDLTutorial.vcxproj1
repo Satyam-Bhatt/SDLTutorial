@@ -41,10 +41,12 @@
     <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp" />
     <ClCompile Include="22_timing\22_timing.cpp" />
     <ClCompile Include="23_advanced_timers\23_advanced_timers.cpp" />
+    <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
@@ -78,6 +80,7 @@
     <ClInclude Include="Class.h" />
     <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
+    <ClInclude Include="Dot.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
     <ClInclude Include="Timer.h" />

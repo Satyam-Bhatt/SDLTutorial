@@ -46,6 +46,7 @@
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Class.h" />
     <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
+    <ClInclude Include="Dot.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
     <ClInclude Include="Timer.h" />
