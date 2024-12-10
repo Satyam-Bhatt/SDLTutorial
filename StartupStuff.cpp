@@ -105,7 +105,7 @@ bool StartupStuff::init()
 		}
 
 		//Create window
-		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH + 250, SCREEN_HEIGHT + 250, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL Error %s\n", SDL_GetError());
@@ -204,6 +204,41 @@ bool StartupStuff::LoadSFX(std::string path, Mix_Chunk*& chunk)
 	}
 
 	return success;
+}
+
+bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
+{
+	int leftA = a.x;
+	int rightA = a.x + a.w;
+	int topA = a.y;
+	int bottomA = a.y + a.h;
+
+	int leftB = b.x;
+	int rightB = b.x + b.w;
+	int topB = b.y;
+	int bottomB = b.y + b.h;
+
+	if(bottomA <= topB)
+	{
+		return false;
+	}
+
+	if(topA >= bottomB)
+	{
+		return false;
+	}
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 

@@ -7,6 +7,10 @@ Dot::Dot()
 
 	velX = 0;
 	velY = 0;
+
+	//Collision box detection
+	collider.w = DOT_WIDTH;
+	collider.h = DOT_HEIGHT;
 }
 
 void Dot::handleEvent(SDL_Event& e)
@@ -50,21 +54,25 @@ void Dot::handleEvent(SDL_Event& e)
 	}
 }
 
-void Dot::move()
+void Dot::move(SDL_Rect& wall)
 {
 	posX += velX;
+	collider.x = posX;
 
 	//If the dot went too far right or left
-	if((posX < 0 ) || (posX + DOT_WIDTH > SCREEN_WIDTH))
+	if((posX < 0 ) || (posX + DOT_WIDTH > SCREEN_WIDTH + SCREEN_EXTENTION) || startup->checkCollision(collider, wall))
 	{
 		posX -= velX;
+		collider.x = posX;
 	}
 
 	posY += velY;
+	collider.y = posY;
 
-	if ((posY < 0) || (posY + DOT_HEIGHT > SCREEN_HEIGHT))
+	if ((posY < 0) || (posY + DOT_HEIGHT > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision(collider, wall))
 	{
 		posY -= velY;
+		collider.y = posY;
 	}
 }
 

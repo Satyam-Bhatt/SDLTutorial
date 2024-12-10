@@ -30,7 +30,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture, dotTexture;
+Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -69,6 +69,7 @@ void close()
 	timerTextTexture2.Free();
 	fpsTimer_Texture.Free();
 	dotTexture.Free();
+	collidePrompt_Texture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -150,6 +151,10 @@ int main(int argc, char* args[])
 			{
 				printf("Failed to render text texture!\n");
 			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Collider Check", { 0, 255, 0 }, 20, collidePrompt_Texture))
+			{
+				printf("Failed to render text texture!\n");
+			}
 #endif
 
 			bool quit = false;
@@ -196,6 +201,9 @@ int main(int argc, char* args[])
 
 			//Moving Dot
 			Dot dot;
+
+			//Wall for Collision
+			SDL_Rect wall = { 660, 500, 200, 200 };
 
 			while (!quit)
 			{
@@ -460,7 +468,15 @@ int main(int argc, char* args[])
 					avgFPS = 0;
 				}
 
-				dot.move();
+				fpsText.str("");
+				fpsText << "Average Frames Per Second " << avgFPS;
+
+				if(!fpsTimer_Texture.LoadFromRenderededText(fpsText.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				{
+					printf("Unable to render time texture!\n");
+				}
+
+				dot.move(wall);
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -514,7 +530,14 @@ int main(int argc, char* args[])
 
 				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
 				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
-				timerTextTexture2.Render(100, 660, startupStuff->renderer, false);
+				timerTextTexture2.Render(5, 640, startupStuff->renderer, false);
+
+				fpsTimer_Texture.Render(5, 685, startupStuff->renderer, false);
+
+				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 0, 100, 255);
+				SDL_RenderFillRect(startupStuff->renderer, &wall);
+
+				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
 
 				dot.render(dotTexture, startupStuff->renderer);
 
