@@ -480,8 +480,9 @@ int main(int argc, char* args[])
 				}
 
 				//dot.move(wall);
-
-				dot.move(collideDot.getColliders());
+				std::vector<SDL_Rect> multipleCollider = collideDot.getColliders();
+				multipleCollider.push_back(wall);
+				dot.move(multipleCollider);
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
