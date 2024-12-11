@@ -241,6 +241,39 @@ bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
+bool StartupStuff::checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b)
+{
+	//Sided of rectangle
+	int leftA, leftB, rightA, rightB, topA, topB, bottomA, bottomB;
+
+	//Go through the A rectangle
+	for (int i = 0; i < a.size(); i++)
+	{
+		leftA = a[i].x;
+		rightA = a[i].x + a[i].w;
+		topA = a[i].y;
+		bottomA = a[i].y + a[i].h;
+
+		for (int j = 0; j < b.size(); j++)
+		{
+			leftB = b[j].x;
+			rightB = b[j].x + b[j].w;
+			topB = b[j].y;
+			bottomB = b[j].y + b[j].h;
+
+			//If no sides from A are outside of B
+			if (((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB)) == false)
+			{
+				//Collision Detected
+				return true;
+			}
+		}
+	}
+
+	//If the boxes don't touch
+	return false;
+}
+
 
 #ifdef SDL_TTF_MAJOR_VERSION
 bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)

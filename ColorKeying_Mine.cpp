@@ -200,7 +200,10 @@ int main(int argc, char* args[])
 			fpsTimer.start();
 
 			//Moving Dot
-			Dot dot;
+			Dot dot(0,0);
+
+			//Dot To Collide With
+			Dot collideDot(100, 100);
 
 			//Wall for Collision
 			SDL_Rect wall = { 660, 500, 200, 200 };
@@ -476,7 +479,9 @@ int main(int argc, char* args[])
 					printf("Unable to render time texture!\n");
 				}
 
-				dot.move(wall);
+				//dot.move(wall);
+
+				dot.move(collideDot.getColliders());
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -540,6 +545,7 @@ int main(int argc, char* args[])
 				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
 
 				dot.render(dotTexture, startupStuff->renderer);
+				collideDot.render(dotTexture, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);
 				++countedFrames;

@@ -7,6 +7,7 @@
 #include <SDL_mixer.h>
 #include <sstream>
 #include "ColorKeying_Mine/Texture_Mine.h"
+#include "vector"
 
 class StartupStuff
 {
@@ -36,6 +37,8 @@ public:
 	bool LoadSFX(std::string path, Mix_Chunk *& chunk);
 
 	bool checkCollision(SDL_Rect a, SDL_Rect b);
+
+	bool checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b);
 
 #ifdef SDL_TTF_MAJOR_VERSION
 	//Load Text
