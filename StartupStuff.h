@@ -8,6 +8,7 @@
 #include <sstream>
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "vector"
+#include "Circle.h"
 
 class StartupStuff
 {
@@ -39,6 +40,15 @@ public:
 	bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 	bool checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b);
+
+	//Circle/Circle collision detector
+	bool checkCollision(Circle& a, Circle& b);
+
+	//Circle/Box collision detector
+	bool checkCollision(Circle& a, SDL_Rect& b);
+
+	//Calculates distance squared between two points
+	double distanceSquared(int x1, int y1, int x2, int y2);
 
 #ifdef SDL_TTF_MAJOR_VERSION
 	//Load Text

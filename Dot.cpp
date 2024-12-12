@@ -44,6 +44,8 @@ Dot::Dot(int x, int y)
 	colliders[10].w = 6;
 	colliders[10].h = 1;
 
+	colliderCircle.radius = DOT_WIDTH / 2;
+
 	shiftColliders();
 
 	//Collision box detection
@@ -119,6 +121,11 @@ void Dot::render(Texture_Mine& texture, SDL_Renderer* renderer)
 	texture.Render(posX, posY, renderer, false);
 }
 
+void Dot::renderCicle(Texture_Mine& dotTexture, SDL_Renderer* renderer)
+{
+	dotTexture.Render(posX - colliderCircle.radius, posY - colliderCircle.radius, renderer, false);
+}
+
 void Dot::move(std::vector<SDL_Rect>& otherColliders)
 {
 	posX += velX;
@@ -135,6 +142,32 @@ void Dot::move(std::vector<SDL_Rect>& otherColliders)
 
 	if ((posY < 0) || (posY + DOT_HEIGHT > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision(colliders, otherColliders))
 	{
+		posY -= velY;
+		shiftColliders();
+	}
+}
+
+void Dot::move(SDL_Rect& square, Circle& circle)
+{
+	posX += velX;
+	shiftColliders();
+
+	//If the dot collided or went too far to the left or right
+	if ((posX - colliderCircle.radius < 0) || (posX + colliderCircle.radius > SCREEN_WIDTH) || startup-> checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	{
+		//Move back
+		posX -= velX;
+		shiftColliders();
+	}
+
+	//Move the dot up or down
+	posY += velY;
+	shiftColliders();
+
+	//If the dot collided or went too far up or down
+	if ((posY - colliderCircle.radius < 0) || (posY + colliderCircle.radius > SCREEN_HEIGHT) || startup->checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	{
+		//Move back
 		posY -= velY;
 		shiftColliders();
 	}

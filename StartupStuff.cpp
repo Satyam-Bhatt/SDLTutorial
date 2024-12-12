@@ -274,6 +274,29 @@ bool StartupStuff::checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect
 	return false;
 }
 
+bool StartupStuff::checkCollision(Circle& a, Circle& b)
+{
+	//Total Radius Squared
+	int totalRadiusSquared = a.radius + b.radius;
+	totalRadiusSquared *= totalRadiusSquared;
+
+	//If distance between the center of the circle is less than the sum of their radii
+	if (distanceSquared(a.x, a.y, b.x, b.y) < totalRadiusSquared)
+	{
+		//Circle collided
+		return true;
+	}
+
+	return false;
+}
+
+double StartupStuff::distanceSquared(int x1, int y1, int x2, int y2)
+{
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+	return deltaX * deltaX + deltaY * deltaY;
+}
+
 
 #ifdef SDL_TTF_MAJOR_VERSION
 bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)
