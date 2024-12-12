@@ -200,7 +200,7 @@ int main(int argc, char* args[])
 			fpsTimer.start();
 
 			//Moving Dot
-			Dot dot(0,0);
+			Dot dot(20,20);
 
 			//Dot To Collide With
 			Dot collideDot(100, 100);
@@ -482,7 +482,9 @@ int main(int argc, char* args[])
 				//dot.move(wall);
 				std::vector<SDL_Rect> multipleCollider = collideDot.getColliders();
 				multipleCollider.push_back(wall);
-				dot.move(multipleCollider);
+				//dot.move(multipleCollider);
+
+				dot.move(wall, collideDot.getColliderCircle());
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
@@ -545,8 +547,11 @@ int main(int argc, char* args[])
 
 				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
 
-				dot.render(dotTexture, startupStuff->renderer);
-				collideDot.render(dotTexture, startupStuff->renderer);
+				//dot.render(dotTexture, startupStuff->renderer);
+				//collideDot.render(dotTexture, startupStuff->renderer);
+
+				dot.renderCicle(dotTexture, startupStuff->renderer);
+				collideDot.renderCicle(dotTexture, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);
 				++countedFrames;

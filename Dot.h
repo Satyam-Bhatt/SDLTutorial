@@ -51,5 +51,7 @@ private:
 
 	//Moves the collision boxes relative to the dot's offset
 	void shiftColliders();
+
+	void shiftCircleColliders();
 };
 

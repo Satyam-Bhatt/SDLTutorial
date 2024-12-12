@@ -47,6 +47,7 @@ Dot::Dot(int x, int y)
 	colliderCircle.radius = DOT_WIDTH / 2;
 
 	shiftColliders();
+	shiftCircleColliders();
 
 	//Collision box detection
 	collider.w = DOT_WIDTH;
@@ -150,32 +151,37 @@ void Dot::move(std::vector<SDL_Rect>& otherColliders)
 void Dot::move(SDL_Rect& square, Circle& circle)
 {
 	posX += velX;
-	shiftColliders();
+	shiftCircleColliders();
 
 	//If the dot collided or went too far to the left or right
-	if ((posX - colliderCircle.radius < 0) || (posX + colliderCircle.radius > SCREEN_WIDTH) || startup-> checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	if ((posX - colliderCircle.radius < 0) || (posX + colliderCircle.radius > SCREEN_WIDTH + SCREEN_EXTENTION) || startup-> checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
 	{
 		//Move back
 		posX -= velX;
-		shiftColliders();
+		shiftCircleColliders();
 	}
 
 	//Move the dot up or down
 	posY += velY;
-	shiftColliders();
+	shiftCircleColliders();
 
 	//If the dot collided or went too far up or down
-	if ((posY - colliderCircle.radius < 0) || (posY + colliderCircle.radius > SCREEN_HEIGHT) || startup->checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	if ((posY - colliderCircle.radius < 0) || (posY + colliderCircle.radius > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
 	{
 		//Move back
 		posY -= velY;
-		shiftColliders();
+		shiftCircleColliders();
 	}
 }
 
 std::vector<SDL_Rect>& Dot::getColliders()
 {
 	return colliders;
+}
+
+Circle& Dot::getColliderCircle()
+{
+	return colliderCircle;
 }
 
 void Dot::shiftColliders()
@@ -195,6 +201,13 @@ void Dot::shiftColliders()
 		//Move the row offset down the height of the collision box
 		r += colliders[set].h;
 	}
+}
+
+void Dot::shiftCircleColliders()
+{
+	//Align collider to center of dot
+	colliderCircle.x = posX;
+	colliderCircle.y = posY;
 }
 
 
