@@ -127,6 +127,13 @@ void Dot::renderCicle(Texture_Mine& dotTexture, SDL_Renderer* renderer)
 	dotTexture.Render(posX - colliderCircle.radius, posY - colliderCircle.radius, renderer, false);
 }
 
+void Dot::renderCicleWithCamera(int camX, int camY, Texture_Mine& dotTexture, SDL_Renderer* renderer)
+{
+	int xRelative = posX - camX;
+	int yRelative = posY - camY;
+	dotTexture.Render(xRelative - colliderCircle.radius, yRelative - colliderCircle.radius, renderer, false);
+}
+
 void Dot::move(std::vector<SDL_Rect>& otherColliders)
 {
 	posX += velX;
@@ -184,6 +191,7 @@ Circle& Dot::getColliderCircle()
 	return colliderCircle;
 }
 
+
 void Dot::shiftColliders()
 {
 	//Row offset
@@ -208,6 +216,16 @@ void Dot::shiftCircleColliders()
 	//Align collider to center of dot
 	colliderCircle.x = posX;
 	colliderCircle.y = posY;
+}
+
+int Dot::getPosX()
+{
+	return posX;
+}
+
+int Dot::getPosY()
+{
+	return posY;
 }
 
 

@@ -34,6 +34,13 @@ public:
 	//Get Collision Circle
 	Circle& getColliderCircle();
 
+	// Shows the dot on the screen relative to the camera
+	void renderCicleWithCamera(int camX, int camY ,Texture_Mine& dotTexture, SDL_Renderer* renderer);
+
+	//Position Accessors
+	int getPosX();
+	int getPosY();
+
 private:
 	int posX, posY;
 

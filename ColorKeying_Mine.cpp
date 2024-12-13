@@ -15,6 +15,10 @@
 // - Start Stop Timer
 // - Average FPS
 // - Motion
+// - Collision With Rects
+// - Collision Per-Pixel
+// - Collision Circle and Square
+// - Camera
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -30,7 +34,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture;
+Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -70,6 +74,7 @@ void close()
 	fpsTimer_Texture.Free();
 	dotTexture.Free();
 	collidePrompt_Texture.Free();
+	background_Texture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -128,7 +133,8 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/medium.wav", medium)
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/low.wav", low)
 			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png")
-			|| !startupStuff->LoadMedia(dotTexture, "26_motion/dot.bmp"))
+			|| !startupStuff->LoadMedia(dotTexture, "26_motion/dot.bmp")
+			|| !startupStuff->LoadMedia(background_Texture, "30_scrolling/bg.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -207,6 +213,9 @@ int main(int argc, char* args[])
 
 			//Wall for Collision
 			SDL_Rect wall = { 660, 500, 200, 200 };
+
+			//The camera area
+			SDL_Rect camera = { 0,0, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION };
 
 			while (!quit)
 			{
@@ -479,15 +488,46 @@ int main(int argc, char* args[])
 					printf("Unable to render time texture!\n");
 				}
 
+				//------ For Rect Collision Detection ------------
 				//dot.move(wall);
-				std::vector<SDL_Rect> multipleCollider = collideDot.getColliders();
+				//--------------------
+
+				//------ For Per Pixel Collision Detection ------ 
+				/* std::vector<SDL_Rect> multipleCollider = collideDot.getColliders();
 				multipleCollider.push_back(wall);
-				//dot.move(multipleCollider);
+				dot.move(multipleCollider); */
+				//---------------------
 
+				//--------------- For Circle and Rect Collistion Detection ----------------
 				dot.move(wall, collideDot.getColliderCircle());
+				//-----------------------
 
-				SDL_SetRenderDrawColor(startupStuff->renderer, 0, 0, 0, 255);
+				//-------- CAMERA ----------
+				camera.x = dot.getPosX() - SCREEN_WIDTH / 2;
+				camera.y = dot.getPosY() - SCREEN_HEIGHT / 2;
+
+				//Keep Camera in bounds
+				if (camera.x < 0)
+				{
+					camera.x = 0;
+				}
+				if (camera.y < 0)
+				{
+					camera.y = 0;
+				}
+				if (camera.x > SCREEN_WIDTH + SCREEN_EXTENTION - camera.w)
+				{
+					camera.x = SCREEN_WIDTH + SCREEN_EXTENTION - camera.w;
+				}
+				if (camera.y > SCREEN_HEIGHT + SCREEN_EXTENTION - camera.h)
+				{
+					camera.y = SCREEN_HEIGHT + SCREEN_EXTENTION - camera.h;
+				}
+
+				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
 				SDL_RenderClear(startupStuff->renderer);
+
+				background_Texture.Render(0, 0, startupStuff->renderer, &camera);
 
 				audio_Texture.RenderRotate(640, SCREEN_HEIGHT / 2 - audio_Texture.GetHeight() / 6, 3, startupStuff->renderer);
 
@@ -550,7 +590,9 @@ int main(int argc, char* args[])
 				//dot.render(dotTexture, startupStuff->renderer);
 				//collideDot.render(dotTexture, startupStuff->renderer);
 
+
 				dot.renderCicle(dotTexture, startupStuff->renderer);
+				//dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
 				collideDot.renderCicle(dotTexture, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);

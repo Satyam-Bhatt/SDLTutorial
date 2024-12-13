@@ -44,6 +44,7 @@
     <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp" />
     <ClCompile Include="26_motion\26_motion.cpp" />
     <ClCompile Include="29_circular_collision_detection\29_circular_collision_detection.cpp" />
+    <ClCompile Include="30_scrolling\30_scrolling.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />

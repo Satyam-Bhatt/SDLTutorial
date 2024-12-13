@@ -120,6 +120,15 @@
     <ClCompile Include="26_motion\26_motion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="29_circular_collision_detection\29_circular_collision_detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="30_scrolling\30_scrolling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
