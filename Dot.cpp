@@ -131,6 +131,7 @@ void Dot::renderCicleWithCamera(int camX, int camY, Texture_Mine& dotTexture, SD
 {
 	int xRelative = posX - camX;
 	int yRelative = posY - camY;
+
 	dotTexture.Render(xRelative - colliderCircle.radius, yRelative - colliderCircle.radius, renderer, false);
 }
 
@@ -161,7 +162,7 @@ void Dot::move(SDL_Rect& square, Circle& circle)
 	shiftCircleColliders();
 
 	//If the dot collided or went too far to the left or right
-	if ((posX - colliderCircle.radius < 0) || (posX + colliderCircle.radius > SCREEN_WIDTH + SCREEN_EXTENTION) || startup-> checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	if ((posX - colliderCircle.radius < 0) || (posX + colliderCircle.radius > SCREEN_WIDTH_CAMERA) || startup-> checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
 	{
 		//Move back
 		posX -= velX;
@@ -173,7 +174,7 @@ void Dot::move(SDL_Rect& square, Circle& circle)
 	shiftCircleColliders();
 
 	//If the dot collided or went too far up or down
-	if ((posY - colliderCircle.radius < 0) || (posY + colliderCircle.radius > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
+	if ((posY - colliderCircle.radius < 0) || (posY + colliderCircle.radius > SCREEN_HEIGHT_CAMERA) || startup->checkCollision(colliderCircle, square) || startup->checkCollision(colliderCircle, circle))
 	{
 		//Move back
 		posY -= velY;

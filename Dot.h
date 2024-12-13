@@ -12,7 +12,7 @@ public:
 	static const int DOT_WIDTH = 20;
 	static const int DOT_HEIGHT = 20;
 
-	static const int DOT_VEL = 1;
+	static const int DOT_VEL = 2;
 
 	Dot(int x, int y);
 
@@ -45,6 +45,8 @@ private:
 	int posX, posY;
 
 	int velX, velY;
+
+	int cameraRelativeX, cameraRelativeY;
 
 	SDL_Rect collider;
 

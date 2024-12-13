@@ -213,6 +213,7 @@ int main(int argc, char* args[])
 
 			//Wall for Collision
 			SDL_Rect wall = { 660, 500, 200, 200 };
+			SDL_Rect falkeWall = { 660, 500, 200, 200 };
 
 			//The camera area
 			SDL_Rect camera = { 0,0, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION };
@@ -499,12 +500,12 @@ int main(int argc, char* args[])
 				//---------------------
 
 				//--------------- For Circle and Rect Collistion Detection ----------------
-				dot.move(wall, collideDot.getColliderCircle());
+				dot.move(falkeWall, collideDot.getColliderCircle());
 				//-----------------------
 
 				//-------- CAMERA ----------
-				camera.x = dot.getPosX() - SCREEN_WIDTH / 2;
-				camera.y = dot.getPosY() - SCREEN_HEIGHT / 2;
+				camera.x = dot.getPosX() - (SCREEN_WIDTH + SCREEN_EXTENTION) / 2;
+				camera.y = dot.getPosY() - (SCREEN_HEIGHT + SCREEN_EXTENTION) / 2;
 
 				//Keep Camera in bounds
 				if (camera.x < 0)
@@ -515,13 +516,17 @@ int main(int argc, char* args[])
 				{
 					camera.y = 0;
 				}
-				if (camera.x > SCREEN_WIDTH + SCREEN_EXTENTION - camera.w)
+				if (camera.x > SCREEN_WIDTH_CAMERA - camera.w)
 				{
-					camera.x = SCREEN_WIDTH + SCREEN_EXTENTION - camera.w;
+					camera.x = SCREEN_WIDTH_CAMERA - camera.w;
+					falkeWall.x = 660;
+					falkeWall.x += camera.x;
 				}
-				if (camera.y > SCREEN_HEIGHT + SCREEN_EXTENTION - camera.h)
+				if (camera.y >  SCREEN_HEIGHT_CAMERA - camera.h)
 				{
-					camera.y = SCREEN_HEIGHT + SCREEN_EXTENTION - camera.h;
+					camera.y = SCREEN_HEIGHT_CAMERA - camera.h;
+					falkeWall.y = 500;
+					falkeWall.y += camera.y;
 				}
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
@@ -583,6 +588,7 @@ int main(int argc, char* args[])
 				fpsTimer_Texture.Render(5, 685, startupStuff->renderer, false);
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 0, 100, 255);
+				//SDL_Rect walli = { 0, wall, 200, 200 };
 				SDL_RenderFillRect(startupStuff->renderer, &wall);
 
 				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
@@ -590,9 +596,8 @@ int main(int argc, char* args[])
 				//dot.render(dotTexture, startupStuff->renderer);
 				//collideDot.render(dotTexture, startupStuff->renderer);
 
-
-				dot.renderCicle(dotTexture, startupStuff->renderer);
-				//dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
+				//dot.renderCicle(dotTexture, startupStuff->renderer);
+				dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
 				collideDot.renderCicle(dotTexture, startupStuff->renderer);
 
 				SDL_RenderPresent(startupStuff->renderer);
