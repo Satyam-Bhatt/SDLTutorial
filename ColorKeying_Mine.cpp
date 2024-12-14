@@ -19,6 +19,7 @@
 // - Collision Per-Pixel
 // - Collision Circle and Square
 // - Camera Scrolling
+// - Scrolling Background
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -34,7 +35,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture, scrollingBackground_Texture;;
+Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture, scrollingBackground_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
