@@ -222,7 +222,6 @@ int main(int argc, char* args[])
 
 			//Offset for Background
 			int bgOffset = 0;
-			SDL_Rect clipForBG = { 0, 580, 400, 140 };
 
 			while (!quit)
 			{
