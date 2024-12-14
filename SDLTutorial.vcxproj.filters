@@ -129,6 +129,9 @@
     <ClCompile Include="30_scrolling\30_scrolling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="31_scrolling_backgrounds\31_scrolling_backgrounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

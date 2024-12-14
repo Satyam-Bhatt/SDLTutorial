@@ -207,7 +207,7 @@ void Texture_Mine::Render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip)
 	SDL_RenderCopy(renderer, mTexture, clip, &renderQuat);
 }
 
-void Texture_Mine::Render(int x, int y, int width, int height, SDL_Renderer* renderer)
+void Texture_Mine::Render(int x, int y, int width, int height, SDL_Renderer* renderer, SDL_Rect* clip)
 {
 	if (mTexture == NULL)
 	{
@@ -217,7 +217,7 @@ void Texture_Mine::Render(int x, int y, int width, int height, SDL_Renderer* ren
 	
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, width, height };
-	SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
+	SDL_RenderCopy(renderer, mTexture, clip, &renderQuad);
 }
 
 void Texture_Mine::RenderRotate(int x, int y, float changeTextureSize , SDL_Renderer* renderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)

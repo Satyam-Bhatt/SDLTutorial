@@ -34,7 +34,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture;
+Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture, scrollingBackground_Texture;;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -75,6 +75,7 @@ void close()
 	dotTexture.Free();
 	collidePrompt_Texture.Free();
 	background_Texture.Free();
+	scrollingBackground_Texture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -134,7 +135,8 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadSFX("21_sound_effects_and_music/low.wav", low)
 			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png")
 			|| !startupStuff->LoadMedia(dotTexture, "26_motion/dot.bmp")
-			|| !startupStuff->LoadMedia(background_Texture, "30_scrolling/bg.png"))
+			|| !startupStuff->LoadMedia(background_Texture, "30_scrolling/bg.png")
+			|| !startupStuff->LoadMedia(scrollingBackground_Texture, "31_scrolling_backgrounds/bg.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -217,6 +219,10 @@ int main(int argc, char* args[])
 
 			//The camera area
 			SDL_Rect camera = { 0,0, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION };
+
+			//Offset for Background
+			int bgOffset = 0;
+			SDL_Rect clipForBG = { 0, 580, 400, 140 };
 
 			while (!quit)
 			{
@@ -587,6 +593,16 @@ int main(int argc, char* args[])
 				prompt_Texture.Render(600, 0, startupStuff->renderer, false);
 				timeTextTexture.Render(500, 20, startupStuff->renderer, false);
 
+				--bgOffset;
+				if (bgOffset < -400)
+				{
+					bgOffset = 0;
+				}
+
+				scrollingBackground_Texture.Render(bgOffset, 580, 400, 140, startupStuff->renderer);
+				scrollingBackground_Texture.Render(bgOffset + 400, 580, 400, 140, startupStuff->renderer);
+				scrollingBackground_Texture.Render(bgOffset + 800, 580, 400, 140, startupStuff->renderer);
+				
 				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
 				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
 				timerTextTexture2.Render(5, 640, startupStuff->renderer, false);
