@@ -46,8 +46,6 @@ private:
 
 	int velX, velY;
 
-	int cameraRelativeX, cameraRelativeY;
-
 	SDL_Rect collider;
 
 	StartupStuff* startup;

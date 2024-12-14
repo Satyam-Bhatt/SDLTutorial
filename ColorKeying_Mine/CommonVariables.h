@@ -4,8 +4,8 @@ const int SCREEN_HEIGHT = 480;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_EXTENTION = 250;
 
-const int SCREEN_WIDTH_CAMERA = 1920;
-const int SCREEN_HEIGHT_CAMERA = 1080;
+const int SCREEN_WIDTH_CAMERA = 1280;
+const int SCREEN_HEIGHT_CAMERA = 720;
 
 const int BUTTON_WIDTH = 300;
 const int BUTTON_HEIGHT = 200;

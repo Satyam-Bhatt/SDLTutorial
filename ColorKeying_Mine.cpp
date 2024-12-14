@@ -18,7 +18,7 @@
 // - Collision With Rects
 // - Collision Per-Pixel
 // - Collision Circle and Square
-// - Camera
+// - Camera Scrolling
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -507,6 +507,12 @@ int main(int argc, char* args[])
 				camera.x = dot.getPosX() - (SCREEN_WIDTH + SCREEN_EXTENTION) / 2;
 				camera.y = dot.getPosY() - (SCREEN_HEIGHT + SCREEN_EXTENTION) / 2;
 
+				if (camera.x > 0 && camera.y > 0)
+				{
+					falkeWall.x += camera.x;
+					falkeWall.y += camera.y;
+				}
+
 				//Keep Camera in bounds
 				if (camera.x < 0)
 				{
@@ -588,7 +594,6 @@ int main(int argc, char* args[])
 				fpsTimer_Texture.Render(5, 685, startupStuff->renderer, false);
 
 				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 0, 100, 255);
-				//SDL_Rect walli = { 0, wall, 200, 200 };
 				SDL_RenderFillRect(startupStuff->renderer, &wall);
 
 				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
