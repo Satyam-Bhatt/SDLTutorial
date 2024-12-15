@@ -35,7 +35,7 @@ TTF_Font* gFont = NULL, * gFont2 = NULL;
 
 Texture_Mine texture_1, texture_2, texture_3, texture_4, texture_5, texture_animated, texture_rotated, texture_text, joystick_Texture, audio_Texture, prompt_Texture, timeTextTexture, start_PromptTexture, pause_PromptTexture, timerTextTexture2;
 
-Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture, scrollingBackground_Texture;
+Texture_Mine fpsTimer_Texture, dotTexture, collidePrompt_Texture, background_Texture, scrollingBackground_Texture, inputText_Texture;
 
 Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
@@ -77,6 +77,7 @@ void close()
 	collidePrompt_Texture.Free();
 	background_Texture.Free();
 	scrollingBackground_Texture.Free();
+	inputText_Texture.Free();
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -224,8 +225,20 @@ int main(int argc, char* args[])
 			//Offset for Background
 			int bgOffset = 0;
 
+			//Input Text
+			SDL_Color textColor = { 0,0,0,0xFF };
+
+			//The current input text
+			std::string inputText = "Enter Text Here";
+			inputText_Texture.LoadFromRenderededText(inputText, textColor, gFont2, startupStuff->renderer);
+
+			//Enable text input
+			SDL_StartTextInput();
+
 			while (!quit)
 			{
+				bool renderText = false;
+
 				while (SDL_PollEvent(&e) != 0)
 				{
 					if (e.type == SDL_QUIT)
@@ -365,6 +378,40 @@ int main(int argc, char* args[])
 							}
 							break;
 						}
+
+						//Handle Backspace
+						if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
+						{
+							//lop off character
+							inputText.pop_back();
+							renderText = true;
+						}
+						//Handle Copy
+						else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() && KMOD_CTRL)
+						{
+							SDL_SetClipboardText(inputText.c_str());
+						}
+						//Handle Paste
+						else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() && KMOD_CTRL)
+						{
+							//Copy text from temporary buffer
+							char* tempText = SDL_GetClipboardText();
+							inputText = tempText;
+							SDL_free(tempText);
+
+							renderText = true;
+						}
+					}
+					//Special Text input events
+					else if (e.type == SDL_TEXTINPUT)
+					{
+						//Not copy or pasing
+						if (!(SDL_GetModState() & KMOD_CTRL && (e.text.text[0] == 'c' || e.text.text[0] == 'C' || e.text.text[0] == 'v' || e.text.text[0] == 'V')))
+						{
+							//Append character
+							inputText += e.text.text;
+							renderText = true;
+						}
 					}
 					//Joystick events
 					else if (e.type == SDL_JOYAXISMOTION)
@@ -460,6 +507,28 @@ int main(int argc, char* args[])
 				else
 				{
 					currentTexture = &pressTexture;
+				}
+
+				if (renderText)
+				{
+					//Text is not empty
+					if (inputText != "")
+					{
+						//Render new text
+						if (!inputText_Texture.LoadFromRenderededText(inputText, textColor, gFont2, startupStuff->renderer))
+						{
+							printf("Unable to render text texture!\n");
+						}
+					}
+					//Text is empty
+					else
+					{
+						//Render Space Texture
+						if (!inputText_Texture.LoadFromRenderededText(" ", textColor, gFont2, startupStuff->renderer))
+						{
+							printf("Unable to render text texture!\n");
+						}
+					}
 				}
 
 				//Set text to be rendered
@@ -621,6 +690,8 @@ int main(int argc, char* args[])
 				dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
 				collideDot.renderCicle(dotTexture, startupStuff->renderer);
 
+				inputText_Texture.Render(20, 550, startupStuff->renderer, false);
+
 				SDL_RenderPresent(startupStuff->renderer);
 				++countedFrames;
 
@@ -632,6 +703,9 @@ int main(int argc, char* args[])
 			}
 		}
 	}
+	//Disable text input
+	SDL_StopTextInput();
+
 	close();
 	return 0;
 }
