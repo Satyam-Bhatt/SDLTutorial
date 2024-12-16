@@ -360,6 +360,68 @@ bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::strin
 			success = false;
 		}
 	}
+
 	return success;
 }
+bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine texture[], Sint32 data[TOTAL_DATA])
+{
+	bool success = true;
+
+	//Open file for reading in binary
+	SDL_RWops* file = SDL_RWFromFile("33_file_reading_and_writing/nums.bin", "r+b");
+	//File does not exist
+	if (file == NULL)
+	{
+		printf("Warning: Unable to open file!SDL Error : % s\n", SDL_GetError());
+
+		//Create file for writing
+		file = SDL_RWFromFile("33_file_reading_and_writing/nums.bin", "w+b");
+
+		if (file != NULL)
+		{
+			printf("New file created!\n");
+
+			//Initialize Data
+			for (size_t i = 0; i < TOTAL_DATA; i++)
+			{
+				data[i] = 0;
+				SDL_RWwrite(file, &data[i], sizeof(Sint32), 1);
+			}
+
+			//Close file handler
+			SDL_RWclose(file);
+		}
+		else
+		{
+			printf("Error: Unable to create file! SDL Error: %s\n", SDL_GetError());
+			success = false;
+		}
+	}
+	//File Exists
+	else
+	{
+		//Load Data
+		printf("Reading file...!\n");
+		for(int i = 0; i < TOTAL_DATA; i++)
+		{
+			SDL_RWread(file, &data[i], sizeof(Sint32), 1);
+		}
+		//Close file handler
+		SDL_RWclose(file);
+	}
+
+	SDL_Color textColor_ = { 0, 0, 0, 0xFF };
+	SDL_Color highlightColor = { 0xFF, 0, 0, 0xFF };
+
+	//Initialize data textures
+	texture[0].LoadFromRenderededText(std::to_string(data[0]), highlightColor, gFont, renderer);
+	for (int i = 1; i < TOTAL_DATA; ++i)
+	{
+		texture[i].LoadFromRenderededText(std::to_string(data[i]), textColor_, gFont, renderer);
+	}
+
+
+	return success;
+}
+
 #endif

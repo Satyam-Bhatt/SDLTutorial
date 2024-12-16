@@ -43,8 +43,12 @@
     <ClCompile Include="23_advanced_timers\23_advanced_timers.cpp" />
     <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp" />
     <ClCompile Include="26_motion\26_motion.cpp" />
+    <ClCompile Include="29_circular_collision_detection\29_circular_collision_detection.cpp" />
+    <ClCompile Include="30_scrolling\30_scrolling.cpp" />
+    <ClCompile Include="31_scrolling_backgrounds\31_scrolling_backgrounds.cpp" />
+    <ClCompile Include="33_file_reading_and_writing\33_file_reading_and_writing.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
-    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />

@@ -41,7 +41,7 @@ Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
 
 //Key State Textures
-Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture;
+Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture, dataTextures[TOTAL_DATA];
 
 //Music
 Mix_Music* music = NULL;
@@ -49,8 +49,29 @@ Mix_Music* music = NULL;
 //Sound Effects
 Mix_Chunk* scratch = NULL, * high = NULL, * medium = NULL, * low = NULL;
 
+//Data Points
+Sint32 gData[ TOTAL_DATA ];
+
 void close()
 {
+	//open data for writing
+	SDL_RWops* file = SDL_RWFromFile("33_file_reading_and_writing/nums.bin", "w+b");
+
+	if (file != NULL)
+	{
+		//save data
+		for (int i = 0; i < TOTAL_DATA; ++i)
+		{
+			SDL_RWwrite(file, &gData[i], sizeof(Sint32), 1);
+		}
+		//close file handler
+		SDL_RWclose(file);
+	}
+	else
+	{
+		printf("Error: Unable to save file! %s\n", SDL_GetError());
+	}
+
 	texture_1.Free();
 	texture_2.Free();
 	texture_3.Free();
@@ -165,6 +186,10 @@ int main(int argc, char* args[])
 			{
 				printf("Failed to render text texture!\n");
 			}
+			if (!startupStuff->LoadText_Save(gFont2, "22_timing/lazy.ttf", "Time: ", { 255, 0, 0 }, 20, dataTextures, gData))
+			{
+				printf("Failed to render text texture!\n");
+			}
 #endif
 
 			bool quit = false;
@@ -234,6 +259,13 @@ int main(int argc, char* args[])
 
 			//Enable text input
 			SDL_StartTextInput();
+
+			//Text rendering color
+			SDL_Color textColor_Main = { 0, 0, 0, 0xFF };
+			SDL_Color highlightColor = { 0xFF, 0, 0, 0xFF };
+
+			//Current input point
+			int currentData = 0;
 
 			while (!quit)
 			{
@@ -376,6 +408,41 @@ int main(int argc, char* args[])
 							{
 								timer.start();
 							}
+							break;
+
+						case SDLK_UP:
+							//Rerender previous entry input point
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), textColor, gFont2, startupStuff->renderer);
+							--currentData;
+							if (currentData < 0)
+							{
+								currentData = TOTAL_DATA - 1;
+							}
+							//Rerender current entry input point
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), highlightColor, gFont2, startupStuff->renderer);
+							break;
+
+						case SDLK_DOWN:
+							//Rerender previous entry input point
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), textColor, gFont2, startupStuff->renderer);
+							++currentData;
+							if (currentData == TOTAL_DATA)
+							{
+								currentData = 0;
+							}
+
+							//Rerender current entry input point
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), highlightColor, gFont2, startupStuff->renderer);
+							break;
+
+						case SDLK_LEFT:
+							--gData[currentData];
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), highlightColor, gFont2, startupStuff->renderer);
+							break;
+
+						case SDLK_RIGHT:
+							++gData[currentData];
+							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), highlightColor, gFont2, startupStuff->renderer);
 							break;
 						}
 
@@ -691,6 +758,11 @@ int main(int argc, char* args[])
 				collideDot.renderCicle(dotTexture, startupStuff->renderer);
 
 				inputText_Texture.Render(20, 550, startupStuff->renderer, false);
+
+				for (int i = 0; i < TOTAL_DATA; ++i)
+				{
+					dataTextures[i].Render(200, 580 + i * 20, startupStuff->renderer, false);
+				}
 
 				SDL_RenderPresent(startupStuff->renderer);
 				++countedFrames;
