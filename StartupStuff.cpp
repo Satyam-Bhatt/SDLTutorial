@@ -363,7 +363,8 @@ bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::strin
 
 	return success;
 }
-bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine texture[], Sint32 data[TOTAL_DATA])
+bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine* texture, 
+	Sint32 data[TOTAL_DATA])
 {
 	bool success = true;
 
@@ -419,7 +420,6 @@ bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::st
 	{
 		texture[i].LoadFromRenderededText(std::to_string(data[i]), textColor_, gFont, renderer);
 	}
-
 
 	return success;
 }

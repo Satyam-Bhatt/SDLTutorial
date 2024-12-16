@@ -56,7 +56,7 @@ public:
 	bool LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture);
 
 	//Load and save
-	bool LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine texture[TOTAL_DATA], Sint32 data[TOTAL_DATA]);
+	bool LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine* texture, Sint32 data[TOTAL_DATA]);
 
 #endif
 

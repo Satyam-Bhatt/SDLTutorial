@@ -43,6 +43,8 @@ Button button[TOTAL_BUTTONS];
 //Key State Textures
 Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture, dataTextures[TOTAL_DATA];
 
+Texture_Mine* dataArray = &dataTextures[0];
+
 //Music
 Mix_Music* music = NULL;
 
@@ -761,7 +763,7 @@ int main(int argc, char* args[])
 
 				for (int i = 0; i < TOTAL_DATA; ++i)
 				{
-					dataTextures[i].Render(200, 580 + i * 20, startupStuff->renderer, false);
+					dataTextures[i].Render(400, 580 + i * 20, startupStuff->renderer, false);
 				}
 
 				SDL_RenderPresent(startupStuff->renderer);
