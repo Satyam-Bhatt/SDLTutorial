@@ -58,6 +58,9 @@ public:
 	//Load and save
 	bool LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine* texture, Sint32 data[TOTAL_DATA]);
 
+	//LOad Audio
+	bool LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine* texture, int& recordingDeviceCount);
+
 	//Load Text and Audio
 
 #endif

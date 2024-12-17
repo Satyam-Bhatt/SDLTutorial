@@ -45,8 +45,6 @@ Button button[TOTAL_BUTTONS];
 //Key State Textures
 Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture, dataTextures[TOTAL_DATA];
 
-Texture_Mine* dataArray = &dataTextures[0];
-
 //Music
 Mix_Music* music = NULL;
 
@@ -223,6 +221,14 @@ int main(int argc, char* args[])
 			{
 				printf("Failed to render text texture!\n");
 			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Audio Devices: ", { 255, 0, 0 }, 20, pause_PromptTexture))
+			{
+				printf("Failed to render text texture!\n");
+			}
+			if (!startupStuff->LoadAudio(gFont2, { 255,0,255,255 }, recordingDeviceTexture, recordingDeviceCount))
+			{
+				printf("Failed to load audio device + Textures!\n");
+			}
 #endif
 
 			bool quit = false;
@@ -299,6 +305,13 @@ int main(int argc, char* args[])
 
 			//Current input point
 			int currentData = 0;
+
+			//Set default recording state
+			RecordingState currentState = SELECTING_DEVICE;
+
+			//Audio Device IDs
+			SDL_AudioDeviceID recordingDeviceId = 0;
+			SDL_AudioDeviceID playbackDeviceId = 0;
 
 			while (!quit)
 			{

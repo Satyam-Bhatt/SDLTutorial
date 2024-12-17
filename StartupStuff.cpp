@@ -424,4 +424,42 @@ bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::st
 	return success;
 }
 
+bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine* texture, int& recordingDeviceCount)
+{
+	bool success = true;
+
+	//Get capture device count
+	recordingDeviceCount = SDL_GetNumAudioDevices(SDL_TRUE);
+
+	//No Recording Devices
+	if(recordingDeviceCount < 1)
+	{
+		printf("Unable to get audio capture device! SDL Error: %s\n", SDL_GetError());
+		success = false;
+	}
+	//At least one device connected
+	else
+	{
+		//Cap recording device count
+		if(recordingDeviceCount > MAX_RECORDING_DEVICES)
+		{
+			recordingDeviceCount = MAX_RECORDING_DEVICES;
+		}
+
+		//Load device names
+		std::stringstream promptText;
+		for(int i = 0; i < recordingDeviceCount; i++)
+		{
+			//Get capture device name
+			promptText.str("");
+			promptText<<i<<": "<<SDL_GetAudioDeviceName(i, SDL_TRUE);
+
+			//Set Texture
+			texture[i].LoadFromRenderededText(promptText.str().c_str(), textColor, gFont, renderer);
+		}
+	}
+
+	return success;
+}
+
 #endif
