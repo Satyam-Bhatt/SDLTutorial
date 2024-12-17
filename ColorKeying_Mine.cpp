@@ -20,6 +20,8 @@
 // - Collision Circle and Square
 // - Camera Scrolling
 // - Scrolling Background
+// - Enter Text
+// - Save and Load
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -53,6 +55,35 @@ Mix_Chunk* scratch = NULL, * high = NULL, * medium = NULL, * low = NULL;
 
 //Data Points
 Sint32 gData[ TOTAL_DATA ];
+
+//Recording/playback callbacks
+void audioRecordingCallback(void* userdata, Uint8* stream, int len);
+void audioPlaybackCallback(void* userdata, Uint8* stream, int len);
+
+//Prompt Audio Texture
+Texture_Mine promptAudioTexture;
+
+//Texture to show recording device names
+Texture_Mine recordingDeviceTexture[MAX_RECORDING_DEVICES];
+
+//Number of available devices
+int recordingDeviceCount = 0;
+
+//Received audio spec
+SDL_AudioSpec receivedRecordingSpec;
+SDL_AudioSpec receivedPlaybackSpec;
+
+//Recording data buffer
+Uint8* recordingBuffer = NULL;
+
+//Size of data buffer
+Uint32 bufferByteSize = 0;
+
+//Position in data buffer
+Uint32 bufferBytePosition = 0;
+
+//Maximum position in data buffer for recording
+Uint32 bufferByteMaxPosition = 0;
 
 void close()
 {
@@ -763,7 +794,7 @@ int main(int argc, char* args[])
 
 				for (int i = 0; i < TOTAL_DATA; ++i)
 				{
-					dataTextures[i].Render(400, 580 + i * 20, startupStuff->renderer, false);
+					dataTextures[i].Render(400, 500 + i * 20, startupStuff->renderer, false);
 				}
 
 				SDL_RenderPresent(startupStuff->renderer);

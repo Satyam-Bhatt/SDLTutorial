@@ -47,6 +47,7 @@
     <ClCompile Include="30_scrolling\30_scrolling.cpp" />
     <ClCompile Include="31_scrolling_backgrounds\31_scrolling_backgrounds.cpp" />
     <ClCompile Include="33_file_reading_and_writing\33_file_reading_and_writing.cpp" />
+    <ClCompile Include="34_audio_recording\34_audio_recording.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />

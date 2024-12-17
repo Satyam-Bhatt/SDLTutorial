@@ -26,3 +26,23 @@ const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 const int TOTAL_DATA = 10;
+
+//Maximum number of supported recording device
+const int MAX_RECORDING_DEVICES = 10;
+
+//Maximum recording time
+const int MAX_RECORDING_SECONDS = 5;
+
+//Maximum recording time plus padding
+const int RECORDING_BUFFER_SECONDS = MAX_RECORDING_SECONDS + 1;
+
+//The various recording actions we can take
+enum RecordingState
+{
+    SELECTING_DEVICE,
+    STOPPED,
+    RECORDING,
+    RECORDED,
+    PLAYBACK,
+    ERROR
+};
