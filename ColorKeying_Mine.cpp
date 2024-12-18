@@ -130,6 +130,22 @@ void close()
 	background_Texture.Free();
 	scrollingBackground_Texture.Free();
 	inputText_Texture.Free();
+	promptAudioTexture.Free();
+	for (int i = 0; i < TOTAL_DATA; ++i)
+	{
+		dataTextures[i].Free();
+	}
+	for (int i = 0; i < MAX_RECORDING_DEVICES; i++)
+	{
+		recordingDeviceTexture[i].Free();
+	}
+
+	//Free playback audio
+	if (recordingBuffer != NULL)
+	{
+		delete[] recordingBuffer;
+		recordingBuffer = NULL;
+	}
 
 	//Free Sound Effects
 	Mix_FreeChunk(scratch);
@@ -167,6 +183,15 @@ void audioRecordingCallback(void* userdata, Uint8* stream, int len)
 
 	//Move along buffer
 	bufferByteMaxPosition += len;
+}
+
+void audioPlaybackCallback(void* userdata, Uint8* stream, int len)
+{
+	//Copy audio to stream
+	memcpy(stream, &recordingBuffer[bufferBytePosition], len);
+
+	//Move along buffer
+	bufferBytePosition += len;
 }
 
 int main(int argc, char* args[])
@@ -709,12 +734,84 @@ int main(int argc, char* args[])
 						}
 						break;
 
+						// User has finished recording
+					case RECORDED:
 
+						//On Key Press
+						if (e.type == SDL_KEYDOWN)
+						{
+							//Start playback
+							if (e.key.keysym.sym == SDLK_1)
+							{
+								//Go back to beginning of buffer
+								bufferBytePosition = 0;
 
+								//Start Playback
+								SDL_PauseAudioDevice(playbackDeviceId, SDL_FALSE);
+
+								//Go on to next state
+								promptAudioTexture.LoadFromRenderededText("Playing...", textColor, gFont, startupStuff->renderer);
+								currentState = PLAYBACK;
+							}
+							//Record again
+							if (e.key.keysym.sym == SDLK_2)
+							{
+								//Reset the buffer
+								bufferByteMaxPosition = 0;
+								memset(recordingBuffer, 0, bufferByteSize);
+
+								//Start Recording
+								SDL_PauseAudioDevice(recordingDeviceId, SDL_FALSE);
+
+								//Go on to next state
+								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont, startupStuff->renderer);
+								currentState = RECORDING;
+							}
+						}
+						break;
+					}
+					dot.handleEvent(e);
+				}
+
+				//Updating recording
+				if (currentState == RECORDING)
+				{
+					//Look Callback
+					SDL_LockAudioDevice(recordingDeviceId);
+
+					//Finish Recording
+					if (bufferBytePosition > bufferByteMaxPosition)
+					{
+						//Stop Recording Audio
+						SDL_PauseAudioDevice(recordingDeviceId, SDL_TRUE);
+
+						//Go on to next state
+						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont, startupStuff->renderer);
+						currentState = RECORDED;
 					}
 
-					dot.handleEvent(e);
+					//Unlock Callback
+					SDL_UnlockAudioDevice(recordingDeviceId);
+				}
+				//Updating Playback
+				else if (currentState == PLAYBACK)
+				{
+					//Look Callback
+					SDL_LockAudioDevice(playbackDeviceId);
 
+					//Finished Playback
+					if (bufferBytePosition > bufferByteMaxPosition)
+					{
+						//Stop playing audio
+						SDL_PauseAudioDevice(playbackDeviceId, SDL_TRUE);
+
+						//Go on to next state
+						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont, startupStuff->renderer);
+						currentState = RECORDED;
+					}
+
+					//Unlock Callback
+					SDL_UnlockAudioDevice(playbackDeviceId);
 				}
 
 				//Set Texture based on current keyState
@@ -926,6 +1023,21 @@ int main(int argc, char* args[])
 				for (int i = 0; i < TOTAL_DATA; ++i)
 				{
 					dataTextures[i].Render(400, 500 + i * 20, startupStuff->renderer, false);
+				}
+
+				promptAudioTexture.Render(0, 0, startupStuff->renderer, false);
+
+				//User is selecting
+				if (currentState == SELECTING_DEVICE)
+				{
+					//Render Device Names
+					int yOffset = promptAudioTexture.GetHeight() * 2;
+
+					for (int i = 0; i < recordingDeviceCount; ++i)
+					{
+						recordingDeviceTexture[i].Render(0, yOffset, startupStuff->renderer, false);
+						yOffset += recordingDeviceTexture[i].GetHeight();
+					}
 				}
 
 				SDL_RenderPresent(startupStuff->renderer);
