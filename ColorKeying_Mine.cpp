@@ -52,7 +52,7 @@ Mix_Music* music = NULL;
 Mix_Chunk* scratch = NULL, * high = NULL, * medium = NULL, * low = NULL;
 
 //Data Points
-Sint32 gData[ TOTAL_DATA ];
+Sint32 gData[TOTAL_DATA];
 
 //Recording/playback callbacks
 void audioRecordingCallback(void* userdata, Uint8* stream, int len);
@@ -158,6 +158,15 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 	Mix_Quit();
+}
+
+void audioRecordingCallback(void* userdata, Uint8* stream, int len)
+{
+	//Copy audio from stream
+	memcpy(&recordingBuffer[bufferByteMaxPosition], stream, len);
+
+	//Move along buffer
+	bufferByteMaxPosition += len;
 }
 
 int main(int argc, char* args[])
@@ -274,7 +283,7 @@ int main(int argc, char* args[])
 			fpsTimer.start();
 
 			//Moving Dot
-			Dot dot(20,20);
+			Dot dot(20, 20);
 
 			//Dot To Collide With
 			Dot collideDot(100, 100);
@@ -323,6 +332,7 @@ int main(int argc, char* args[])
 					{
 						quit = true;
 					}
+
 					//Key press events
 					else if (e.type == SDL_KEYDOWN)
 					{
@@ -596,7 +606,115 @@ int main(int argc, char* args[])
 						button[i].HandleEvent(&e);
 					}
 
+					//Do current state event handling
+					switch (currentState)
+					{
+						//User is selecting recording device
+					case SELECTING_DEVICE:
+						//On Key Press
+						if (e.type == SDL_KEYDOWN)
+						{
+							//Handle key press from 0 to 9
+							if (e.key.keysym.sym >= SDLK_0 && e.key.keysym.sym <= SDLK_9)
+							{
+								//Get selection index
+								int index = e.key.keysym.sym - SDLK_0;
+								//Index is valid
+								if (index < recordingDeviceCount)
+								{
+									//Default Audio Spec
+									SDL_AudioSpec desiredRecordingSpec;
+									SDL_zero(desiredRecordingSpec);
+									desiredRecordingSpec.freq = 44100;
+									desiredRecordingSpec.format = AUDIO_F32;
+									desiredRecordingSpec.samples = 4096;
+									desiredRecordingSpec.callback = audioRecordingCallback;
+
+									//Open recording device
+									recordingDeviceId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(index, SDL_TRUE), SDL_TRUE, &desiredRecordingSpec, &receivedRecordingSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+
+									//Device failed to open
+									if (recordingDeviceId == 0)
+									{
+										//Report Error
+										printf("Failed to open recording device! SDL Error: %s", SDL_GetError());
+										promptAudioTexture.LoadFromRenderededText("Failed to open recording device!", textColor, gFont2, startupStuff->renderer);
+										currentState = ERROR;
+									}
+									//Device Opened Successfully
+									else
+									{
+										//Default Audio Spec
+										SDL_AudioSpec desiredPlayabackSpec;
+										SDL_zero(desiredPlayabackSpec);
+										desiredPlayabackSpec.freq = 44100;
+										desiredPlayabackSpec.format = AUDIO_F32;
+										desiredPlayabackSpec.samples = 4096;
+										desiredPlayabackSpec.callback = audioPlaybackCallback;
+
+										//Open playback device
+										playbackDeviceId = SDL_OpenAudioDevice(NULL, SDL_FALSE, &desiredPlayabackSpec, &receivedPlaybackSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+
+										//Device Failed to open
+										if (playbackDeviceId == 0)
+										{
+											//Report Error
+											printf("Failed to open playback device! SDL Error: %s", SDL_GetError());
+											promptAudioTexture.LoadFromRenderededText("Failed to open playback device!", textColor, gFont2, startupStuff->renderer);
+											currentState = ERROR;
+										}
+										//Device Opened Successfully
+										else
+										{
+											//Calculate per sample bytes
+											int bytePerSample = receivedRecordingSpec.channels * (SDL_AUDIO_BITSIZE(receivedRecordingSpec.format) / 8);
+
+											//Calculate bytes per second
+											int bytesPerSecond = receivedRecordingSpec.freq * bytePerSample;
+
+											//Calculate buffer size
+											bufferByteSize = RECORDING_BUFFER_SECONDS * bytesPerSecond;
+
+											//Allocate and initialize byte buffer
+											recordingBuffer = new Uint8[bufferByteSize];
+											memset(recordingBuffer, 0, bufferByteSize);
+
+											//Go on to next state
+											promptAudioTexture.LoadFromRenderededText("Press 1 to record for 5 seconds.", textColor, gFont, startupStuff->renderer);
+											currentState = STOPPED;
+										}
+									}
+								}
+							}
+						}
+						break;
+
+						//User getting ready to record
+					case STOPPED:
+						if (e.type == SDL_KEYDOWN)
+						{
+							//Start Recording
+							if (e.key.keysym.sym == SDLK_1)
+							{
+								//Go back to beginning of buffer
+								bufferBytePosition = 0;
+
+								//Start recording
+								SDL_PauseAudioDevice(recordingDeviceId, SDL_FALSE);
+
+								//Go on to next state
+								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont, startupStuff->renderer);
+								currentState = RECORDING;
+							}
+						}
+						break;
+
+
+
+					}
+
 					dot.handleEvent(e);
+
 				}
 
 				//Set Texture based on current keyState
@@ -657,7 +775,7 @@ int main(int argc, char* args[])
 				timeText2.str("");
 				timeText2 << "Seconds since start time " << (timer.getTicks() / 1000.f);
 
-				if(!timerTextTexture2.LoadFromRenderededText(timeText2.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				if (!timerTextTexture2.LoadFromRenderededText(timeText2.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
 				{
 					printf("Unable to render time texture!\n");
 				}
@@ -672,7 +790,7 @@ int main(int argc, char* args[])
 				fpsText.str("");
 				fpsText << "Average Frames Per Second " << avgFPS;
 
-				if(!fpsTimer_Texture.LoadFromRenderededText(fpsText.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
+				if (!fpsTimer_Texture.LoadFromRenderededText(fpsText.str().c_str(), { 255, 0, 0 }, gFont2, startupStuff->renderer))
 				{
 					printf("Unable to render time texture!\n");
 				}
@@ -716,7 +834,7 @@ int main(int argc, char* args[])
 					falkeWall.x = 660;
 					falkeWall.x += camera.x;
 				}
-				if (camera.y >  SCREEN_HEIGHT_CAMERA - camera.h)
+				if (camera.y > SCREEN_HEIGHT_CAMERA - camera.h)
 				{
 					camera.y = SCREEN_HEIGHT_CAMERA - camera.h;
 					falkeWall.y = 500;
@@ -784,7 +902,7 @@ int main(int argc, char* args[])
 				scrollingBackground_Texture.Render(bgOffset, 580, 400, 140, startupStuff->renderer);
 				scrollingBackground_Texture.Render(bgOffset + 400, 580, 400, 140, startupStuff->renderer);
 				scrollingBackground_Texture.Render(bgOffset + 800, 580, 400, 140, startupStuff->renderer);
-				
+
 				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
 				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
 				timerTextTexture2.Render(5, 640, startupStuff->renderer, false);
