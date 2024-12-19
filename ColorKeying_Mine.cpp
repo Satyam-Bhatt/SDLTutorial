@@ -179,7 +179,7 @@ void close()
 void audioRecordingCallback(void* userdata, Uint8* stream, int len)
 {
 	//Copy audio from stream
-	memcpy(&recordingBuffer[bufferByteMaxPosition], stream, len);
+	memcpy(&recordingBuffer[bufferBytePosition], stream, len);
 
 	//Move along buffer
 	bufferByteMaxPosition += len;
@@ -262,6 +262,10 @@ int main(int argc, char* args[])
 			if (!startupStuff->LoadAudio(gFont2, { 255,0,255,255 }, recordingDeviceTexture, recordingDeviceCount))
 			{
 				printf("Failed to load audio device + Textures!\n");
+			}
+			if (!startupStuff->LoadText(gFont2, "22_timing/lazy.ttf", "Select Your recording Device:  ", { 255, 255, 0 }, 20, promptAudioTexture))
+			{
+				printf("Failed to render text texture!\n");
 			}
 #endif
 
@@ -644,6 +648,7 @@ int main(int argc, char* args[])
 							{
 								//Get selection index
 								int index = e.key.keysym.sym - SDLK_0;
+
 								//Index is valid
 								if (index < recordingDeviceCount)
 								{
@@ -652,6 +657,7 @@ int main(int argc, char* args[])
 									SDL_zero(desiredRecordingSpec);
 									desiredRecordingSpec.freq = 44100;
 									desiredRecordingSpec.format = AUDIO_F32;
+									desiredRecordingSpec.channels = 2;
 									desiredRecordingSpec.samples = 4096;
 									desiredRecordingSpec.callback = audioRecordingCallback;
 
@@ -674,6 +680,7 @@ int main(int argc, char* args[])
 										SDL_zero(desiredPlayabackSpec);
 										desiredPlayabackSpec.freq = 44100;
 										desiredPlayabackSpec.format = AUDIO_F32;
+										desiredPlayabackSpec.channels = 2;
 										desiredPlayabackSpec.samples = 4096;
 										desiredPlayabackSpec.callback = audioPlaybackCallback;
 
@@ -699,6 +706,9 @@ int main(int argc, char* args[])
 
 											//Calculate buffer size
 											bufferByteSize = RECORDING_BUFFER_SECONDS * bytesPerSecond;
+
+											//Calculate max buffer use
+											bufferByteMaxPosition = MAX_RECORDING_SECONDS * bytesPerSecond;
 
 											//Allocate and initialize byte buffer
 											recordingBuffer = new Uint8[bufferByteSize];
