@@ -182,7 +182,7 @@ void audioRecordingCallback(void* userdata, Uint8* stream, int len)
 	memcpy(&recordingBuffer[bufferBytePosition], stream, len);
 
 	//Move along buffer
-	bufferByteMaxPosition += len;
+	bufferBytePosition += len;
 }
 
 void audioPlaybackCallback(void* userdata, Uint8* stream, int len)
@@ -788,6 +788,8 @@ int main(int argc, char* args[])
 				{
 					//Look Callback
 					SDL_LockAudioDevice(recordingDeviceId);
+
+					printf("Recording...%d :: max::%d\n", bufferBytePosition, bufferByteMaxPosition);
 
 					//Finish Recording
 					if (bufferBytePosition > bufferByteMaxPosition)
