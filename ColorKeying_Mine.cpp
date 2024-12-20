@@ -715,7 +715,7 @@ int main(int argc, char* args[])
 											memset(recordingBuffer, 0, bufferByteSize);
 
 											//Go on to next state
-											promptAudioTexture.LoadFromRenderededText("Press 1 to record for 5 seconds.", textColor, gFont, startupStuff->renderer);
+											promptAudioTexture.LoadFromRenderededText("Press 1 to record for 5 seconds.", textColor, gFont2, startupStuff->renderer);
 											currentState = STOPPED;
 										}
 									}
@@ -738,7 +738,7 @@ int main(int argc, char* args[])
 								SDL_PauseAudioDevice(recordingDeviceId, SDL_FALSE);
 
 								//Go on to next state
-								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont, startupStuff->renderer);
+								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont2, startupStuff->renderer);
 								currentState = RECORDING;
 							}
 						}
@@ -760,7 +760,7 @@ int main(int argc, char* args[])
 								SDL_PauseAudioDevice(playbackDeviceId, SDL_FALSE);
 
 								//Go on to next state
-								promptAudioTexture.LoadFromRenderededText("Playing...", textColor, gFont, startupStuff->renderer);
+								promptAudioTexture.LoadFromRenderededText("Playing...", textColor, gFont2, startupStuff->renderer);
 								currentState = PLAYBACK;
 							}
 							//Record again
@@ -774,7 +774,7 @@ int main(int argc, char* args[])
 								SDL_PauseAudioDevice(recordingDeviceId, SDL_FALSE);
 
 								//Go on to next state
-								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont, startupStuff->renderer);
+								promptAudioTexture.LoadFromRenderededText("Recording...", textColor, gFont2, startupStuff->renderer);
 								currentState = RECORDING;
 							}
 						}
@@ -789,7 +789,7 @@ int main(int argc, char* args[])
 					//Look Callback
 					SDL_LockAudioDevice(recordingDeviceId);
 
-					printf("Recording...%d :: max::%d\n", bufferBytePosition, bufferByteMaxPosition);
+					//printf("Recording...%d :: max::%d\n", bufferBytePosition, bufferByteMaxPosition);
 
 					//Finish Recording
 					if (bufferBytePosition > bufferByteMaxPosition)
@@ -798,7 +798,7 @@ int main(int argc, char* args[])
 						SDL_PauseAudioDevice(recordingDeviceId, SDL_TRUE);
 
 						//Go on to next state
-						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont, startupStuff->renderer);
+						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont2, startupStuff->renderer);
 						currentState = RECORDED;
 					}
 
@@ -818,7 +818,7 @@ int main(int argc, char* args[])
 						SDL_PauseAudioDevice(playbackDeviceId, SDL_TRUE);
 
 						//Go on to next state
-						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont, startupStuff->renderer);
+						promptAudioTexture.LoadFromRenderededText("Press 1 to play. Press 2 to record again", textColor, gFont2, startupStuff->renderer);
 						currentState = RECORDED;
 					}
 
@@ -1037,17 +1037,17 @@ int main(int argc, char* args[])
 					dataTextures[i].Render(400, 500 + i * 20, startupStuff->renderer, false);
 				}
 
-				promptAudioTexture.Render(0, 0, startupStuff->renderer, false);
+				promptAudioTexture.Render(640, 345, startupStuff->renderer, false);
 
 				//User is selecting
 				if (currentState == SELECTING_DEVICE)
 				{
 					//Render Device Names
-					int yOffset = promptAudioTexture.GetHeight() * 2;
+					int yOffset = promptAudioTexture.GetHeight() * 2 + 350;
 
 					for (int i = 0; i < recordingDeviceCount; ++i)
 					{
-						recordingDeviceTexture[i].Render(0, yOffset, startupStuff->renderer, false);
+						recordingDeviceTexture[i].Render(640, yOffset, startupStuff->renderer, false);
 						yOffset += recordingDeviceTexture[i].GetHeight();
 					}
 				}
