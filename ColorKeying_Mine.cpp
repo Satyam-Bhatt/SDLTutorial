@@ -22,6 +22,7 @@
 // - Scrolling Background
 // - Enter Text
 // - Save and Load
+// - Audio Record and Playback
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -767,7 +768,7 @@ int main(int argc, char* args[])
 							if (e.key.keysym.sym == SDLK_2)
 							{
 								//Reset the buffer
-								bufferByteMaxPosition = 0;
+								bufferBytePosition = 0;
 								memset(recordingBuffer, 0, bufferByteSize);
 
 								//Start Recording
