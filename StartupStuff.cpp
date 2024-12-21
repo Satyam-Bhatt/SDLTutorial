@@ -5,6 +5,11 @@ StartupStuff::StartupStuff()
 {
 	window = NULL;
 	renderer = NULL;
+	keyboardFocus = false;
+	fullscreen = false;
+	minimized = false;
+	width = 0;
+	height = 0;
 }
 
 StartupStuff::~StartupStuff()
@@ -105,7 +110,7 @@ bool StartupStuff::init()
 		}
 
 		//Create window
-		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Satayam On Rise", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH + SCREEN_EXTENTION, SCREEN_HEIGHT + SCREEN_EXTENTION, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL Error %s\n", SDL_GetError());
@@ -113,6 +118,13 @@ bool StartupStuff::init()
 		}
 		else
 		{
+			//Resizable Window Tutorial
+			mouseFocus = true;
+			keyboardFocus = true;
+			width = SCREEN_WIDTH + SCREEN_EXTENTION;
+			height = SCREEN_HEIGHT + SCREEN_EXTENTION;
+			//-----
+
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL)
 			{
@@ -218,12 +230,12 @@ bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
 	int topB = b.y;
 	int bottomB = b.y + b.h;
 
-	if(bottomA <= topB)
+	if (bottomA <= topB)
 	{
 		return false;
 	}
 
-	if(topA >= bottomB)
+	if (topA >= bottomB)
 	{
 		return false;
 	}
@@ -342,7 +354,7 @@ double StartupStuff::distanceSquared(int x1, int y1, int x2, int y2)
 
 
 #ifdef SDL_TTF_MAJOR_VERSION
-bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)
+bool StartupStuff::LoadText(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine& texture)
 {
 	bool success = true;
 
@@ -363,7 +375,7 @@ bool StartupStuff::LoadText(TTF_Font * & gFont, std::string fontPath, std::strin
 
 	return success;
 }
-bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine* texture, 
+bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::string textureText, SDL_Color textColor, int fontSize, Texture_Mine* texture,
 	Sint32 data[TOTAL_DATA])
 {
 	bool success = true;
@@ -403,7 +415,7 @@ bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::st
 	{
 		//Load Data
 		printf("Reading file...!\n");
-		for(int i = 0; i < TOTAL_DATA; i++)
+		for (int i = 0; i < TOTAL_DATA; i++)
 		{
 			SDL_RWread(file, &data[i], sizeof(Sint32), 1);
 		}
@@ -432,7 +444,7 @@ bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine
 	recordingDeviceCount = SDL_GetNumAudioDevices(SDL_TRUE);
 
 	//No Recording Devices
-	if(recordingDeviceCount < 1)
+	if (recordingDeviceCount < 1)
 	{
 		printf("Unable to get audio capture device! SDL Error: %s\n", SDL_GetError());
 		success = false;
@@ -441,18 +453,18 @@ bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine
 	else
 	{
 		//Cap recording device count
-		if(recordingDeviceCount > MAX_RECORDING_DEVICES)
+		if (recordingDeviceCount > MAX_RECORDING_DEVICES)
 		{
 			recordingDeviceCount = MAX_RECORDING_DEVICES;
 		}
 
 		//Load device names
 		std::stringstream promptText;
-		for(int i = 0; i < recordingDeviceCount; i++)
+		for (int i = 0; i < recordingDeviceCount; i++)
 		{
 			//Get capture device name
 			promptText.str("");
-			promptText<<i<<": "<<SDL_GetAudioDeviceName(i, SDL_TRUE);
+			promptText << i << ": " << SDL_GetAudioDeviceName(i, SDL_TRUE);
 
 			//Set Texture
 			texture[i].LoadFromRenderededText(promptText.str().c_str(), textColor, gFont, renderer);
@@ -460,6 +472,74 @@ bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine
 	}
 
 	return success;
+}
+
+void StartupStuff::handleEvent(SDL_Event& e)
+{
+	if (e.type == SDL_WINDOWEVENT)
+	{
+		//Caption update flag
+		bool updateCaption = false;
+
+		switch (e.window.event)
+		{
+			//Get new dimensions and repaint on window size change
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+			width = e.window.data1;
+			height = e.window.data2;
+			SDL_RenderPresent(renderer);
+			break;
+
+			//Repaint on exposure
+		case SDL_WINDOWEVENT_EXPOSED:
+			SDL_RenderPresent(renderer);
+			break;
+
+			//Mouse Entered window
+		case SDL_WINDOWEVENT_ENTER:
+			mouseFocus = true;
+			updateCaption = true;
+			break;
+
+			//Mouse Left window
+		case SDL_WINDOWEVENT_LEAVE:
+			mouseFocus = false;
+			updateCaption = true;
+			break;
+
+			//Window has keyboard focus
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			keyboardFocus = true;
+			updateCaption = true;
+			break;
+
+			//Window lost keyboard focus
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+			keyboardFocus = false;
+			updateCaption = true;
+			break;
+
+			//Window minimized
+		case SDL_WINDOWEVENT_MINIMIZED:
+			minimized = true;
+			break;
+
+			//Window maximized
+		case SDL_WINDOWEVENT_MAXIMIZED:
+			minimized = false;
+			break;
+
+			//Window restored
+		case SDL_WINDOWEVENT_RESTORED:
+			minimized = false;
+			break;
+		}
+
+		if (updateCaption)
+		{
+			
+		}
+	}
 }
 
 #endif

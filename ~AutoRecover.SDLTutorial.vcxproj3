@@ -42,7 +42,15 @@
     <ClCompile Include="22_timing\22_timing.cpp" />
     <ClCompile Include="23_advanced_timers\23_advanced_timers.cpp" />
     <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp" />
+    <ClCompile Include="26_motion\26_motion.cpp" />
+    <ClCompile Include="29_circular_collision_detection\29_circular_collision_detection.cpp" />
+    <ClCompile Include="30_scrolling\30_scrolling.cpp" />
+    <ClCompile Include="31_scrolling_backgrounds\31_scrolling_backgrounds.cpp" />
+    <ClCompile Include="33_file_reading_and_writing\33_file_reading_and_writing.cpp" />
+    <ClCompile Include="34_audio_recording\34_audio_recording.cpp" />
+    <ClCompile Include="35_window_events\35_window_events.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
+    <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
@@ -53,6 +61,7 @@
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt" />
@@ -84,6 +93,7 @@
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="StartupStuff.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

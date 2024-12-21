@@ -45,7 +45,7 @@ Texture_Mine buttonSprite;
 Button button[TOTAL_BUTTONS];
 
 //Key State Textures
-Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture, dataTextures[TOTAL_DATA];
+Texture_Mine pressTexture, upTexture, downTexture, leftTexture, rightTexture, dataTextures[TOTAL_DATA], scene_Texture;
 
 //Music
 Mix_Music* music = NULL;
@@ -270,8 +270,6 @@ int main(int argc, char* args[])
 				printf("Failed to render text texture!\n");
 			}
 #endif
-
-			startupStuff2->init();
 
 			bool quit = false;
 			SDL_Event e;
