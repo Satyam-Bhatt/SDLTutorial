@@ -65,5 +65,32 @@ public:
 
 #endif
 
+	//Creates renderer from internal window
+	SDL_Renderer* createRenderer();
+
+	//Handle window events
+	void handleEvent(SDL_Event& e);
+
+	//Window dimensions
+	int getWidth();
+	int getHeight();
+
+	//Window focus
+	bool hasMouseFocus();
+	bool hasKeyboardFocus();
+	bool isMinimized();
+
+private:
+
+	//Window Dimesions
+	int width;
+	int height;
+
+	//Window Focus
+	bool mouseFocus;
+	bool keyboardFocus;
+	bool minimized;
+	bool fullscreen;
+
 };
 

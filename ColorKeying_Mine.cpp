@@ -33,6 +33,7 @@
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
+StartupStuff* startupStuff2 = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
@@ -269,6 +270,8 @@ int main(int argc, char* args[])
 				printf("Failed to render text texture!\n");
 			}
 #endif
+
+			startupStuff2->init();
 
 			bool quit = false;
 			SDL_Event e;
