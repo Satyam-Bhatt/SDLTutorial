@@ -65,9 +65,6 @@ public:
 
 #endif
 
-	//Creates renderer from internal window
-	SDL_Renderer* createRenderer();
-
 	//Handle window events
 	void handleEvent(SDL_Event& e);
 

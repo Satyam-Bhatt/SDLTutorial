@@ -33,7 +33,6 @@
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
-StartupStuff* startupStuff2 = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
@@ -782,7 +781,10 @@ int main(int argc, char* args[])
 						}
 						break;
 					}
+
 					dot.handleEvent(e);
+
+					startupStuff->handleEvent(e);
 				}
 
 				//Updating recording
@@ -952,111 +954,114 @@ int main(int argc, char* args[])
 					falkeWall.y += camera.y;
 				}
 
-				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
-				SDL_RenderClear(startupStuff->renderer);
+				//Only draw if window is not minimized
+				if (!startupStuff->isMinimized())
+				{
+					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
+					SDL_RenderClear(startupStuff->renderer);
 
-				background_Texture.Render(0, 0, startupStuff->renderer, &camera);
+					background_Texture.Render(0, 0, startupStuff->renderer, &camera);
+					audio_Texture.RenderRotate(640, SCREEN_HEIGHT / 2 - audio_Texture.GetHeight() / 6, 3, startupStuff->renderer);
 
-				audio_Texture.RenderRotate(640, SCREEN_HEIGHT / 2 - audio_Texture.GetHeight() / 6, 3, startupStuff->renderer);
+					texture_2.Render(0, 0, startupStuff->renderer, false);
+					texture_1.Render(420, 200, startupStuff->renderer, false);
 
-				texture_2.Render(0, 0, startupStuff->renderer, false);
-				texture_1.Render(420, 200, startupStuff->renderer, false);
+					texture_3.Render(SCREEN_WIDTH / 2 - texture_3.GetWidth() / 2, SCREEN_HEIGHT / 2 - texture_3.GetHeight() / 2, startupStuff->renderer, false);
 
-				texture_3.Render(SCREEN_WIDTH / 2 - texture_3.GetWidth() / 2, SCREEN_HEIGHT / 2 - texture_3.GetHeight() / 2, startupStuff->renderer, false);
+					texture_3.Render(0, 0, startupStuff->renderer, &texture_3.clipRects[0]);
+					texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[1].w, 0, startupStuff->renderer, &texture_3.clipRects[1]);
+					texture_3.Render(0, SCREEN_HEIGHT - texture_3.clipRects[2].h, startupStuff->renderer, &texture_3.clipRects[2]);
+					texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[3].w, SCREEN_HEIGHT - texture_3.clipRects[3].h, startupStuff->renderer, &texture_3.clipRects[3]);
 
-				texture_3.Render(0, 0, startupStuff->renderer, &texture_3.clipRects[0]);
-				texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[1].w, 0, startupStuff->renderer, &texture_3.clipRects[1]);
-				texture_3.Render(0, SCREEN_HEIGHT - texture_3.clipRects[2].h, startupStuff->renderer, &texture_3.clipRects[2]);
-				texture_3.Render(SCREEN_WIDTH - texture_3.clipRects[3].w, SCREEN_HEIGHT - texture_3.clipRects[3].h, startupStuff->renderer, &texture_3.clipRects[3]);
+					texture_4.SetColor(r, g, b);
+					texture_4.Render(SCREEN_WIDTH / 2 - 50, 0, 100, 100, startupStuff->renderer);
 
-				texture_4.SetColor(r, g, b);
-				texture_4.Render(SCREEN_WIDTH / 2 - 50, 0, 100, 100, startupStuff->renderer);
+					texture_5.SetAlpha(a);
+					texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
 
-				texture_5.SetAlpha(a);
-				texture_5.Render(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 100, 120, 100, startupStuff->renderer);
+					texture_animated.Render(100, 120, startupStuff->renderer, &texture_animated.animatedRects[frame / 16]);
 
-				texture_animated.Render(100, 120, startupStuff->renderer, &texture_animated.animatedRects[frame / 16]);
-
-				texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
+					texture_rotated.RenderRotate(500, 250, 3, startupStuff->renderer, NULL, degrees, NULL, flipType);
 
 #ifdef  SDL_TTF_MAJOR_VERSION
 
-				texture_text.Render(150, 150, startupStuff->renderer, false);
+					texture_text.Render(150, 150, startupStuff->renderer, false);
 
 #endif
-				for (int i = 0; i < TOTAL_BUTTONS; i++)
-				{
-					button[i].Render(&buttonSprite, startupStuff->renderer);
-				}
-
-				currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
-
-				// conversion Radians to degree
-				double joystickAngle = atan2(yDir, xDir) * 180 / M_PI;
-
-				if (xDir == 0 && yDir == 0)
-				{
-					joystickAngle = 0;
-				}
-
-				joystick_Texture.RenderRotate(0, 250, 3, startupStuff->renderer, NULL, joystickAngle);
-
-				prompt_Texture.Render(600, 0, startupStuff->renderer, false);
-				timeTextTexture.Render(500, 20, startupStuff->renderer, false);
-
-				--bgOffset;
-				if (bgOffset < -400)
-				{
-					bgOffset = 0;
-				}
-
-				scrollingBackground_Texture.Render(bgOffset, 580, 400, 140, startupStuff->renderer);
-				scrollingBackground_Texture.Render(bgOffset + 400, 580, 400, 140, startupStuff->renderer);
-				scrollingBackground_Texture.Render(bgOffset + 800, 580, 400, 140, startupStuff->renderer);
-
-				start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
-				pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
-				timerTextTexture2.Render(5, 640, startupStuff->renderer, false);
-
-				fpsTimer_Texture.Render(5, 685, startupStuff->renderer, false);
-
-				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 0, 100, 255);
-				SDL_RenderFillRect(startupStuff->renderer, &wall);
-
-				collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
-
-				//dot.render(dotTexture, startupStuff->renderer);
-				//collideDot.render(dotTexture, startupStuff->renderer);
-
-				//dot.renderCicle(dotTexture, startupStuff->renderer);
-				dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
-				collideDot.renderCicle(dotTexture, startupStuff->renderer);
-
-				inputText_Texture.Render(20, 550, startupStuff->renderer, false);
-
-				for (int i = 0; i < TOTAL_DATA; ++i)
-				{
-					dataTextures[i].Render(400, 500 + i * 20, startupStuff->renderer, false);
-				}
-
-				promptAudioTexture.Render(640, 345, startupStuff->renderer, false);
-
-				//User is selecting
-				if (currentState == SELECTING_DEVICE)
-				{
-					//Render Device Names
-					int yOffset = promptAudioTexture.GetHeight() * 2 + 350;
-
-					for (int i = 0; i < recordingDeviceCount; ++i)
+					for (int i = 0; i < TOTAL_BUTTONS; i++)
 					{
-						recordingDeviceTexture[i].Render(640, yOffset, startupStuff->renderer, false);
-						yOffset += recordingDeviceTexture[i].GetHeight();
+						button[i].Render(&buttonSprite, startupStuff->renderer);
 					}
+
+					currentTexture->RenderRotate(375, 0, 4, startupStuff->renderer);
+
+					// conversion Radians to degree
+					double joystickAngle = atan2(yDir, xDir) * 180 / M_PI;
+
+					if (xDir == 0 && yDir == 0)
+					{
+						joystickAngle = 0;
+					}
+
+					joystick_Texture.RenderRotate(0, 250, 3, startupStuff->renderer, NULL, joystickAngle);
+
+					prompt_Texture.Render(600, 0, startupStuff->renderer, false);
+					timeTextTexture.Render(500, 20, startupStuff->renderer, false);
+
+					--bgOffset;
+					if (bgOffset < -400)
+					{
+						bgOffset = 0;
+					}
+
+					scrollingBackground_Texture.Render(bgOffset, 580, 400, 140, startupStuff->renderer);
+					scrollingBackground_Texture.Render(bgOffset + 400, 580, 400, 140, startupStuff->renderer);
+					scrollingBackground_Texture.Render(bgOffset + 800, 580, 400, 140, startupStuff->renderer);
+
+					start_PromptTexture.Render(0, 600, startupStuff->renderer, false);
+					pause_PromptTexture.Render(0, 620, startupStuff->renderer, false);
+					timerTextTexture2.Render(5, 640, startupStuff->renderer, false);
+
+					fpsTimer_Texture.Render(5, 685, startupStuff->renderer, false);
+
+					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 0, 100, 255);
+					SDL_RenderFillRect(startupStuff->renderer, &wall);
+
+					collidePrompt_Texture.Render(670, 550, startupStuff->renderer, false);
+
+					//dot.render(dotTexture, startupStuff->renderer);
+					//collideDot.render(dotTexture, startupStuff->renderer);
+
+					//dot.renderCicle(dotTexture, startupStuff->renderer);
+					dot.renderCicleWithCamera(camera.x, camera.y, dotTexture, startupStuff->renderer);
+					collideDot.renderCicle(dotTexture, startupStuff->renderer);
+
+					inputText_Texture.Render(20, 550, startupStuff->renderer, false);
+
+					for (int i = 0; i < TOTAL_DATA; ++i)
+					{
+						dataTextures[i].Render(400, 500 + i * 20, startupStuff->renderer, false);
+					}
+
+					promptAudioTexture.Render(640, 345, startupStuff->renderer, false);
+
+					//User is selecting
+					if (currentState == SELECTING_DEVICE)
+					{
+						//Render Device Names
+						int yOffset = promptAudioTexture.GetHeight() * 2 + 350;
+
+						for (int i = 0; i < recordingDeviceCount; ++i)
+						{
+							recordingDeviceTexture[i].Render(640, yOffset, startupStuff->renderer, false);
+							yOffset += recordingDeviceTexture[i].GetHeight();
+						}
+					}
+
+					SDL_RenderPresent(startupStuff->renderer);
 				}
-
-				SDL_RenderPresent(startupStuff->renderer);
+				
 				++countedFrames;
-
 				frame++;
 				if (frame / 16 > 3)
 				{

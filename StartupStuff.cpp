@@ -33,6 +33,13 @@ void StartupStuff::Free()
 	joyStick = NULL;
 	window = NULL;
 	renderer = NULL;
+
+	mouseFocus = false;
+	keyboardFocus = false;
+	fullscreen = false;
+	minimized = false;
+	width = 0;
+	height = 0;
 }
 
 bool StartupStuff::init()
@@ -435,6 +442,7 @@ bool StartupStuff::LoadText_Save(TTF_Font*& gFont, std::string fontPath, std::st
 
 	return success;
 }
+#endif
 
 bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine* texture, int& recordingDeviceCount)
 {
@@ -537,9 +545,50 @@ void StartupStuff::handleEvent(SDL_Event& e)
 
 		if (updateCaption)
 		{
-			
+			std::stringstream caption;
+			caption << "SDL Tutorial - MouseFocus: " << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus: " << ((keyboardFocus) ? "On" : "Off");
+			SDL_SetWindowTitle(window, caption.str().c_str());
+		}
+	}
+	//Enter and exit full screen on return key
+	else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN)
+	{
+		if (fullscreen)
+		{
+			SDL_SetWindowFullscreen(window, 0);
+			fullscreen = false;
+		}
+		else
+		{
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+			fullscreen = true;
+			minimized = false;
 		}
 	}
 }
 
-#endif
+int StartupStuff::getWidth()
+{
+	return width;
+}
+
+int StartupStuff::getHeight()
+{
+	return height;
+}
+
+bool StartupStuff::hasMouseFocus()
+{
+	return mouseFocus;
+}
+
+bool StartupStuff::hasKeyboardFocus()
+{
+	return keyboardFocus;
+}
+
+bool StartupStuff::isMinimized()
+{
+	return minimized;
+}
+
