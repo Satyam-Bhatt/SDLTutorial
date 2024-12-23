@@ -23,6 +23,7 @@
 // - Enter Text
 // - Save and Load
 // - Audio Record and Playback
+// - Window Events
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -33,6 +34,7 @@
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
+StartupStuff startupStuff2[TOTAL_WINDOWS];
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
@@ -170,6 +172,12 @@ void close()
 	startupStuff->Free();
 	delete startupStuff;
 	startupStuff = nullptr;
+
+	//Destroy Startup
+	for (int i = 0; i < TOTAL_WINDOWS; i++)
+	{
+		startupStuff2[i].Free();
+	}
 
 	TTF_Quit();
 	IMG_Quit();
@@ -352,6 +360,12 @@ int main(int argc, char* args[])
 			SDL_AudioDeviceID recordingDeviceId = 0;
 			SDL_AudioDeviceID playbackDeviceId = 0;
 
+			//Initialize the rest of the windows
+			for (int i = 0; i < TOTAL_WINDOWS; ++i)
+			{
+				startupStuff2[i].init();
+			}
+
 			while (!quit)
 			{
 				bool renderText = false;
@@ -529,6 +543,18 @@ int main(int argc, char* args[])
 						case SDLK_RIGHT:
 							++gData[currentData];
 							dataTextures[currentData].LoadFromRenderededText(std::to_string(gData[currentData]), highlightColor, gFont2, startupStuff->renderer);
+							break;
+
+						case SDLK_z:
+							startupStuff2[0].focus();
+							break;
+
+						case SDLK_x:
+							startupStuff2[1].focus();
+							break;
+
+						case SDLK_c:
+							startupStuff2[2].focus();
 							break;
 						}
 
@@ -785,6 +811,11 @@ int main(int argc, char* args[])
 					dot.handleEvent(e);
 
 					startupStuff->handleEvent(e);
+
+					for (int i = 0; i < TOTAL_WINDOWS; ++i)
+					{
+						startupStuff2[i].handleEvent(e);
+					}
 				}
 
 				//Updating recording
@@ -1058,6 +1089,12 @@ int main(int argc, char* args[])
 						}
 					}
 
+					//Update all windows
+					for (int i = 0; i < TOTAL_WINDOWS; ++i)
+					{
+						startupStuff2[i].render();
+					}
+
 					SDL_RenderPresent(startupStuff->renderer);
 				}
 				
@@ -1066,6 +1103,23 @@ int main(int argc, char* args[])
 				if (frame / 16 > 3)
 				{
 					frame = 0;
+				}
+
+				//Check all windows
+				bool allWindowsClosed = true;
+
+				for (int i = 0; i < TOTAL_WINDOWS; ++i)
+				{
+					if (startupStuff2[i].isShown())
+					{
+						allWindowsClosed = false;
+						break;
+					}
+				}
+
+				if (allWindowsClosed)
+				{
+					quit = false;
 				}
 			}
 		}

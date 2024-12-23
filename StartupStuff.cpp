@@ -142,6 +142,9 @@ bool StartupStuff::init()
 			{
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+				windowID = SDL_GetWindowID(window);
+				shown = true;
+
 				//Initialize Image loading
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags))
@@ -491,6 +494,16 @@ void StartupStuff::handleEvent(SDL_Event& e)
 
 		switch (e.window.event)
 		{
+			//Window appeared
+		case SDL_WINDOWEVENT_SHOWN:
+			shown = true;
+			break;
+
+			//Window disappeared
+		case SDL_WINDOWEVENT_HIDDEN:
+			shown = false;
+			break;
+
 			//Get new dimensions and repaint on window size change
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
 			width = e.window.data1;
@@ -541,17 +554,22 @@ void StartupStuff::handleEvent(SDL_Event& e)
 		case SDL_WINDOWEVENT_RESTORED:
 			minimized = false;
 			break;
+
+		//Hide on close
+		case SDL_WINDOWEVENT_CLOSE:
+			SDL_HideWindow(window);
+			break;
 		}
 
 		if (updateCaption)
 		{
 			std::stringstream caption;
-			caption << "SDL Tutorial - MouseFocus: " << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus: " << ((keyboardFocus) ? "On" : "Off");
+			caption << "SDL Tutorial - MouseFocus: " << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus: " << ((keyboardFocus) ? "On" : "Off") << " Shown: " << ((shown) ? "On" : "Off");
 			SDL_SetWindowTitle(window, caption.str().c_str());
 		}
 	}
 	//Enter and exit full screen on return key
-	else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN)
+	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN)
 	{
 		if (fullscreen)
 		{
@@ -590,5 +608,33 @@ bool StartupStuff::hasKeyboardFocus()
 bool StartupStuff::isMinimized()
 {
 	return minimized;
+}
+
+void StartupStuff::focus()
+{
+	//Restore window if needed
+	if(!shown)
+		SDL_ShowWindow(window);
+
+	//Move window forward
+	SDL_RaiseWindow(window);
+}
+
+void StartupStuff::render()
+{
+	if (!minimized)
+	{
+		//Clear screen
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(renderer);
+
+		//Update screen
+		SDL_RenderPresent(renderer);
+	}
+}
+
+bool StartupStuff::isShown()
+{
+	return shown;
 }
 

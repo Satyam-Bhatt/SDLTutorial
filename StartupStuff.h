@@ -76,18 +76,28 @@ public:
 	bool hasMouseFocus();
 	bool hasKeyboardFocus();
 	bool isMinimized();
+	
+	// Focuses on window
+	void focus();
+
+	// Shows windows contents
+	void render();
+
+	bool isShown();
 
 private:
 
 	//Window Dimesions
 	int width;
 	int height;
+	int windowID;
 
 	//Window Focus
 	bool mouseFocus;
 	bool keyboardFocus;
 	bool minimized;
 	bool fullscreen;
+	bool shown;
 
 };
 

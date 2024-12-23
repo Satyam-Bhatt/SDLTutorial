@@ -46,3 +46,6 @@ enum RecordingState
     PLAYBACK,
     ERROR
 };
+
+//Total windows
+const int TOTAL_WINDOWS = 3;
