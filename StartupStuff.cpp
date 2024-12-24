@@ -170,14 +170,11 @@ bool StartupStuff::init()
 
 				//Get the bounds of the display
 				int displayCount = SDL_GetNumVideoDisplays();
-				printf("Display count: %d\n", displayCount);
 				displayBounds.resize(displayCount);
-				//displayBounds[displayCount];
 
 				for (int i = 0; i < displayCount; i++)
 				{
 					SDL_GetDisplayBounds(i, &displayBounds[i]);
-					printf("Display %d bounds: %d %d %d %d\n", i, displayBounds[i].x, displayBounds[i].y, displayBounds[i].w, displayBounds[i].h);
 				}
 			}
 		}
@@ -609,7 +606,7 @@ void StartupStuff::handleDisplaySwitchAndEvents(SDL_Event& e)
 {
 	bool updateCaption = false;
 
-	if (e.type = SDL_KEYDOWN)
+	if (e.type == SDL_KEYDOWN)
 	{
 		//Display change flag
 		bool switchDisplay = false;

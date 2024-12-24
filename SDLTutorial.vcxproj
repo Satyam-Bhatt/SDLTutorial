@@ -49,6 +49,7 @@
     <ClCompile Include="33_file_reading_and_writing\33_file_reading_and_writing.cpp" />
     <ClCompile Include="34_audio_recording\34_audio_recording.cpp" />
     <ClCompile Include="35_window_events\35_window_events.cpp" />
+    <ClCompile Include="37_multiple_displays\37_multiple_displays.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />

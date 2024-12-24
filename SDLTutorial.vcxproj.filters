@@ -144,6 +144,9 @@
     <ClCompile Include="35_window_events\35_window_events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="37_multiple_displays\37_multiple_displays.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
