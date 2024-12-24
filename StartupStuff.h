@@ -68,6 +68,9 @@ public:
 	//Handle window events
 	void handleEvent(SDL_Event& e);
 
+	//Handle Display Switch
+	void handleDisplaySwitchAndEvents(SDL_Event & e);
+
 	//Window dimensions
 	int getWidth();
 	int getHeight();
@@ -91,6 +94,7 @@ private:
 	int width;
 	int height;
 	int windowID;
+	int windowDisplayID;
 
 	//Window Focus
 	bool mouseFocus;
@@ -98,6 +102,8 @@ private:
 	bool minimized;
 	bool fullscreen;
 	bool shown;
+
+	std::vector<SDL_Rect> displayBounds;
 
 };
 

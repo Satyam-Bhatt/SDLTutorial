@@ -143,6 +143,7 @@ bool StartupStuff::init()
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 				windowID = SDL_GetWindowID(window);
+				windowDisplayID = SDL_GetWindowDisplayIndex(window);
 				shown = true;
 
 				//Initialize Image loading
@@ -165,6 +166,18 @@ bool StartupStuff::init()
 				{
 					printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 					success = false;
+				}
+
+				//Get the bounds of the display
+				int displayCount = SDL_GetNumVideoDisplays();
+				printf("Display count: %d\n", displayCount);
+				displayBounds.resize(displayCount);
+				//displayBounds[displayCount];
+
+				for (int i = 0; i < displayCount; i++)
+				{
+					SDL_GetDisplayBounds(i, &displayBounds[i]);
+					printf("Display %d bounds: %d %d %d %d\n", i, displayBounds[i].x, displayBounds[i].y, displayBounds[i].w, displayBounds[i].h);
 				}
 			}
 		}
@@ -487,13 +500,20 @@ bool StartupStuff::LoadAudio(TTF_Font*& gFont, SDL_Color textColor, Texture_Mine
 
 void StartupStuff::handleEvent(SDL_Event& e)
 {
-	if (e.type == SDL_WINDOWEVENT)
+	//Caption update flag
+	bool updateCaption = false;
+
+	if (e.type == SDL_WINDOWEVENT && e.window.windowID == windowID)
 	{
-		//Caption update flag
-		bool updateCaption = false;
 
 		switch (e.window.event)
 		{
+			//Window Moved
+		case SDL_WINDOWEVENT_MOVED:
+			windowDisplayID = SDL_GetWindowDisplayIndex(window);
+			updateCaption = true;
+			break;
+
 			//Window appeared
 		case SDL_WINDOWEVENT_SHOWN:
 			shown = true;
@@ -555,17 +575,10 @@ void StartupStuff::handleEvent(SDL_Event& e)
 			minimized = false;
 			break;
 
-		//Hide on close
+			//Hide on close
 		case SDL_WINDOWEVENT_CLOSE:
 			SDL_HideWindow(window);
 			break;
-		}
-
-		if (updateCaption)
-		{
-			std::stringstream caption;
-			caption << "SDL Tutorial - MouseFocus: " << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus: " << ((keyboardFocus) ? "On" : "Off") << " Shown: " << ((shown) ? "On" : "Off");
-			SDL_SetWindowTitle(window, caption.str().c_str());
 		}
 	}
 	//Enter and exit full screen on return key
@@ -581,6 +594,65 @@ void StartupStuff::handleEvent(SDL_Event& e)
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 			fullscreen = true;
 			minimized = false;
+		}
+	}
+
+	if (updateCaption)
+	{
+		std::stringstream caption;
+		caption << "SDL Tutorial - ID: " << windowID << " Display: " << windowDisplayID << " MouseFocus:" << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus:" << ((keyboardFocus) ? "On" : "Off");
+		SDL_SetWindowTitle(window, caption.str().c_str());
+	}
+}
+
+void StartupStuff::handleDisplaySwitchAndEvents(SDL_Event& e)
+{
+	bool updateCaption = false;
+
+	if (e.type = SDL_KEYDOWN)
+	{
+		//Display change flag
+		bool switchDisplay = false;
+
+		//Cycle through displays on up/down
+		switch (e.key.keysym.sym)
+		{
+		case SDLK_b:
+			++windowDisplayID;
+			switchDisplay = true;
+			break;
+
+		case SDLK_v:
+			--windowDisplayID;
+			switchDisplay = true;
+			break;
+		}
+
+		//Display needs to be updated
+		if (switchDisplay)
+		{
+			//Bound display index
+			if (windowDisplayID < 0)
+			{
+				windowDisplayID = SDL_GetNumVideoDisplays() - 1;
+			}
+			else if (windowDisplayID >= SDL_GetNumVideoDisplays())
+			{
+				windowDisplayID = 0;
+			}
+
+			//Move window to center of next display
+			SDL_SetWindowPosition(window, displayBounds[windowDisplayID].x + (displayBounds[windowDisplayID].w - width) / 2, displayBounds[windowDisplayID].y + (displayBounds[windowDisplayID].h - height) / 2);
+			updateCaption = true;
+
+		}
+
+		//Update window caption with new data
+		if (updateCaption)
+		{
+			std::stringstream caption;
+			caption << "SDL Tutorial - ID: " << windowID << " Display: " << windowDisplayID << " MouseFocus:" << ((mouseFocus) ? "On" : "Off") << " KeyboardFocus:" << ((keyboardFocus) ? "On" : "Off");
+			SDL_SetWindowTitle(window, caption.str().c_str());
 		}
 	}
 }
@@ -613,7 +685,7 @@ bool StartupStuff::isMinimized()
 void StartupStuff::focus()
 {
 	//Restore window if needed
-	if(!shown)
+	if (!shown)
 		SDL_ShowWindow(window);
 
 	//Move window forward

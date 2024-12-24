@@ -48,4 +48,4 @@ enum RecordingState
 };
 
 //Total windows
-const int TOTAL_WINDOWS = 3;
+const int TOTAL_WINDOWS = 1;

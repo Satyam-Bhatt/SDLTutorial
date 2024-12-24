@@ -86,6 +86,13 @@ Uint32 bufferBytePosition = 0;
 //Maximum position in data buffer for recording
 Uint32 bufferByteMaxPosition = 0;
 
+//New Window
+StartupStuff startupStuff3;
+
+ //Display Data
+int totalDisplays = 0;
+SDL_Rect* displayBounds = NULL;
+
 void close()
 {
 	//open data for writing
@@ -178,6 +185,8 @@ void close()
 	{
 		startupStuff2[i].Free();
 	}
+
+	startupStuff3.Free();
 
 	TTF_Quit();
 	IMG_Quit();
@@ -365,6 +374,8 @@ int main(int argc, char* args[])
 			{
 				startupStuff2[i].init();
 			}
+
+			startupStuff3.init();
 
 			while (!quit)
 			{
@@ -816,6 +827,8 @@ int main(int argc, char* args[])
 					{
 						startupStuff2[i].handleEvent(e);
 					}
+					startupStuff3.handleEvent(e);
+					startupStuff3.handleDisplaySwitchAndEvents(e);
 				}
 
 				//Updating recording
@@ -1094,6 +1107,7 @@ int main(int argc, char* args[])
 					{
 						startupStuff2[i].render();
 					}
+					startupStuff3.render();
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}
@@ -1119,7 +1133,7 @@ int main(int argc, char* args[])
 
 				if (allWindowsClosed)
 				{
-					quit = false;
+					quit = true;
 				}
 			}
 		}
