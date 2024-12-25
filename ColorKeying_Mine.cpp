@@ -24,6 +24,8 @@
 // - Save and Load
 // - Audio Record and Playback
 // - Window Events
+// - Window can be moved to different displays
+// - Particle System
 
 #include "ColorKeying_Mine/Texture_Mine.h"
 #include "ColorKeying_Mine/CommonVariables.h"
@@ -89,9 +91,9 @@ Uint32 bufferByteMaxPosition = 0;
 //New Window
 StartupStuff startupStuff3;
 
- //Display Data
-int totalDisplays = 0;
-SDL_Rect* displayBounds = NULL;
+//Particle Textures
+Texture_Mine colorTexture[3];
+Texture_Mine shimmerTexture, redTexture;
 
 void close()
 {
@@ -242,7 +244,12 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(audio_Texture, "21_sound_effects_and_music/prompt.png")
 			|| !startupStuff->LoadMedia(dotTexture, "26_motion/dot.bmp")
 			|| !startupStuff->LoadMedia(background_Texture, "30_scrolling/bg.png")
-			|| !startupStuff->LoadMedia(scrollingBackground_Texture, "31_scrolling_backgrounds/bg.png"))
+			|| !startupStuff->LoadMedia(scrollingBackground_Texture, "31_scrolling_backgrounds/bg.png")
+			|| !startupStuff->LoadMedia(colorTexture[0], "38_particle_engines/red.bmp")
+			|| !startupStuff->LoadMedia(colorTexture[1], "38_particle_engines/green.bmp")
+			|| !startupStuff->LoadMedia(colorTexture[2], "38_particle_engines/blue.bmp")
+			|| !startupStuff->LoadMedia(shimmerTexture, "38_particle_engines/shimmer.bmp")
+			|| !startupStuff->LoadMedia(redTexture, "38_particle_engines/red.bmp"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -376,6 +383,16 @@ int main(int argc, char* args[])
 			}
 
 			startupStuff3.init();
+
+			//particle
+			colorTexture[0].SetAlpha(192);
+			colorTexture[1].SetAlpha(192);
+			colorTexture[2].SetAlpha(192);
+			shimmerTexture.SetAlpha(192);
+			
+			Texture_Mine* pointerToColorTextures = colorTexture;
+
+			dot.renderParticles_Mine(pointerToColorTextures, shimmerTexture);
 
 			while (!quit)
 			{
@@ -1108,6 +1125,8 @@ int main(int argc, char* args[])
 						startupStuff2[i].render();
 					}
 					startupStuff3.render();
+
+					dot.renderParticles(camera.x, camera.y, pointerToColorTextures, shimmerTexture, startupStuff->renderer);
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}

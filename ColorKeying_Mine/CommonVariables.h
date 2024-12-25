@@ -39,13 +39,16 @@ const int RECORDING_BUFFER_SECONDS = MAX_RECORDING_SECONDS + 1;
 //The various recording actions we can take
 enum RecordingState
 {
-    SELECTING_DEVICE,
-    STOPPED,
-    RECORDING,
-    RECORDED,
-    PLAYBACK,
-    ERROR
+	SELECTING_DEVICE,
+	STOPPED,
+	RECORDING,
+	RECORDED,
+	PLAYBACK,
+	ERROR
 };
 
 //Total windows
 const int TOTAL_WINDOWS = 1;
+
+//Particle Count
+const int TOTAL_PARTICLES = 20;

@@ -68,8 +68,6 @@ public:
 	//Handle window events
 	void handleEvent(SDL_Event& e);
 
-	//Handle Display Switch
-	void handleDisplaySwitchAndEvents(SDL_Event & e);
 
 	//Window dimensions
 	int getWidth();
@@ -87,6 +85,9 @@ public:
 	void render();
 
 	bool isShown();
+
+	//Handle Display Switch
+	void handleDisplaySwitchAndEvents(SDL_Event & e);
 
 private:
 

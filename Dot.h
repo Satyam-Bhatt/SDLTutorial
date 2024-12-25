@@ -4,6 +4,8 @@
 #include "StartupStuff.h"
 #include <vector>
 #include "Circle.h"
+#include "Particle.h"
+#include "ColorKeying_Mine/CommonVariables.h"
 #pragma once
 
 class Dot
@@ -15,6 +17,8 @@ public:
 	static const int DOT_VEL = 2;
 
 	Dot(int x, int y);
+
+	~Dot();
 
 	void handleEvent(SDL_Event& e);
 	void move(SDL_Rect& wall);	
@@ -37,11 +41,20 @@ public:
 	// Shows the dot on the screen relative to the camera
 	void renderCicleWithCamera(int camX, int camY ,Texture_Mine& dotTexture, SDL_Renderer* renderer);
 
+	//Render Particles
+	void renderParticles_Mine(Texture_Mine *& t, Texture_Mine & s);
+
+	//Show the particles
+	void renderParticles(int camX, int camY, Texture_Mine *& t, Texture_Mine& s, SDL_Renderer* renderer);
+
 	//Position Accessors
 	int getPosX();
 	int getPosY();
 
 private:
+	//The particles
+	Particle* particles[TOTAL_PARTICLES];
+
 	int posX, posY;
 
 	int velX, velY;

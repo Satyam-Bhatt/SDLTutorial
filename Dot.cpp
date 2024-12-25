@@ -54,6 +54,15 @@ Dot::Dot(int x, int y)
 	collider.h = DOT_HEIGHT;
 }
 
+Dot::~Dot()
+{
+	//Delete particles
+	for(int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		delete particles[i];
+	}
+}
+
 void Dot::handleEvent(SDL_Event& e)
 {
 	if (e.type == SDL_KEYDOWN)
@@ -227,6 +236,35 @@ int Dot::getPosX()
 int Dot::getPosY()
 {
 	return posY;
+}
+
+void Dot::renderParticles_Mine(Texture_Mine *& t, Texture_Mine& s)
+{
+	//Initialize particles
+	for(int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		particles[i] = new Particle(posX , posY , t, s);
+	}
+}
+
+void Dot::renderParticles(int camX, int camY, Texture_Mine *& t, Texture_Mine& s, SDL_Renderer* renderer)
+{
+	//Go through particles
+	for(int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		//Delete and replace particle
+		if (particles[i]->isDead())
+		{
+			delete particles[i];
+			particles[i] = new Particle(posX - camX, posY - camY, t, s);
+		}
+	}
+
+	//Show particles
+	for(int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		particles[i]->render(renderer);
+	}
 }
 
 
