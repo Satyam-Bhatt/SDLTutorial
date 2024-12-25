@@ -93,7 +93,7 @@ StartupStuff startupStuff3;
 
 //Particle Textures
 Texture_Mine colorTexture[3];
-Texture_Mine shimmerTexture, redTexture;
+Texture_Mine shimmerTexture;
 
 void close()
 {
@@ -143,6 +143,7 @@ void close()
 	scrollingBackground_Texture.Free();
 	inputText_Texture.Free();
 	promptAudioTexture.Free();
+	shimmerTexture.Free();
 	for (int i = 0; i < TOTAL_DATA; ++i)
 	{
 		dataTextures[i].Free();
@@ -150,6 +151,10 @@ void close()
 	for (int i = 0; i < MAX_RECORDING_DEVICES; i++)
 	{
 		recordingDeviceTexture[i].Free();
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		colorTexture[i].Free();
 	}
 
 	//Free playback audio
@@ -248,8 +253,7 @@ int main(int argc, char* args[])
 			|| !startupStuff->LoadMedia(colorTexture[0], "38_particle_engines/red.bmp")
 			|| !startupStuff->LoadMedia(colorTexture[1], "38_particle_engines/green.bmp")
 			|| !startupStuff->LoadMedia(colorTexture[2], "38_particle_engines/blue.bmp")
-			|| !startupStuff->LoadMedia(shimmerTexture, "38_particle_engines/shimmer.bmp")
-			|| !startupStuff->LoadMedia(redTexture, "38_particle_engines/red.bmp"))
+			|| !startupStuff->LoadMedia(shimmerTexture, "38_particle_engines/shimmer.bmp"))
 		{
 			printf("Failed to load media!\n");
 		}
