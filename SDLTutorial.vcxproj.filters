@@ -153,6 +153,15 @@
     <ClCompile Include="38_particle_engines\38_particle_engines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TilingMain_Mine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="39_tiling\39_tiling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
@@ -238,6 +247,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

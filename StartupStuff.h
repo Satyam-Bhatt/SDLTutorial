@@ -10,6 +10,7 @@
 #include "vector"
 #include "Circle.h"
 #include "ColorKeying_Mine/CommonVariables.h"
+#include "Tile.h"
 
 class StartupStuff
 {
@@ -88,6 +89,18 @@ public:
 
 	//Handle Display Switch
 	void handleDisplaySwitchAndEvents(SDL_Event & e);
+
+	//Load Tiles
+	bool loadTiles(Tile* tiles[]);
+
+	//Box collision detector
+	bool checkCollision(SDL_Rect a, SDL_Rect b);
+
+	//Checks collision box against set of tiles
+	bool touchesWall(SDL_Rect box, Tile* tiles[]);
+
+	//Sets tiles from tile map
+	bool setTiles(Tile* tiles[]);
 
 private:
 
