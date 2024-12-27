@@ -191,6 +191,26 @@ void Dot::move(SDL_Rect& square, Circle& circle)
 	}
 }
 
+void Dot::move(Tile* tiles[])
+{
+	box.x += velX;
+
+	//if the dot went too far to the left or right
+	if ((box.x < 0) || (box.x + DOT_WIDTH > SCREEN_WIDTH_CAMERA) || startup->touchesWall(box, tiles))
+	{
+		box.x -= velX;
+	}
+
+	//Move the dot up or down
+	box.y += velY;
+
+	//if the dot went too far up or down
+	if ((box.y < 0) || (box.y + DOT_HEIGHT > SCREEN_HEIGHT_CAMERA) || startup->touchesWall(box, tiles))
+	{
+		box.y -= velY;
+	}
+}
+
 std::vector<SDL_Rect>& Dot::getColliders()
 {
 	return colliders;
@@ -226,6 +246,11 @@ void Dot::shiftCircleColliders()
 	//Align collider to center of dot
 	colliderCircle.x = posX;
 	colliderCircle.y = posY;
+}
+
+void Dot::renderWithCamera(SDL_Rect& camera, Texture_Mine& texture, SDL_Renderer* renderer)
+{
+	texture.Render(box.x - camera.x, box.y - camera.y, renderer, false);
 }
 
 int Dot::getPosX()
@@ -264,6 +289,34 @@ void Dot::renderParticles(int camX, int camY, Texture_Mine *& t, Texture_Mine& s
 	for(int i = 0; i < TOTAL_PARTICLES; ++i)
 	{
 		particles[i]->render(renderer);
+	}
+}
+
+void Dot::setCamera(SDL_Rect& camera)
+{
+	//Center the camera over the dot
+	camera.x = (box.x + DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
+	camera.y = (box.y + DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+
+	//Keep the camera in bounds
+	if (camera.x < 0)
+	{
+		camera.x = 0;
+	}
+
+	if (camera.y < 0)
+	{
+		camera.y = 0;
+	}
+
+	if (camera.x > SCREEN_WIDTH_CAMERA - camera.w)
+	{
+		camera.x = SCREEN_WIDTH_CAMERA - camera.w;
+	}
+
+	if (camera.y > SCREEN_HEIGHT_CAMERA - camera.h)
+	{
+		camera.y = SCREEN_HEIGHT_CAMERA - camera.h;
 	}
 }
 

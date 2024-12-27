@@ -55,7 +55,7 @@ public:
 	void setCamera(SDL_Rect& camera);
 
 	//Shows the dot on the screen relative to the camera
-	void renderWithCamera(SDL_Rect & camera);
+	void renderWithCamera(SDL_Rect& camera, Texture_Mine& texture, SDL_Renderer* renderer);
 
 	//Position Accessors
 	int getPosX();

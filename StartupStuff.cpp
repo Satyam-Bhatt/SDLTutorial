@@ -273,6 +273,36 @@ bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
+bool StartupStuff::setTiles(Tile* tiles[])
+{
+	//Success flag
+	bool tilesLoaded = true;
+
+	//the tile offsets
+	int x = 0, y = 0;
+
+	//open the map
+	std::ifstream map("39_tiling/lazy.map");
+
+	//if it could not open the map
+	if (!map.fail())
+	{
+		printf("Unable to load map!\n");
+		tilesLoaded = false;
+	}
+	else
+	{
+		//Initialize the tiles
+		for (int i = 0; i < TOTAL_TILES; ++i)
+		{
+
+		}
+	}
+
+
+	return tilesLoaded;
+}
+
 bool StartupStuff::checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b)
 {
 	//Sided of rectangle

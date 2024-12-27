@@ -11,6 +11,7 @@
 #include "Circle.h"
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "Tile.h"
+#include <fstream>
 
 class StartupStuff
 {
