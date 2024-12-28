@@ -304,7 +304,7 @@ bool StartupStuff::setTiles(Tile * tiles[])
 	std::ifstream map("39_tiling/lazy.map");
 
 	//if it could not open the map
-	if (!map.fail())
+	if (map.fail())
 	{
 		printf("Unable to load map!\n");
 		tilesLoaded = false;
