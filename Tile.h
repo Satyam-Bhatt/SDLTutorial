@@ -2,7 +2,6 @@
 #include <SDL.h>
 #include "ColorKeying_Mine/CommonVariables.h"
 #include "ColorKeying_Mine/Texture_Mine.h"
-//#include "StartupStuff.h"
 
 class Tile
 {
@@ -22,8 +21,6 @@ public:
 private:
 	//The attribute of the tile
 	SDL_Rect box;
-
-	//StartupStuff* startupStuff;
 
 	//The tile type
 	int type;
