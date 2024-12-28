@@ -209,10 +209,9 @@ int main(int argc, char* args[])
 						}
 					}
 
-					dot.renderParticles(camera.x, camera.y, pointerToColorTextures, shimmerTexture, startupStuff->renderer);
+					dot.renderParticles_Tiling(pointerToColorTextures, shimmerTexture, startupStuff->renderer);
 
 				    dot.renderWithCamera(camera, dotTexture, startupStuff->renderer);
-
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}

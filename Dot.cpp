@@ -52,6 +52,11 @@ Dot::Dot(int x, int y)
 	//Collision box detection
 	collider.w = DOT_WIDTH;
 	collider.h = DOT_HEIGHT;
+
+	box.x = x;
+	box.y = y;
+	box.w = DOT_WIDTH;
+	box.h = DOT_HEIGHT;
 }
 
 Dot::~Dot()
@@ -193,20 +198,23 @@ void Dot::move(SDL_Rect& square, Circle& circle)
 
 void Dot::move_Tiling(Tile* tiles[])
 {
+	//Move the dot left or right
 	box.x += velX;
 
-	//if the dot went too far to the left or right
+	//If the dot went too far to the left or right or touched a wall
 	if ((box.x < 0) || (box.x + DOT_WIDTH > SCREEN_WIDTH_CAMERA) || startup->touchesWall(box, tiles))
 	{
+		//move back
 		box.x -= velX;
 	}
 
 	//Move the dot up or down
 	box.y += velY;
 
-	//if the dot went too far up or down
+	//If the dot went too far up or down or touched a wall
 	if ((box.y < 0) || (box.y + DOT_HEIGHT > SCREEN_HEIGHT_CAMERA) || startup->touchesWall(box, tiles))
 	{
+		//move back
 		box.y -= velY;
 	}
 }
@@ -220,7 +228,6 @@ Circle& Dot::getColliderCircle()
 {
 	return colliderCircle;
 }
-
 
 void Dot::shiftColliders()
 {
@@ -292,6 +299,26 @@ void Dot::renderParticles(int camX, int camY, Texture_Mine *& t, Texture_Mine& s
 	}
 }
 
+void Dot::renderParticles_Tiling(Texture_Mine*& t, Texture_Mine& s, SDL_Renderer* renderer)
+{
+	//Go through particles
+	for (int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		//Delete and replace particle
+		if (particles[i]->isDead())
+		{
+			delete particles[i];
+			particles[i] = new Particle(box.x - cameraForParticle.x, box.y - cameraForParticle.y, t, s);
+		}
+	}
+
+	//Show particles
+	for (int i = 0; i < TOTAL_PARTICLES; ++i)
+	{
+		particles[i]->render(renderer);
+	}
+}
+
 void Dot::setCamera(SDL_Rect& camera)
 {
 	//Center the camera over the dot
@@ -318,6 +345,8 @@ void Dot::setCamera(SDL_Rect& camera)
 	{
 		camera.y = SCREEN_HEIGHT_CAMERA - camera.h;
 	}
+
+	cameraForParticle = {camera.x, camera.y, camera.w, camera.h};
 }
 
 

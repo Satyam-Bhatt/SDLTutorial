@@ -15,7 +15,7 @@ public:
 	static const int DOT_WIDTH = 20;
 	static const int DOT_HEIGHT = 20;
 
-	static const int DOT_VEL = 2;
+	static const int DOT_VEL = 5;
 
 	Dot(int x, int y);
 
@@ -50,6 +50,8 @@ public:
 
 	//Show the particles
 	void renderParticles(int camX, int camY, Texture_Mine *& t, Texture_Mine& s, SDL_Renderer* renderer);
+
+	void renderParticles_Tiling(Texture_Mine*& t, Texture_Mine& s, SDL_Renderer* renderer);
 
 	//Centers the camera over the dot
 	void setCamera(SDL_Rect& camera);
@@ -86,5 +88,7 @@ private:
 
 	//Collision box of the dot
 	SDL_Rect box;
+
+	SDL_Rect cameraForParticle;
 };
 
