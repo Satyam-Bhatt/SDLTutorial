@@ -34,7 +34,7 @@ public:
 	void move(SDL_Rect& square, Circle& circle);
 
 	//Moves the dot and check collision against the tiles
-	void move(Tile* tiles[]);
+	void move_Tiling(Tile* tiles[]);
 
 	//Gets the collision boxes
 	std::vector<SDL_Rect>& getColliders();

@@ -238,7 +238,7 @@ bool StartupStuff::LoadSFX(std::string path, Mix_Chunk*& chunk)
 	return success;
 }
 
-bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
+bool StartupStuff::checkCollision_Tiling(SDL_Rect a, SDL_Rect b)
 {
 	int leftA = a.x;
 	int rightA = a.x + a.w;
@@ -273,7 +273,26 @@ bool StartupStuff::checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
-bool StartupStuff::setTiles(Tile* tiles[])
+bool StartupStuff::touchesWall(SDL_Rect box, Tile* tiles[])
+{
+	//Go through the tiles
+	for (int i = 0; i < TOTAL_TILES; ++i)
+	{
+		//If the tile is a wall type tile
+		if ((tiles[i]->getType()) >= TILE_CENTER && (tiles[i]->getType() <= TILE_TOPLEFT))
+		{
+			//if the collision box touches the wall tile
+			if (checkCollision_Tiling(box, tiles[i]->getBox()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool StartupStuff::setTiles(Tile * tiles[])
 {
 	//Success flag
 	bool tilesLoaded = true;
@@ -295,8 +314,54 @@ bool StartupStuff::setTiles(Tile* tiles[])
 		//Initialize the tiles
 		for (int i = 0; i < TOTAL_TILES; ++i)
 		{
+			//Determines the kind on tile which will be made
+			int tileType = -1;
 
+			//Read tile from map file
+			map >> tileType;
+
+			//If there was a problem in reading the map
+			if (map.fail())
+			{
+				//Stop loading map
+				printf("Error loading map: Unexpected end of file! \n");
+				tilesLoaded = false;
+				break;
+			}
+
+			//If the number is a valid tile number
+			if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
+			{
+				tiles[i] = new Tile(x, y, tileType);
+			}
+			//If we don't recognize the tile type
+			else
+			{
+				//Stop loading map
+				printf("Error loading map: Invalid tile type at %d! \n", i);
+				tilesLoaded = false;
+				break;
+			}
+
+			//Move to next tile spot
+			x += TILE_WIDTH;
+
+			//if we've gone too far
+			if (x >= SCREEN_WIDTH_CAMERA)
+			{
+				//Move back
+				x = 0;
+
+				//Move to the next row
+				y += TILE_HEIGHT;
+			}
 		}
+
+		//Close the file
+		map.close();
+
+		//if the map was loaded fine
+		return tilesLoaded;
 	}
 
 

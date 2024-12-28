@@ -17,10 +17,10 @@ Tile::Tile(int x, int y, int tileType)
 void Tile::render(SDL_Rect& camera, Texture_Mine& tileTexture, SDL_Renderer* renderer, SDL_Rect clip)
 {
 	//If the tile is on screen
-	if (startupStuff->checkCollision(camera, box))
-	{
+	//if (startupStuff->checkCollision(camera, box))
+	//{
 		tileTexture.Render(box.x - camera.x, box.y - camera.y, renderer, &clip);
-	}
+	//}
 }
 
 int Tile::getType()

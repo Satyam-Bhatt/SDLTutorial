@@ -40,7 +40,7 @@ public:
 
 	bool LoadSFX(std::string path, Mix_Chunk *& chunk);
 
-	bool checkCollision(SDL_Rect a, SDL_Rect b);
+	//bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 	bool checkCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b);
 
@@ -91,17 +91,14 @@ public:
 	//Handle Display Switch
 	void handleDisplaySwitchAndEvents(SDL_Event & e);
 
-	//Load Tiles
-	bool loadTiles(Tile* tiles[]);
-
 	//Box collision detector
-	bool checkCollision(SDL_Rect a, SDL_Rect b);
+	bool checkCollision_Tiling(SDL_Rect a, SDL_Rect b);
 
 	//Checks collision box against set of tiles
 	bool touchesWall(SDL_Rect box, Tile* tiles[]);
 
 	//Sets tiles from tile map
-	bool setTiles(Tile* tiles[]);
+	bool setTiles(Tile * tiles[]);
 
 private:
 

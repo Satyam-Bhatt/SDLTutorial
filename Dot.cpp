@@ -110,7 +110,7 @@ void Dot::move(SDL_Rect& wall)
 	collider.x = posX;
 
 	//If the dot went too far right or left
-	if((posX < 0 ) || (posX + DOT_WIDTH > SCREEN_WIDTH + SCREEN_EXTENTION) || startup->checkCollision(collider, wall))
+	if((posX < 0 ) || (posX + DOT_WIDTH > SCREEN_WIDTH + SCREEN_EXTENTION) || startup->checkCollision_Tiling(collider, wall))
 	{
 		posX -= velX;
 		collider.x = posX;
@@ -119,7 +119,7 @@ void Dot::move(SDL_Rect& wall)
 	posY += velY;
 	collider.y = posY;
 
-	if ((posY < 0) || (posY + DOT_HEIGHT > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision(collider, wall))
+	if ((posY < 0) || (posY + DOT_HEIGHT > SCREEN_HEIGHT + SCREEN_EXTENTION) || startup->checkCollision_Tiling(collider, wall))
 	{
 		posY -= velY;
 		collider.y = posY;
@@ -191,7 +191,7 @@ void Dot::move(SDL_Rect& square, Circle& circle)
 	}
 }
 
-void Dot::move(Tile* tiles[])
+void Dot::move_Tiling(Tile* tiles[])
 {
 	box.x += velX;
 
