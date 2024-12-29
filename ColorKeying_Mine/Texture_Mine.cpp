@@ -162,6 +162,129 @@ int Texture_Mine::GetHeight()
 	return mHeight;
 }
 
+bool Texture_Mine::loadPixelsFromFile(std::string path, SDL_Window * window)
+{
+	//Free preexisting assets
+	Free();
+
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	if (loadedSurface == NULL)
+	{
+		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+	}
+	else
+	{
+		//Convert surface to display format
+		surfacePixels = SDL_ConvertSurfaceFormat(loadedSurface, SDL_GetWindowPixelFormat(window), 0);
+		if (surfacePixels == NULL)
+		{
+			printf("Unable to convert loaded surface to display format! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			//Get image dimensions
+			mWidth = surfacePixels->w;
+			mHeight = surfacePixels->h;
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface(loadedSurface);
+	}
+
+	return surfacePixels != NULL;
+}
+
+bool Texture_Mine::loadFromPixels(SDL_Renderer * renderer)
+{
+	//Only load if pixels exist
+	if (surfacePixels == NULL)
+	{
+		printf("No pixels loaded!");
+	}
+	else
+	{
+		//Color key image
+		SDL_SetColorKey(surfacePixels, SDL_TRUE, SDL_MapRGB(surfacePixels->format, 0, 0xFF, 0xFF));
+
+		//Create texture from surface pixels
+		mTexture = SDL_CreateTextureFromSurface(renderer, surfacePixels);
+		if (mTexture == NULL)
+		{
+			printf("Unable to create texture from loaded pixels! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			//Get image dimensions
+			mWidth = surfacePixels->w;
+			mHeight = surfacePixels->h;
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface(surfacePixels);
+		surfacePixels = NULL;
+	}
+
+	//Return success
+	return mTexture != NULL;
+}
+
+bool Texture_Mine::LoadFromFile_TextureManipulation(std::string path, SDL_Renderer* renderer, SDL_Window * window)
+{
+	//Load pixels
+	if (!loadPixelsFromFile(path, window))
+	{
+		printf("Failed to load pixels for %s!\n", path.c_str());
+	}
+	else
+	{
+		//Load texture from pixels
+		if (!loadFromPixels(renderer))
+		{
+			printf("Failed to texture from pixels from %s!\n", path.c_str());
+		}
+	}
+
+	//Return success
+	return mTexture != NULL;
+}
+
+Uint32* Texture_Mine::getPixels32()
+{
+	Uint32* pixels = NULL;
+
+	if (surfacePixels != NULL)
+	{
+		pixels = static_cast<Uint32*>(surfacePixels->pixels);
+	}
+
+	return pixels;
+}
+
+Uint32 Texture_Mine::getPitch32()
+{
+	Uint32 pitch = 0;
+
+	if (surfacePixels != NULL)
+	{
+		pitch = surfacePixels->pitch / 4;
+	}
+
+	return pitch;
+}
+
+Uint32 Texture_Mine::mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	Uint32 pixel = 0;
+
+	if (surfacePixels != NULL)
+	{
+		pixel = SDL_MapRGBA(surfacePixels->format, r, g, b, a);
+	}
+
+	return pixel;
+}
+
 int Texture_Mine::GetWidth()
 {
 	return mWidth;

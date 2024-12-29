@@ -40,15 +40,36 @@
     <ClCompile Include="20_force_feedback\20_force_feedback.cpp" />
     <ClCompile Include="21_sound_effects_and_music\21_sound_effects_and_music.cpp" />
     <ClCompile Include="22_timing\22_timing.cpp" />
+    <ClCompile Include="23_advanced_timers\23_advanced_timers.cpp" />
+    <ClCompile Include="25_capping_frame_rate\25_capping_frame_rate.cpp" />
+    <ClCompile Include="26_motion\26_motion.cpp" />
+    <ClCompile Include="29_circular_collision_detection\29_circular_collision_detection.cpp" />
+    <ClCompile Include="30_scrolling\30_scrolling.cpp" />
+    <ClCompile Include="31_scrolling_backgrounds\31_scrolling_backgrounds.cpp" />
+    <ClCompile Include="33_file_reading_and_writing\33_file_reading_and_writing.cpp" />
+    <ClCompile Include="34_audio_recording\34_audio_recording.cpp" />
+    <ClCompile Include="35_window_events\35_window_events.cpp" />
+    <ClCompile Include="37_multiple_displays\37_multiple_displays.cpp" />
+    <ClCompile Include="38_particle_engines\38_particle_engines.cpp" />
+    <ClCompile Include="39_tiling\39_tiling.cpp" />
+    <ClCompile Include="40_texture_manipulation\40_texture_manipulation.cpp" />
+    <ClCompile Include="CapScreen_Main.cpp" />
+    <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
+    <ClCompile Include="TextureManipulation_Main.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TilingMain_Mine.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt" />
@@ -76,9 +97,13 @@
     <ClInclude Include="Class.h" />
     <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
+    <ClInclude Include="Dot.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="StartupStuff.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

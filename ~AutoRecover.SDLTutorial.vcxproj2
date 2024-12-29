@@ -52,6 +52,7 @@
     <ClCompile Include="37_multiple_displays\37_multiple_displays.cpp" />
     <ClCompile Include="38_particle_engines\38_particle_engines.cpp" />
     <ClCompile Include="39_tiling\39_tiling.cpp" />
+    <ClCompile Include="40_texture_manipulation\40_texture_manipulation.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />
@@ -64,6 +65,7 @@
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
+    <ClCompile Include="TextureManipulation_Main.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilingMain_Mine.cpp" />
     <ClCompile Include="Timer.cpp" />

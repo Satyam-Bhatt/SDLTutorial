@@ -53,10 +53,27 @@ public:
 	SDL_Rect clipRects[4];
 	SDL_Rect animatedRects[4];
 
+	//Load image into pixel buffer
+	bool loadPixelsFromFile(std::string path, SDL_Window * window);
+
+	//Create image from preloaded pixels
+	bool loadFromPixels(SDL_Renderer* renderer);
+
+	//Loads image at specified path
+	bool LoadFromFile_TextureManipulation(std::string path, SDL_Renderer* renderer, SDL_Window* window);
+
+	//Pixel Access
+	Uint32* getPixels32();
+	Uint32 getPitch32();
+	Uint32 mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+
 private:
 	//The actual hardware texture
 	SDL_Texture* mTexture;
 	//Image dimensions
 	int mWidth;
 	int mHeight;
+
+	//Surface Pixels
+	SDL_Surface* surfacePixels;
 };
