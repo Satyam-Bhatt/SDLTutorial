@@ -36,6 +36,9 @@ public:
 	//Load Media with Blend Mode
 	bool LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendMode blending);
 
+	//Load Media with Pixel Information and Keying
+	bool LoadMedia_TextureManipulation(Texture_Mine& texture, std::string path);
+
 	bool LoadMusic(std::string path, Mix_Music *& music);
 
 	bool LoadSFX(std::string path, Mix_Chunk *& chunk);

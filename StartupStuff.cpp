@@ -210,6 +210,46 @@ bool StartupStuff::LoadMedia(Texture_Mine& texture, std::string path, SDL_BlendM
 	return success;
 }
 
+bool StartupStuff::LoadMedia_TextureManipulation(Texture_Mine& texture, std::string path)
+{
+	//Loading success flag
+	bool success = true;
+
+	//Load Foo' texture pixel
+	if (!texture.loadPixelsFromFile(path, window))
+	{
+		printf("Unable to load Foo' texture!\n");
+		success = false;
+	}
+	else
+	{
+		//Get pixel data
+		Uint32* pixels = texture.getPixels32();
+		int pixelCount = texture.getPitch32() * texture.GetHeight();
+
+		//Map colors
+		Uint32 colorKey = texture.mapRGBA(0xFF, 0x00, 0xFF, 0xFF);
+		Uint32 transparent = texture.mapRGBA(0xFF, 0xFF, 0xFF, 0x00);
+
+		//Color key pixels
+		for (int i = 0; i < pixelCount; ++i)
+		{
+			if (pixels[i] == colorKey)
+			{
+				pixels[i] = transparent;
+			}
+		}
+
+		//Create texture from manually color keyed pixels
+		if (!texture.loadFromPixels(renderer))
+		{
+			printf("Unable to load Foo' texture from surface!\n");
+		}
+	}
+
+	return success;
+}
+
 bool StartupStuff::LoadMusic(std::string path, Mix_Music*& music)
 {
 	bool success = true;

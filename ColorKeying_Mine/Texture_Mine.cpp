@@ -63,6 +63,11 @@ void Texture_Mine::Free()
 		mWidth = 0;
 		mHeight = 0;
 	}
+	if (surfacePixels != NULL)
+	{
+		SDL_FreeSurface(surfacePixels);
+		surfacePixels = NULL;
+	}
 }
 
 //Loads up mTexture from a file

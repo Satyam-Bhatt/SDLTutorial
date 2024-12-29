@@ -14,22 +14,11 @@ StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
-Texture_Mine dotTexture, tileTexture;
-
-SDL_Rect tileClips[TOTAL_TILE_SPRITES];
-
-//Particle Textures
-Texture_Mine colorTexture[3];
-Texture_Mine shimmerTexture;
+Texture_Mine textureManipulation;
 
 void close()
 {
-	dotTexture.Free();
-	shimmerTexture.Free();
-	for (int i = 0; i < 3; i++)
-	{
-		colorTexture[i].Free();
-	}
+	textureManipulation.Free();
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -54,12 +43,7 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		if (!startupStuff->LoadMedia(dotTexture, "39_tiling/dot.bmp")
-			|| !startupStuff->LoadMedia(colorTexture[0], "38_particle_engines/red.bmp")
-			|| !startupStuff->LoadMedia(colorTexture[1], "38_particle_engines/green.bmp")
-			|| !startupStuff->LoadMedia(colorTexture[2], "38_particle_engines/blue.bmp")
-			|| !startupStuff->LoadMedia(shimmerTexture, "38_particle_engines/shimmer.bmp")
-			|| !startupStuff->LoadMedia(tileTexture, "39_tiling/tiles.png"))
+		if (!startupStuff->LoadMedia_TextureManipulation(textureManipulation ,"40_texture_manipulation/foo.png"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -103,6 +87,8 @@ int main(int argc, char* args[])
 				{
 					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
 					SDL_RenderClear(startupStuff->renderer);
+
+					textureManipulation.Render((SCREEN_WIDTH - textureManipulation.GetWidth()) / 2, (SCREEN_HEIGHT - textureManipulation.GetHeight()) / 2, startupStuff->renderer ,false);
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}
