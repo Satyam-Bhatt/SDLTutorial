@@ -292,6 +292,15 @@ Uint32 Texture_Mine::mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return pixel;
 }
 
+Uint32 Texture_Mine::getPixel32(Uint32 x, Uint32 y)
+{
+	//Convert the pixels to 32 bit
+	Uint32* pixels = static_cast<Uint32*>(surfacePixels->pixels);
+
+	//Get the pixel requested
+	return pixels[y * getPitch32() + x];
+}
+
 int Texture_Mine::GetWidth()
 {
 	return mWidth;

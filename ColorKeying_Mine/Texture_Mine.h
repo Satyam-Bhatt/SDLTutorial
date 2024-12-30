@@ -67,6 +67,8 @@ public:
 	Uint32 getPitch32();
 	Uint32 mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
+	Uint32 getPixel32(Uint32 x, Uint32 y);
+
 private:
 	//The actual hardware texture
 	SDL_Texture* mTexture;
