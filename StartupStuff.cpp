@@ -8,6 +8,10 @@ StartupStuff::StartupStuff()
 	keyboardFocus = false;
 	fullscreen = false;
 	minimized = false;
+	mouseFocus = false;
+	shown = false;
+	windowDisplayID = -1;
+	windowID = -1;
 	width = 0;
 	height = 0;
 }

@@ -2,6 +2,8 @@
 
 Texture_Mine::Texture_Mine()
 {
+	surfacePixels = NULL;
+
 	//Initialize Variables
 	mTexture = NULL;
 	mWidth = 0;
