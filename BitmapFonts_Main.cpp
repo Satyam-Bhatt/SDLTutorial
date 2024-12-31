@@ -8,17 +8,22 @@
 #include "Timer.h"
 #include "Dot.h"
 #include <fstream>
+#include "BitmapFont.h"
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
-Texture_Mine textureManipulation;
+Texture_Mine bitMapRender;
+
+BitmapFont texture_text;
 
 void close()
 {
-	textureManipulation.Free();
+	texture_text.free();
+
+	bitMapRender.Free();
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -43,7 +48,8 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		if (!startupStuff->LoadMedia_TextureManipulation(textureManipulation, "40_texture_manipulation/foo.png"))
+		if (!startupStuff->LoadMedia_TextureManipulation(bitMapRender, "40_texture_manipulation/foo.png")
+			|| !texture_text.buildFont("40_texture_manipulation/foo.png", startupStuff->renderer))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -88,8 +94,10 @@ int main(int argc, char* args[])
 					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
 					SDL_RenderClear(startupStuff->renderer);
 
-					textureManipulation.Render((SCREEN_WIDTH - textureManipulation.GetWidth()) / 2, (SCREEN_HEIGHT - textureManipulation.GetHeight()) / 2,
+					bitMapRender.Render((SCREEN_WIDTH - bitMapRender.GetWidth()) / 2, (SCREEN_HEIGHT - bitMapRender.GetHeight()) / 2,
 						startupStuff->renderer, false);
+
+					texture_text.renderText(0, 0, "sdaqawfgsdlmsosdf", startupStuff->renderer);
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}

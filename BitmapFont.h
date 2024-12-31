@@ -15,7 +15,7 @@ public:
 	void free();
 
 	//Shows the text
-	void renderText(int x, int y, std::string text);
+	void renderText(int x, int y, std::string text, SDL_Renderer* renderer);
 
 private:
 	//The font texture

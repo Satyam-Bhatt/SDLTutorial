@@ -171,10 +171,57 @@ bool BitmapFont::buildFont(std::string fontFile, SDL_Renderer* renderer)
 		}
 
 		//Create final texture
-		if (!fontTexture.loadFromPixels())
+		if (!fontTexture.loadFromPixels(renderer))
 		{
 			printf("Unable to create font texture!\n");
 			success = false;
+		}
+	}
+	return success;
+}
+
+void BitmapFont::free()
+{
+	fontTexture.Free();
+}
+
+void BitmapFont::renderText(int x, int y, std::string text, SDL_Renderer* renderer)
+{
+	//If the font has been built
+	if (fontTexture.GetWidth() > 0)
+	{
+		//Temp offsets
+		int curX = x, curY = y;
+
+		//Go through the text
+		for (int i = 0; i < text.length(); ++i)
+		{
+			//If the current character is a space
+			if (text[i] == ' ')
+			{
+				//Move over
+				curX += space;
+			}
+			//If the current character is a newline
+			else if (text[i] == '\n')
+			{
+				//Move down
+				curY += newLine;
+
+				//Move back
+				curX = x;
+			}
+			else
+			{
+				//Get the ASCII value of the character
+				int ascii = (unsigned char)text[i];
+
+				//Show the character
+				fontTexture.RenderRotate(curX, curY,1, renderer, &chars[ascii]);
+
+				//Move over the width of the character with one pixel of padding
+				curX += chars[ascii].w + 1;
+			}
 		}
 	}
 }
