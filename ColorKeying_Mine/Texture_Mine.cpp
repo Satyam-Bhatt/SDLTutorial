@@ -250,6 +250,9 @@ bool Texture_Mine::LoadFromFile_TextureManipulation(std::string path, SDL_Render
 		{
 			printf("Failed to texture from pixels from %s!\n", path.c_str());
 		}
+		else
+		{
+		}
 	}
 
 	//Return success
@@ -294,6 +297,12 @@ Uint32 Texture_Mine::mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 Uint32 Texture_Mine::getPixel32(Uint32 x, Uint32 y)
 {
+	if (surfacePixels == NULL)
+	{
+		printf("No pixels loaded!");
+		return 0;
+	}
+
 	//Convert the pixels to 32 bit
 	Uint32* pixels = static_cast<Uint32*>(surfacePixels->pixels);
 

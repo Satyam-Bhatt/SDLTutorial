@@ -9,7 +9,7 @@ public:
 	BitmapFont();
 
 	//Generates the font
-	bool buildFont(std::string fontFile, SDL_Renderer* renderer);
+	bool buildFont(std::string fontFile, SDL_Renderer* renderer, SDL_Window* window);
 
 	//Deallocates font
 	void free();

@@ -7,7 +7,7 @@ BitmapFont::BitmapFont()
 	space = 0;
 }
 
-bool BitmapFont::buildFont(std::string fontFile, SDL_Renderer* renderer)
+bool BitmapFont::buildFont(std::string fontFile, SDL_Renderer* renderer, SDL_Window* window)
 {
 	//Get rid of preexisting texture
 	free();
@@ -15,7 +15,7 @@ bool BitmapFont::buildFont(std::string fontFile, SDL_Renderer* renderer)
 	//Load bitmap image
 	bool success = true;
 
-	if(!fontTexture.LoadFromFile(fontFile, renderer))
+	if(!fontTexture.loadPixelsFromFile(fontFile, window))
 	{
 		printf("Failed to load font image!\n");
 		success = false;

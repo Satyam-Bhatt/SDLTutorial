@@ -49,7 +49,7 @@ int main(int argc, char* args[])
 	else
 	{
 		if (!startupStuff->LoadMedia_TextureManipulation(bitMapRender, "40_texture_manipulation/foo.png")
-			|| !texture_text.buildFont("40_texture_manipulation/foo.png", startupStuff->renderer))
+			|| !texture_text.buildFont("41_bitmap_fonts/lazyfont.png", startupStuff->renderer, startupStuff->window))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -97,7 +97,7 @@ int main(int argc, char* args[])
 					bitMapRender.Render((SCREEN_WIDTH - bitMapRender.GetWidth()) / 2, (SCREEN_HEIGHT - bitMapRender.GetHeight()) / 2,
 						startupStuff->renderer, false);
 
-					texture_text.renderText(0, 0, "sdaqawfgsdlmsosdf", startupStuff->renderer);
+					texture_text.renderText(0,0, "AAAaaaaBBBbbbcasomdwew\nasdawd\nnn  asdasd \nsjkdn", startupStuff->renderer);
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}
