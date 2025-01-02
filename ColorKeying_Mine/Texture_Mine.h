@@ -62,12 +62,17 @@ public:
 	//Loads image at specified path
 	bool LoadFromFile_TextureManipulation(std::string path, SDL_Renderer* renderer, SDL_Window* window);
 
+	//Creates blank texture
+	bool createBlank(int width, int height, SDL_Renderer* renderer);
+
 	//Pixel Access
 	Uint32* getPixels32();
 	Uint32 getPitch32();
 	Uint32 mapRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-
 	Uint32 getPixel32(Uint32 x, Uint32 y);
+	void copyRawPixels32(void* pixels);
+	bool lockTexture();
+	bool unlockTexture();
 
 private:
 	//The actual hardware texture
@@ -78,4 +83,8 @@ private:
 
 	//Surface Pixels
 	SDL_Surface* surfacePixels;
+
+	//Void Pixels
+	void* rawPixels;
+	int rawPitch;
 };

@@ -177,6 +177,12 @@
     <ClCompile Include="BitmapFont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="42_texture_streaming\42_texture_streaming.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
@@ -268,6 +274,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BitmapFont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

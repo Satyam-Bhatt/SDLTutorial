@@ -410,3 +410,77 @@ void Texture_Mine::SetBlendMode(SDL_BlendMode blending)
 	//Set blending function
 	SDL_SetTextureBlendMode(mTexture, blending);
 }
+
+bool Texture_Mine::createBlank(int width, int height, SDL_Renderer* renderer)
+{
+	//Get rid of preexisting texture
+	Free();
+
+	//Create unintialized texture
+	mTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+	if (mTexture == NULL)
+	{
+		printf("Unable to create blank texture! SDL Error: %s\n", SDL_GetError());
+	}
+	else
+	{
+		mWidth = width;
+		mHeight = height;
+	}
+
+	return mTexture != NULL;
+}
+
+bool Texture_Mine::lockTexture()
+{
+	bool success = true;
+
+	//Texture is already locked
+	if(rawPixels != NULL)
+	{
+		printf("Texture is already locked!\n");
+		success = false;
+	}
+	//Lock texture
+	else
+	{
+		if (SDL_LockTexture(mTexture, NULL, &rawPixels, &rawPitch) != 0)
+		{
+			printf("Unable to lock texture! SDL Error: %s\n", SDL_GetError());
+			success = false;
+		}
+	}
+
+	return success;
+}
+
+bool Texture_Mine::unlockTexture()
+{
+	bool success = true;
+
+	//Texture is not locked
+	if(rawPixels == NULL)
+	{
+		printf("Texture is not locked!\n");
+		success = false;
+	}
+	//Unlock texture
+	else
+	{
+		SDL_UnlockTexture(mTexture);
+		rawPixels = NULL;
+		rawPitch = 0;
+	}
+
+	return success;
+}
+
+void Texture_Mine::copyRawPixels32(void* pixels)
+{
+	//Texture is locked
+	if (rawPixels != NULL)
+	{
+		//Copy to locked pixels
+		memcpy(rawPixels, pixels, rawPitch * mHeight);
+	}
+}

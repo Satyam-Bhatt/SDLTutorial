@@ -9,15 +9,18 @@
 #include "Dot.h"
 #include <fstream>
 #include "BitmapFont.h"
+#include "DataStream.h"
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
-Texture_Mine bitMapRender;
+Texture_Mine bitMapRender, streamingTexture;
 
 BitmapFont texture_text;
+
+DataStream dataStream;
 
 void close()
 {
@@ -49,7 +52,9 @@ int main(int argc, char* args[])
 	else
 	{
 		if (!startupStuff->LoadMedia_TextureManipulation(bitMapRender, "40_texture_manipulation/foo.png")
-			|| !texture_text.buildFont("41_bitmap_fonts/lazyfont.png", startupStuff->renderer, startupStuff->window))
+			|| !texture_text.buildFont("41_bitmap_fonts/lazyfont.png", startupStuff->renderer, startupStuff->window)
+			|| !streamingTexture.createBlank(64, 205, startupStuff->renderer)
+			|| !dataStream.loadMedia())
 		{
 			printf("Failed to load media!\n");
 		}
@@ -98,6 +103,12 @@ int main(int argc, char* args[])
 						startupStuff->renderer, false);
 
 					texture_text.renderText(0,0, "AAAaaaaBBBbbbcasomdwew\nasdawd\nnn  asdasd \nsjkdn", startupStuff->renderer);
+
+					streamingTexture.lockTexture();
+					streamingTexture.copyRawPixels32(dataStream.getBuffer());
+					streamingTexture.unlockTexture();
+
+					streamingTexture.Render(0, 0, startupStuff->renderer, false);
 
 					SDL_RenderPresent(startupStuff->renderer);
 				}

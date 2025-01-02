@@ -52,11 +52,16 @@
     <ClCompile Include="37_multiple_displays\37_multiple_displays.cpp" />
     <ClCompile Include="38_particle_engines\38_particle_engines.cpp" />
     <ClCompile Include="39_tiling\39_tiling.cpp" />
+    <ClCompile Include="40_texture_manipulation\40_texture_manipulation.cpp" />
+    <ClCompile Include="41_bitmap_fonts\41_bitmap_fonts.cpp" />
+    <ClCompile Include="BitmapFont.cpp" />
+    <ClCompile Include="BitmapFonts_Main.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
     <ClCompile Include="Circle.h" />
     <ClCompile Include="Class.cpp" />
     <ClCompile Include="ColorKeying_Mine.cpp" />
     <ClCompile Include="ColorKeying_Mine\Texture_Mine.cpp" />
+    <ClCompile Include="DataStream.cpp" />
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="ImageRender_Mine.cpp" />
     <ClCompile Include="Mine.cpp" />
@@ -92,10 +97,12 @@
     <Image Include="07_texture_loading_and_rendering\texture.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitmapFont.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Class.h" />
     <ClInclude Include="ColorKeying_Mine\CommonVariables.h" />
     <ClInclude Include="ColorKeying_Mine\Texture_Mine.h" />
+    <ClInclude Include="DataStream.h" />
     <ClInclude Include="Dot.h" />
     <ClInclude Include="MouseEvents_h_cpp\Button.h" />
     <ClInclude Include="Particle.h" />
