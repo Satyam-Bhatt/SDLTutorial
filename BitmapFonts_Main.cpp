@@ -24,6 +24,7 @@ DataStream dataStream;
 
 void close()
 {
+	dataStream.free();
 	texture_text.free();
 
 	bitMapRender.Free();

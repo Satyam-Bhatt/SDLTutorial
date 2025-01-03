@@ -8,7 +8,7 @@ DataStream::DataStream()
 	images[3] = NULL;
 
 	currentImage = 0;
-	delayFrames = 4;
+	delayFrames = 20;
 }
 
 bool DataStream::loadMedia()
@@ -52,7 +52,7 @@ void* DataStream::getBuffer()
 	if (delayFrames == 0)
 	{
 		++currentImage;
-		delayFrames = 4;
+		delayFrames = 20;
 	}
 
 	if (currentImage == 4)
