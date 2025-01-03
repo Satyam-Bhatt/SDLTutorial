@@ -55,6 +55,7 @@
     <ClCompile Include="40_texture_manipulation\40_texture_manipulation.cpp" />
     <ClCompile Include="41_bitmap_fonts\41_bitmap_fonts.cpp" />
     <ClCompile Include="42_texture_streaming\42_texture_streaming.cpp" />
+    <ClCompile Include="43_render_to_texture\43_render_to_texture.cpp" />
     <ClCompile Include="BitmapFont.cpp" />
     <ClCompile Include="BitmapFonts_Main.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />

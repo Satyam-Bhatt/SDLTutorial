@@ -183,6 +183,9 @@
     <ClCompile Include="42_texture_streaming\42_texture_streaming.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="43_render_to_texture\43_render_to_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
