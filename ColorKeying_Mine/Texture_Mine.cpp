@@ -431,6 +431,32 @@ bool Texture_Mine::createBlank(int width, int height, SDL_Renderer* renderer)
 	return mTexture != NULL;
 }
 
+bool Texture_Mine::createBlank(int widths, int height, SDL_TextureAccess access, SDL_Renderer* renderer)
+{
+	//Get rid of preexisting Texture
+	Free();
+
+	//Create uninitialized Texture
+	mTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, access, widths, height);
+	if (mTexture == NULL)
+	{
+		printf("Unable to create blank texture! SDL Error: %s\n", SDL_GetError());
+	}
+	else
+	{
+		mWidth = widths;
+		mHeight = height;
+	}
+
+	return mTexture != NULL;
+}
+
+void Texture_Mine::SetAsRenderTarget(SDL_Renderer* renderer)
+{
+	//Make self render target
+	SDL_SetRenderTarget(renderer, mTexture);
+}
+
 bool Texture_Mine::lockTexture()
 {
 	bool success = true;

@@ -65,6 +65,11 @@ public:
 	//Creates blank texture
 	bool createBlank(int width, int height, SDL_Renderer* renderer);
 
+	bool createBlank(int widths, int height, SDL_TextureAccess access, SDL_Renderer* renderer);
+
+	//Set self as render target
+	void SetAsRenderTarget(SDL_Renderer* renderer);
+
 	//Pixel Access
 	Uint32* getPixels32();
 	Uint32 getPitch32();
