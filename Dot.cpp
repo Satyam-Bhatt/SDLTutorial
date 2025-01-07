@@ -260,6 +260,36 @@ void Dot::renderWithCamera(SDL_Rect& camera, Texture_Mine& texture, SDL_Renderer
 	texture.Render(box.x - camera.x, box.y - camera.y, renderer, false);
 }
 
+void Dot::move_FrameIndependent(float timeStep)
+{
+	//Move the dot left or right
+	posX += velX * timeStep;
+
+	//If the dot went too far to the left or right
+	if (posX < 0)
+	{
+		posX = 0;
+	}
+	else if (posX > SCREEN_WIDTH - DOT_WIDTH)
+	{
+		posX = SCREEN_WIDTH - DOT_WIDTH;
+	}
+
+	//Move the dot up or down
+	posY += velY * timeStep;
+
+	//If the dot went too far up or down
+	if (posY < 0)
+	{
+		posY = 0;
+	}
+	else if (posY > SCREEN_HEIGHT - DOT_HEIGHT)
+	{
+		posY = SCREEN_HEIGHT - DOT_HEIGHT;
+	}
+
+}
+
 int Dot::getPosX()
 {
 	return posX;

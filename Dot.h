@@ -59,6 +59,9 @@ public:
 	//Shows the dot on the screen relative to the camera
 	void renderWithCamera(SDL_Rect& camera, Texture_Mine& texture, SDL_Renderer* renderer);
 
+	//Move the dot frame independent
+	void move_FrameIndependent(float timeStep);
+
 	//Position Accessors
 	int getPosX();
 	int getPosY();
@@ -67,9 +70,9 @@ private:
 	//The particles
 	Particle* particles[TOTAL_PARTICLES];
 
-	int posX, posY;
+	float posX, posY;
 
-	int velX, velY;
+	float velX, velY;
 
 	SDL_Rect collider;
 
