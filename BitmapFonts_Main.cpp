@@ -57,7 +57,7 @@ int main(int argc, char* args[])
 			|| !texture_text.buildFont("41_bitmap_fonts/lazyfont.png", startupStuff->renderer, startupStuff->window)
 			|| !streamingTexture.createBlank(64, 205, startupStuff->renderer)
 			|| !dataStream.loadMedia()
-			|| !targetTexture.createBlank(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_TEXTUREACCESS_TARGET ,startupStuff->renderer))
+			|| !targetTexture.createBlank(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_TEXTUREACCESS_TARGET, startupStuff->renderer))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -97,7 +97,7 @@ int main(int argc, char* args[])
 
 				}
 
-				angle += 2;
+				angle += 1;
 				if (angle > 360)
 				{
 					angle -= 360;
@@ -109,49 +109,49 @@ int main(int argc, char* args[])
 				//Only draw if window is not minimized
 				//if (!startupStuff->isMinimized())
 				//{
-					SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
-					SDL_RenderClear(startupStuff->renderer);
+				SDL_SetRenderDrawColor(startupStuff->renderer, 255, 255, 0, 255);
+				SDL_RenderClear(startupStuff->renderer);
 
-					//bitMapRender.Render((SCREEN_WIDTH - bitMapRender.GetWidth()) / 2, (SCREEN_HEIGHT - bitMapRender.GetHeight()) / 2,
-					//	startupStuff->renderer, false);
+				bitMapRender.Render((SCREEN_WIDTH - bitMapRender.GetWidth()) / 2, (SCREEN_HEIGHT - bitMapRender.GetHeight()) / 2,
+					startupStuff->renderer, false);
 
-					//texture_text.renderText(0,0, "AAAaaaaBBBbbbcasomdwew\nasdawd\nnn  asdasd \nsjkdn", startupStuff->renderer);
+				texture_text.renderText(0, 0, "AAAaaaaBBBbbbcasomdwew\nasdawd\nnn  asdasd \nsjkdn", startupStuff->renderer);
 
-					//streamingTexture.lockTexture();
-					//streamingTexture.copyRawPixels32(dataStream.getBuffer());
-					//streamingTexture.unlockTexture();
+				streamingTexture.lockTexture();
+				streamingTexture.copyRawPixels32(dataStream.getBuffer());
+				streamingTexture.unlockTexture();
 
-					//streamingTexture.Render(0, 0, startupStuff->renderer, false);
+				streamingTexture.Render(0, 0, startupStuff->renderer, false);
 
-					//Render red filled quad
-					SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
-					SDL_SetRenderDrawColor(startupStuff->renderer, 0xFF, 0x00, 0x00, 0xFF);
-					SDL_RenderFillRect(startupStuff->renderer, &fillRect);
+				//Render red filled quad
+				SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
+				SDL_SetRenderDrawColor(startupStuff->renderer, 0xFF, 0x00, 0x00, 0xFF);
+				SDL_RenderFillRect(startupStuff->renderer, &fillRect);
 
-					//Render green outlined quad
-					SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
-					SDL_SetRenderDrawColor(startupStuff->renderer, 0x00, 0xFF, 0x00, 0xFF);
-					SDL_RenderDrawRect(startupStuff->renderer, &outlineRect);
+				//Render green outlined quad
+				SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
+				SDL_SetRenderDrawColor(startupStuff->renderer, 0x00, 0xFF, 0x00, 0xFF);
+				SDL_RenderDrawRect(startupStuff->renderer, &outlineRect);
 
-					//Draw blue horizontal line
-					SDL_SetRenderDrawColor(startupStuff->renderer, 0x00, 0x00, 0xFF, 0xFF);
-					SDL_RenderDrawLine(startupStuff->renderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
+				//Draw blue horizontal line
+				SDL_SetRenderDrawColor(startupStuff->renderer, 0x00, 0x00, 0xFF, 0xFF);
+				SDL_RenderDrawLine(startupStuff->renderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
 
-					//Draw vertical line of yellow dots
-					SDL_SetRenderDrawColor(startupStuff->renderer, 0xFF, 0xFF, 0x00, 0xFF);
-					for (int i = 0; i < SCREEN_HEIGHT; i += 4)
-					{
-						SDL_RenderDrawPoint(startupStuff->renderer, SCREEN_WIDTH / 2, i);
-					}
+				//Draw vertical line of yellow dots
+				SDL_SetRenderDrawColor(startupStuff->renderer, 0xFF, 0xFF, 0x00, 0xFF);
+				for (int i = 0; i < SCREEN_HEIGHT; i += 4)
+				{
+					SDL_RenderDrawPoint(startupStuff->renderer, SCREEN_WIDTH / 2, i);
+				}
 
-					//Reset Render target
-					SDL_SetRenderTarget(startupStuff->renderer, NULL);
+				//Reset Render target
+				SDL_SetRenderTarget(startupStuff->renderer, NULL);
 
-					//Show rendered to texture
-					//targetTexture.Render(0, 0, startupStuff->renderer, false);
-					targetTexture.RenderRotate(0, 0, 1, startupStuff->renderer, NULL, angle, &screenCenter);
+				//Show rendered to texture
+				//targetTexture.Render(0, 0, startupStuff->renderer, false);
+				targetTexture.RenderRotate(0, 0, 1, startupStuff->renderer, NULL, angle, &screenCenter);
 
-					SDL_RenderPresent(startupStuff->renderer);
+				SDL_RenderPresent(startupStuff->renderer);
 				//}
 			}
 		}
