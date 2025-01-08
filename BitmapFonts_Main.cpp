@@ -16,7 +16,7 @@ StartupStuff* startupStuff = new StartupStuff();
 
 TTF_Font* gFont = NULL, * gFont2 = NULL;
 
-Texture_Mine bitMapRender, streamingTexture, targetTexture;
+Texture_Mine bitMapRender, streamingTexture, targetTexture, dotTexture;
 
 BitmapFont texture_text;
 
@@ -24,6 +24,7 @@ DataStream dataStream;
 
 void close()
 {
+	dotTexture.Free();
 	dataStream.free();
 	texture_text.free();
 	targetTexture.Free();
@@ -57,7 +58,8 @@ int main(int argc, char* args[])
 			|| !texture_text.buildFont("41_bitmap_fonts/lazyfont.png", startupStuff->renderer, startupStuff->window)
 			|| !streamingTexture.createBlank(64, 205, startupStuff->renderer)
 			|| !dataStream.loadMedia()
-			|| !targetTexture.createBlank(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_TEXTUREACCESS_TARGET, startupStuff->renderer))
+			|| !targetTexture.createBlank(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_TEXTUREACCESS_TARGET, startupStuff->renderer)
+			|| !startupStuff->LoadMedia(dotTexture, "44_frame_independent_movement/dot.bmp"))
 		{
 			printf("Failed to load media!\n");
 		}
@@ -75,6 +77,9 @@ int main(int argc, char* args[])
 
 			double angle = 0;
 			SDL_Point screenCenter = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
+
+			Dot dot(20,20);
+			Timer frameTimer;
 			while (!quit)
 			{
 				bool renderText = false;
@@ -95,6 +100,8 @@ int main(int argc, char* args[])
 						}
 					}
 
+					dot.handleEvent(e);
+
 				}
 
 				angle += 1;
@@ -102,6 +109,12 @@ int main(int argc, char* args[])
 				{
 					angle -= 360;
 				}
+
+				float timeStep = frameTimer.getTicks() / 1000.f;
+				
+				dot.move_FrameIndependent(timeStep);
+
+				frameTimer.start();
 
 				//Set self as render target
 				targetTexture.SetAsRenderTarget(startupStuff->renderer);
@@ -143,6 +156,8 @@ int main(int argc, char* args[])
 				{
 					SDL_RenderDrawPoint(startupStuff->renderer, SCREEN_WIDTH / 2, i);
 				}
+
+				dot.render(dotTexture, startupStuff->renderer);
 
 				//Reset Render target
 				SDL_SetRenderTarget(startupStuff->renderer, NULL);

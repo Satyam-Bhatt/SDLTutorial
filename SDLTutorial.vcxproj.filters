@@ -186,6 +186,9 @@
     <ClCompile Include="43_render_to_texture\43_render_to_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="44_frame_independent_movement\44_frame_independent_movement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
