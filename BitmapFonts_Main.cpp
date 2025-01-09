@@ -22,6 +22,8 @@ BitmapFont texture_text;
 
 DataStream dataStream;
 
+Uint32 callback(Uint32 interval, void* param);
+
 void close()
 {
 	dotTexture.Free();
@@ -44,6 +46,14 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 	Mix_Quit();
+}
+
+Uint32 callback(Uint32 interval, void* param)
+{
+	 printf("Timer triggered! Message: %s\n", (char*)param);
+	//std::string* message = static_cast<std::string*>(param);
+	//printf("Timer triggered! Message: %s\n", message->c_str());
+	return 0;
 }
 
 int main(int argc, char* args[])
@@ -80,6 +90,17 @@ int main(int argc, char* args[])
 
 			Dot dot(20,20);
 			Timer frameTimer;
+
+			//1- const char* point = "Hello from the timer!";
+
+			std::string message = "Hello from the timer!";
+			//std::string* point = &message;
+
+			const char* point = message.c_str();
+
+			// Add a timer to be triggered every 1000 ms (1 second)
+			SDL_TimerID timerID = SDL_AddTimer(1000, callback, (void*)point);
+
 			while (!quit)
 			{
 				bool renderText = false;
@@ -169,6 +190,7 @@ int main(int argc, char* args[])
 				SDL_RenderPresent(startupStuff->renderer);
 				//}
 			}
+			SDL_RemoveTimer(timerID);
 		}
 	}
 

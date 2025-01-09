@@ -189,6 +189,9 @@
     <ClCompile Include="44_frame_independent_movement\44_frame_independent_movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="45_timer_callbacks\45_timer_callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">
