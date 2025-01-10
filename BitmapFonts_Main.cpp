@@ -10,6 +10,7 @@
 #include <fstream>
 #include "BitmapFont.h"
 #include "DataStream.h"
+#include <SDL_thread.h>
 #define SDL_TTF_MAJOR_VERSION
 
 StartupStuff* startupStuff = new StartupStuff();
@@ -23,6 +24,8 @@ BitmapFont texture_text;
 DataStream dataStream;
 
 Uint32 callback(Uint32 interval, void* param);
+
+int threadFunction(void* data);
 
 void close()
 {
@@ -53,6 +56,13 @@ Uint32 callback(Uint32 interval, void* param)
 	 printf("Timer triggered! Message: %s\n", (char*)param);
 	//std::string* message = static_cast<std::string*>(param);
 	//printf("Timer triggered! Message: %s\n", message->c_str());
+	return 0;
+}
+
+int threadFunction(void* data)
+{
+	//Print incoming data
+	printf("Runnign thread with value = %d\n", int(data));
 	return 0;
 }
 
@@ -100,6 +110,10 @@ int main(int argc, char* args[])
 
 			// Add a timer to be triggered every 1000 ms (1 second)
 			SDL_TimerID timerID = SDL_AddTimer(1000, callback, (void*)point);
+
+			//Run the thread
+			int data = 101;
+			SDL_Thread* threadID = SDL_CreateThread(threadFunction, "LazyThread", (void*)data);
 
 			while (!quit)
 			{
@@ -191,6 +205,7 @@ int main(int argc, char* args[])
 				//}
 			}
 			SDL_RemoveTimer(timerID);
+			SDL_WaitThread(threadID, NULL);
 		}
 	}
 
