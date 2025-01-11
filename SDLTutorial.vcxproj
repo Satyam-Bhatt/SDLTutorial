@@ -58,6 +58,7 @@
     <ClCompile Include="43_render_to_texture\43_render_to_texture.cpp" />
     <ClCompile Include="44_frame_independent_movement\44_frame_independent_movement.cpp" />
     <ClCompile Include="45_timer_callbacks\45_timer_callbacks.cpp" />
+    <ClCompile Include="47_semaphores\47_semaphores.cpp" />
     <ClCompile Include="BitmapFont.cpp" />
     <ClCompile Include="BitmapFonts_Main.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />

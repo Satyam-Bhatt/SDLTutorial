@@ -27,6 +27,15 @@ Uint32 callback(Uint32 interval, void* param);
 
 int threadFunction(void* data);
 
+//Our worker thread function
+int worker(void* data);
+
+//Data access semaphore
+SDL_sem* dataLock = NULL;
+
+//The "data buffer"
+int gdata = -1;
+
 void close()
 {
 	dotTexture.Free();
@@ -35,6 +44,9 @@ void close()
 	targetTexture.Free();
 
 	bitMapRender.Free();
+
+	SDL_DestroySemaphore(dataLock);
+	dataLock = NULL;
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -66,6 +78,42 @@ int threadFunction(void* data)
 	return 0;
 }
 
+int worker(void* data)
+{
+	printf("%s starting... \n", data);
+
+	//Pre thread random seeding
+	srand(SDL_GetTicks());
+
+	//Work 5 times
+	for (int i = 0; i < 5; ++i)
+	{
+		//Waiut randomly
+		SDL_Delay(16 + rand() % 32);
+	
+		//Lock
+		SDL_SemWait(dataLock);
+
+		//Print per work data
+		printf("%s gets %d\n", data, gdata);
+
+		//"Work"
+		gdata = rand() % 256;
+
+		//Print post work data
+		printf("%s sets %d\n\n", data, gdata);
+
+		//Unlock
+		SDL_SemPost(dataLock);
+
+		//Wait Randomly
+		SDL_Delay(16 + rand() % 640);
+	}
+
+	printf("%s finished\n", data);
+	return 0;
+}
+
 int main(int argc, char* args[])
 {
 	if (!startupStuff->init())
@@ -91,7 +139,6 @@ int main(int argc, char* args[])
 			//	printf("Failed to render text texture!\n");
 			//}
 #endif
-
 			bool quit = false;
 			SDL_Event e;;
 
@@ -114,6 +161,14 @@ int main(int argc, char* args[])
 			//Run the thread
 			int data = 101;
 			SDL_Thread* threadID = SDL_CreateThread(threadFunction, "LazyThread", (void*)data);
+
+			dataLock = SDL_CreateSemaphore(1);
+
+			//Run the threads
+			srand(SDL_GetTicks());
+			SDL_Thread * threadA = SDL_CreateThread(worker, "Thread A", (void*)"Thread A");
+			SDL_Delay(16 + rand() % 32);
+			SDL_Thread* threadB = SDL_CreateThread(worker, "Thread B", (void*)"Thread B");
 
 			while (!quit)
 			{
@@ -206,6 +261,8 @@ int main(int argc, char* args[])
 			}
 			SDL_RemoveTimer(timerID);
 			SDL_WaitThread(threadID, NULL);
+			SDL_WaitThread(threadA, NULL);
+			SDL_WaitThread(threadB, NULL);
 		}
 	}
 
