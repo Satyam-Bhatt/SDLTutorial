@@ -45,6 +45,22 @@ SDL_SpinLock dataLock_Spin = 0;
 //The "data buffer"
 int data_Spin = -1;
 
+//Our worker functions
+int producer(void * data);
+int consumer(void * data);
+void produce();
+void consume();
+
+//The protective mutex
+SDL_mutex* gBufferLock = NULL;
+
+//The conditions
+SDL_cond* gCanProduce = NULL;
+SDL_cond* gCanConsume = NULL;
+
+//The data buffer
+int data_Mutex = -1;
+
 void close()
 {
 	dotTexture.Free();
@@ -56,6 +72,14 @@ void close()
 
 	SDL_DestroySemaphore(dataLock);
 	dataLock = NULL;
+
+	SDL_DestroyMutex(gBufferLock);
+	gBufferLock = NULL;
+
+	SDL_DestroyCond(gCanProduce);
+	gCanProduce = NULL;
+	SDL_DestroyCond(gCanConsume);
+	gCanConsume = NULL;
 
 	TTF_CloseFont(gFont);
 	gFont = NULL;
@@ -170,6 +194,96 @@ int worker_Spin(void* data)
 	return 0;
 }
 
+int producer(void* data)
+{
+	printf("\nProducer started....\n");
+
+	//See thread random
+	srand(SDL_GetTicks());
+
+	//Produce 5 times
+	for (int i = 0; i < 5; ++i)
+	{
+		//Wait randomly
+		SDL_Delay(rand() % 1000);
+
+		//Produce
+		produce();
+	}
+
+	printf("\nProducer finished\n");
+	return 0;
+}
+
+int consumer(void* data)
+{
+	printf("\nConsumer started....\n");
+
+	//See thread random
+	srand(SDL_GetTicks());
+
+	//Consume 5 times
+	for (int i = 0; i < 5; ++i)
+	{
+		//Wait randomly
+		SDL_Delay(rand() % 1000);
+
+		//Consume
+		consume();
+	}
+
+	printf("\nConsumer finished\n");
+	return 0;
+}
+
+void produce()
+{
+	//Lock
+	SDL_LockMutex(gBufferLock);
+
+	//if the buffer is full
+	if (data_Mutex != -1)
+	{
+		//Wait for buffer to be cleared
+		printf("\nProducer encountered full buffer, waiting for consumer to empty buffer...\n");
+		SDL_CondWait(gCanProduce, gBufferLock);
+	}
+
+	//Fill and show buffer
+	data_Mutex = rand() % 255;
+	printf("\nProduced %d\n", data_Mutex);
+
+	//Unlock
+	SDL_UnlockMutex(gBufferLock);
+
+	//Signal consumer
+	SDL_CondSignal(gCanConsume);
+}
+
+void consume()
+{
+	//Lock
+	SDL_LockMutex(gBufferLock);
+
+	//If the buffer is empty
+	if (data_Mutex == -1)
+	{
+		//Wait for buffer to be filled
+		printf("\nConsumer encountered empty buffer, waiting for producer to produce data...\n");
+		SDL_CondWait(gCanConsume, gBufferLock);
+	}
+
+	//Show and empty buffer
+	printf("\nConsumed %d\n", data_Mutex);
+	data_Mutex = -1;
+
+	//Unlock
+	SDL_UnlockMutex(gBufferLock);
+
+	//Signal producer
+	SDL_CondSignal(gCanProduce);
+}
+
 int main(int argc, char* args[])
 {
 	if (!startupStuff->init())
@@ -220,11 +334,18 @@ int main(int argc, char* args[])
 
 			dataLock = SDL_CreateSemaphore(1);
 
+			//Create the mutex
+			gBufferLock = SDL_CreateMutex();
+
+			//Create conditions
+			gCanProduce = SDL_CreateCond();
+			gCanConsume = SDL_CreateCond();
+
 			//Run the threads
 			srand(SDL_GetTicks());
-			SDL_Thread * threadA = SDL_CreateThread(worker, "Thread A", (void*)"Thread A");
+			SDL_Thread * threadA = SDL_CreateThread(producer, "Thread A", (void*)"Thread A");
 			SDL_Delay(16 + rand() % 32);
-			SDL_Thread* threadB = SDL_CreateThread(worker, "Thread B", (void*)"Thread B");
+			SDL_Thread* threadB = SDL_CreateThread(consumer, "Thread B", (void*)"Thread B");
 
 			while (!quit)
 			{
