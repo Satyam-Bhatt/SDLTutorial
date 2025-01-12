@@ -30,11 +30,20 @@ int threadFunction(void* data);
 //Our worker thread function
 int worker(void* data);
 
+//Worker thread for spin
+int worker_Spin(void* data);
+
 //Data access semaphore
 SDL_sem* dataLock = NULL;
 
 //The "data buffer"
 int gdata = -1;
+
+//Data access sping lock
+SDL_SpinLock dataLock_Spin = 0;
+
+//The "data buffer"
+int data_Spin = -1;
 
 void close()
 {
@@ -80,7 +89,7 @@ int threadFunction(void* data)
 
 int worker(void* data)
 {
-	printf("%s starting... \n", data);
+	printf("%s starting... \n", (char*)data);
 
 	//Pre thread random seeding
 	srand(SDL_GetTicks());
@@ -95,13 +104,13 @@ int worker(void* data)
 		SDL_SemWait(dataLock);
 
 		//Print per work data
-		printf("%s gets %d\n", data, gdata);
+		printf("%s gets %d\n", (char*)data, gdata);
 
 		//"Work"
 		gdata = rand() % 256;
 
 		//Print post work data
-		printf("%s sets %d\n\n", data, gdata);
+		printf("%s sets %d\n\n", (char*)data, gdata);
 
 		//Unlock
 		SDL_SemPost(dataLock);
@@ -110,7 +119,54 @@ int worker(void* data)
 		SDL_Delay(16 + rand() % 640);
 	}
 
-	printf("%s finished\n", data);
+	printf("%s finished\n", (char*)data);
+
+	if ((char*)data == "Thread A")
+	{
+		//Run the threads
+		srand(SDL_GetTicks());
+		SDL_Thread* threadA = SDL_CreateThread(worker_Spin, "Thread A", (void*)"Thread A");
+		SDL_Delay(16 + rand() % 32);
+		SDL_Thread* threadB = SDL_CreateThread(worker_Spin, "Thread B", (void*)"Thread B");
+	}
+
+	return 0;
+}
+
+int worker_Spin(void* data)
+{
+	printf("%s starting SPIN... \n", (char*)data);
+
+	//Pre thread random seeding
+	srand(SDL_GetTicks());
+
+	//Work 5 times
+	for (int i = 0; i < 5; ++i)
+	{
+		//Wait randomly
+		SDL_Delay(16 + rand() % 32);
+
+		//Lock
+		SDL_AtomicLock(&dataLock_Spin);
+
+		//Print per work data
+		printf("%s gets %d\n", (char*)data, data_Spin);
+
+		//"Work"
+		data_Spin = rand() % 256;
+
+		//Print post work data
+		printf("%s sets %d\n\n", (char*)data, data_Spin);
+
+		//Unlock
+		SDL_AtomicUnlock(&dataLock_Spin);
+
+		//Wait Randomly
+		SDL_Delay(16 + rand() % 640);
+	}
+
+	printf("%s finished  SPIN\n", (char*)data);
+
 	return 0;
 }
 
