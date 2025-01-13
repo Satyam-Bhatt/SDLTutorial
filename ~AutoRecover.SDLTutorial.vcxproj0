@@ -72,6 +72,7 @@
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Mine2.cpp" />
     <ClCompile Include="MouseEvents_h_cpp\Button.cpp" />
+    <ClCompile Include="OpenGL_Main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="StartupStuff.cpp" />
     <ClCompile Include="TextureManipulation_Main.cpp" />
