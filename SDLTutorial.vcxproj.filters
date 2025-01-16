@@ -201,6 +201,9 @@
     <ClCompile Include="50_SDL_and_opengl_2\50_SDL_and_opengl_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="51_SDL_and_modern_opengl\51_SDL_and_modern_opengl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="01_hello_SDL\readme.txt">

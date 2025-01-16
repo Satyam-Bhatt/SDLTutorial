@@ -60,6 +60,7 @@
     <ClCompile Include="45_timer_callbacks\45_timer_callbacks.cpp" />
     <ClCompile Include="47_semaphores\47_semaphores.cpp" />
     <ClCompile Include="50_SDL_and_opengl_2\50_SDL_and_opengl_2.cpp" />
+    <ClCompile Include="51_SDL_and_modern_opengl\51_SDL_and_modern_opengl.cpp" />
     <ClCompile Include="BitmapFont.cpp" />
     <ClCompile Include="BitmapFonts_Main.cpp" />
     <ClCompile Include="CapScreen_Main.cpp" />
@@ -171,8 +172,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDLStuff\SDL2_mixer-2.8.0\include;C:\SDLStuff\SDL2_ttf-2.22.0\include;C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLStuff\SDL2_mixer-2.8.0\lib\x64;C:\SDLStuff\SDL2_ttf-2.22.0\lib\x64;C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.22621.0\um\gl;C:\SDLStuff\SDL2_mixer-2.8.0\include;C:\SDLStuff\SDL2_ttf-2.22.0\include;C:\SDLStuff\SDL2_image-2.8.2\include;C:\SDLStuff\SDL2-2.30.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.22621.0\um\x64;C:\SDLStuff\SDL2_mixer-2.8.0\lib\x64;C:\SDLStuff\SDL2_ttf-2.22.0\lib\x64;C:\SDLStuff\SDL2_image-2.8.2\lib\x64;C:\SDLStuff\SDL2-2.30.8\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -212,7 +213,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
